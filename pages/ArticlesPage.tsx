@@ -70,9 +70,16 @@ const ARTICLES = [
     }
 ];
 
+import SEO from '../components/SEO';
+
 const ArticlesPage = () => {
     return (
         <div className="pt-24 pb-20"> {/* Standard Padding within Layout */}
+            <SEO
+                title="Блог о лидогенерации"
+                description="Экспертные статьи, кейсы и стратегии привлечения клиентов в недвижимости. Как отличить качественные лиды от мусорных."
+                type="article"
+            />
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}

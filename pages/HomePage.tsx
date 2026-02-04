@@ -5,10 +5,12 @@ import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
 const Calculator = React.lazy(() => import('../components/Calculator'));
 const TestPacket = React.lazy(() => import('../components/TestPacket'));
 const SEOContent = React.lazy(() => import('../components/SEOContent'));
+import SEO from '../components/SEO';
 
 const HomePage = () => {
     return (
         <>
+            <SEO />
             {/* Hero Section */}
             <section className="relative pt-36 pb-20 lg:pt-56 lg:pb-32 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
