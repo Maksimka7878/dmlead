@@ -49,8 +49,8 @@ const SEOContent = () => {
     return (
         <section className="bg-slate-50 border-t border-slate-200 py-12 text-slate-600 border-b relative z-10">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div 
-                    onClick={() => setIsOpen(!isOpen)} 
+                <div
+                    onClick={() => setIsOpen(!isOpen)}
                     className="flex items-center justify-between cursor-pointer group select-none"
                 >
                     <h2 className="text-xl font-bold flex items-center gap-2 text-slate-400 group-hover:text-slate-600 transition-colors">
@@ -66,28 +66,40 @@ const SEOContent = () => {
                     <p className="text-sm text-slate-400 italic mb-4">
                         * Данный раздел предназначен для информирования клиентов об особенностях рынка лидогенерации в сфере недвижимости.
                     </p>
-                    {articles.map((article, idx) => (
-                        <article key={idx} className="prose prose-slate max-w-none">
-                            <h3 className="text-lg font-bold text-slate-800 mb-2">{article.title}</h3>
-                            <p className="text-base leading-relaxed text-slate-600 text-justify">
-                                {article.content}
-                            </p>
-                        </article>
-                    ))}
-                    
+                    <div className="grid gap-4">
+                        <p className="text-slate-600 leading-relaxed">
+                            Мы подготовили для вас подробные материалы о том, как работает рынок лидов, как отличать качественные заявки от "мусорных" и какие стратегии маркетинга наиболее эффективны в 2025 году.
+                        </p>
+
+                        <div className="grid gap-3 mt-2">
+                            {articles.map((article, idx) => (
+                                <a key={idx} href="/articles" className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all group">
+                                    <span className="font-bold text-slate-700 group-hover:text-blue-600 transition-colors">{article.title}</span>
+                                    <BookOpen className="w-4 h-4 text-slate-300 group-hover:text-blue-500 transition-colors" />
+                                </a>
+                            ))}
+                        </div>
+
+                        <div className="mt-4 text-center">
+                            <a href="/articles" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:underline">
+                                Читать все статьи в блоге <ChevronDown className="-rotate-90 w-4 h-4" />
+                            </a>
+                        </div>
+                    </div>
+
                     {/* Additional Keyword Cloud for Semantic SEO (Hidden visually but readable by bots if expanded) */}
                     <div className="mt-8 pt-8 border-t border-slate-200">
                         <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Популярные запросы</h4>
                         <div className="flex flex-wrap gap-2">
-                             {[
-                                "Лиды на новостройки", "Купить заявки на недвижимость", "Лидогенерация Дубай", 
-                                "Трафик для риелторов", "Заявки на ипотеку", "Элитная недвижимость Москва", 
+                            {[
+                                "Лиды на новостройки", "Купить заявки на недвижимость", "Лидогенерация Дубай",
+                                "Трафик для риелторов", "Заявки на ипотеку", "Элитная недвижимость Москва",
                                 "Маркетинг для застройщиков", "База клиентов недвижимость", "Лиды от собственников"
-                             ].map((tag, i) => (
-                                 <span key={i} className="text-xs px-3 py-1 bg-white border border-slate-200 rounded-full text-slate-400">
-                                     {tag}
-                                 </span>
-                             ))}
+                            ].map((tag, i) => (
+                                <span key={i} className="text-xs px-3 py-1 bg-white border border-slate-200 rounded-full text-slate-400">
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
                     </div>
                 </div>
