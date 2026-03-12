@@ -9,8 +9,8 @@ export const PRICING_DATA: MarketCategory[] = [
     tiers: [
       { name: 'Стандарт', description: 'Бюджет до 20 млн ₽', price: 3500 },
       { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 5000 },
-      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 7000 },
-      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 10000 },
+      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 9000 },
+      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 13000 },
     ]
   },
   {

@@ -78,7 +78,34 @@ const ArticlesPage = () => {
             <SEO
                 title="Блог о лидогенерации"
                 description="Экспертные статьи, кейсы и стратегии привлечения клиентов в недвижимости. Как отличить качественные лиды от мусорных."
+                keywords="блог лидогенерация, статьи риелторам, маркетинг недвижимость, привлечение клиентов недвижимость, лиды 2025"
                 type="article"
+                path="/articles"
+                schema={[
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dmitryleads.ru/" },
+                            { "@type": "ListItem", "position": 2, "name": "Блог о лидогенерации", "item": "https://dmitryleads.ru/articles" }
+                        ]
+                    },
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "Blog",
+                        "url": "https://dmitryleads.ru/articles",
+                        "name": "Блог DmitryLeads — лидогенерация в недвижимости",
+                        "description": "Экспертные статьи о привлечении клиентов в недвижимости, стратегиях маркетинга и лидогенерации.",
+                        "publisher": { "@id": "https://dmitryleads.ru/#organization" },
+                        "blogPost": ARTICLES.map(a => ({
+                            "@type": "BlogPosting",
+                            "headline": a.title,
+                            "url": `https://dmitryleads.ru/articles#${a.id}`,
+                            "author": { "@id": "https://dmitryleads.ru/#organization" },
+                            "publisher": { "@id": "https://dmitryleads.ru/#organization" }
+                        }))
+                    }
+                ]}
             />
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 

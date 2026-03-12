@@ -112,16 +112,33 @@ const Calculator: React.FC = () => {
             </div>
 
             {/* Count Slider */}
-            <div className="bg-white/20 rounded-2xl p-6 border border-white/30 shadow-inner">
-              <div className="flex justify-between items-end mb-6">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Количество лидов</label>
-                <div className="flex items-baseline gap-1.5">
-                    <span className="text-4xl font-bold text-slate-900 tabular-nums tracking-tighter drop-shadow-sm">{leadCount}</span>
-                    <span className="text-sm font-medium text-slate-500">шт.</span>
+            <div className="bg-white/20 rounded-[2.5rem] p-8 border border-white/30 shadow-inner relative overflow-hidden group/slider">
+              {/* Subtle pulsing glow for the slider section */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
+              
+              <div className="flex justify-between items-center mb-10 relative z-10">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Количество лидов</label>
+                <div className="flex items-baseline gap-2 bg-white/40 px-4 py-1 rounded-2xl border border-white/60 shadow-sm">
+                    <span className="text-5xl font-black text-slate-900 tabular-nums tracking-tighter transition-all duration-300 group-hover/slider:text-blue-600">
+                      {leadCount}
+                    </span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">шт.</span>
                 </div>
               </div>
               
-              <div className="relative h-8 flex items-center">
+              <div className="relative h-12 flex items-center range-container px-3">
+                  {/* Progress Fill */}
+                  <div 
+                    className="range-fill"
+                    style={{ width: `${(leadCount - 10) / 2.9}%` }}
+                  ></div>
+                  
+                  {/* The glow that follows the thumb */}
+                  <div 
+                    className="absolute h-12 w-12 bg-blue-500/20 blur-xl rounded-full pointer-events-none z-10 transition-all duration-100 ease-out hidden sm:block"
+                    style={{ left: `calc(${(leadCount - 10) / 2.9}% - 24px)` }}
+                  ></div>
+
                   <input
                       type="range"
                       min="10"
@@ -129,20 +146,35 @@ const Calculator: React.FC = () => {
                       step="5"
                       value={leadCount}
                       onChange={(e) => setLeadCount(parseInt(e.target.value))}
-                      className="w-full h-3 bg-slate-200/50 rounded-full appearance-none cursor-pointer accent-blue-600 z-20 relative backdrop-blur-sm ring-1 ring-white/50"
-                      style={{
-                          background: `linear-gradient(to right, #3b82f6 0%, #4f46e5 ${(leadCount - 10) / 2.9}%, rgba(255,255,255,0.3) ${(leadCount - 10) / 2.9}%, rgba(255,255,255,0.3) 100%)`
-                      }}
+                      className="premium-range z-20"
                   />
-                  {/* Slider shadow reflection */}
-                  <div className="absolute top-1/2 left-0 w-full h-3 -mt-1.5 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] pointer-events-none"></div>
               </div>
 
-              <div className="flex justify-between text-[10px] text-slate-400 mt-3 font-mono uppercase tracking-wide">
-                <span>10</span>
-                <span className={leadCount >= 30 ? "text-emerald-600 font-bold" : ""}>30 (-10%)</span>
-                <span className={leadCount >= 50 ? "text-emerald-600 font-bold" : ""}>50 (-20%)</span>
-                <span>300</span>
+              {/* Correctly Positioned Ticks */}
+              <div className="relative mt-6 px-3 h-8">
+                {/* 10 (Start) */}
+                <div className="absolute left-0 flex flex-col items-center gap-1.5 transition-opacity" style={{ left: '0%' }}>
+                  <div className={`w-1.5 h-1.5 rounded-full transition-all ${leadCount >= 10 ? 'bg-blue-500 scale-125' : 'bg-slate-300'}`}></div>
+                  <span className="text-[10px] font-bold text-slate-400">10</span>
+                </div>
+                
+                {/* 30 (6.9%) */}
+                <div className="absolute flex flex-col items-center gap-1.5" style={{ left: '6.9%', transform: 'translateX(-50%)' }}>
+                  <div className={`w-1.5 h-1.5 rounded-full transition-all ${leadCount >= 30 ? 'bg-emerald-500 scale-125 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></div>
+                  <span className={`text-[10px] font-bold transition-colors ${leadCount >= 30 ? 'text-emerald-600' : 'text-slate-400'}`}>30</span>
+                </div>
+
+                {/* 50 (13.8%) */}
+                <div className="absolute flex flex-col items-center gap-1.5" style={{ left: '13.8%', transform: 'translateX(-50%)' }}>
+                  <div className={`w-1.5 h-1.5 rounded-full transition-all ${leadCount >= 50 ? 'bg-emerald-500 scale-125 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></div>
+                  <span className={`text-[10px] font-bold transition-colors ${leadCount >= 50 ? 'text-emerald-600' : 'text-slate-400'}`}>50</span>
+                </div>
+
+                {/* 300 (End) */}
+                <div className="absolute right-0 flex flex-col items-center gap-1.5" style={{ right: '0%' }}>
+                  <div className={`w-1.5 h-1.5 rounded-full transition-all ${leadCount >= 300 ? 'bg-blue-500 scale-125' : 'bg-slate-300'}`}></div>
+                  <span className="text-[10px] font-bold text-slate-400">300</span>
+                </div>
               </div>
             </div>
           </div>

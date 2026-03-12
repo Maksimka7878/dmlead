@@ -10,7 +10,26 @@ import SEO from '../components/SEO';
 const HomePage = () => {
     return (
         <>
-            <SEO />
+            <SEO schema={[
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebPage",
+                    "@id": "https://dmitryleads.ru/#webpage",
+                    "url": "https://dmitryleads.ru/",
+                    "name": "Лиды на недвижимость | Премиальные клиенты | DmitryLeads",
+                    "isPartOf": { "@id": "https://dmitryleads.ru/#website" },
+                    "about": { "@id": "https://dmitryleads.ru/#organization" },
+                    "inLanguage": "ru-RU",
+                    "description": "Качественные лиды на недвижимость в Москве и Дубае. Премиальные клиенты, готовые к сделке."
+                },
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dmitryleads.ru/" }
+                    ]
+                }
+            ]} />
             {/* Hero Section */}
             <section className="relative pt-36 pb-20 lg:pt-56 lg:pb-32 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">

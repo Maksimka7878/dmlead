@@ -4,13 +4,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Title, Description, Keywords, Canonical, and OG/Twitter tags are now managed by React Helmet in components/SEO.tsx -->
-  <!-- Structured Data is now managed by React Helmet in components/SEO.tsx -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#2563EB" />
+  <meta name="color-scheme" content="light" />
+  <meta name="format-detection" content="telephone=no" />
 
-  <!-- Dynamic CSS -->
-  <!-- Tailwind and styles are now imported via index.css/index.tsx -->
+  <!-- Static fallback SEO tags for crawlers that don't execute JavaScript -->
+  <title>Лиды на недвижимость | Премиальные клиенты | DmitryLeads</title>
+  <meta name="description" content="Качественные лиды на недвижимость в Москве и Дубае. Премиальные клиенты, готовые к сделке. Гарантия качества и замена брака." />
+  <meta name="keywords" content="лиды недвижимость, купить лиды недвижимость, премиальные лиды, лидогенерация недвижимость" />
+  <link rel="canonical" href="https://dmitryleads.ru/" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="ru" href="https://dmitryleads.ru/" />
+  <link rel="alternate" hreflang="x-default" href="https://dmitryleads.ru/" />
+
+  <!-- Open Graph static fallback -->
+  <meta property="og:url" content="https://dmitryleads.ru/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:site_name" content="DmitryLeads" />
+  <meta property="og:title" content="Лиды на недвижимость | Премиальные клиенты | DmitryLeads" />
+  <meta property="og:description" content="Качественные лиды на недвижимость в Москве и Дубае. Гарантия качества и замена брака." />
+  <meta property="og:image" content="https://dmitryleads.ru/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter static fallback -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@DMitryLeads" />
+
+  <!-- PWA / App -->
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="DmitryLeads" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+
+  <!-- Performance: preconnect to external origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.qrserver.com" />
+
+  <!-- Dynamic meta tags are managed by React Helmet in components/SEO.tsx -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <script type="importmap">
