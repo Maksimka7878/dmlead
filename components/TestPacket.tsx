@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Sparkles } from 'lucide-react';
 
 const TestPacket: React.FC = () => {
   return (
@@ -35,16 +35,40 @@ const TestPacket: React.FC = () => {
                     по новостройкам Москвы.
                 </p>
 
-                <div className="flex flex-wrap gap-4 mb-8 md:mb-0">
-                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-w-[120px] text-center border border-white/10 shadow-lg relative overflow-hidden">
-                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-                        <div className="text-xs text-indigo-200 uppercase tracking-widest mb-2 opacity-80 font-bold">Объем</div>
-                        <div className="font-black text-white text-3xl leading-none tracking-tight">5 шт</div>
-                    </div>
-                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-w-[120px] text-center border border-white/10 shadow-lg relative overflow-hidden">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 md:mb-0">
+                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-h-[132px] border border-white/10 shadow-lg relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-                        <div className="text-xs text-indigo-200 uppercase tracking-widest mb-2 opacity-80 font-bold">Гео</div>
-                        <div className="font-black text-white text-3xl leading-none tracking-tight">МСК</div>
+                        <div className="relative z-10 flex h-full flex-col justify-between">
+                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Объем</div>
+                            <div className="font-black text-white text-3xl leading-none tracking-tight">5 шт</div>
+                        </div>
+                    </div>
+
+                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-h-[132px] border border-white/10 shadow-lg relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+                        <div className="relative z-10 flex h-full flex-col justify-between">
+                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Гео</div>
+                            <div className="font-black text-white text-3xl leading-none tracking-tight">МСК</div>
+                        </div>
+                    </div>
+
+                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-h-[132px] border border-white/10 shadow-lg relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+                        <div className="relative z-10 flex h-full flex-col justify-between">
+                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Сегмент</div>
+                            <div className="font-black text-white text-3xl leading-none tracking-tight">Бизнес</div>
+                        </div>
+                    </div>
+
+                    <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-h-[132px] border border-white/10 shadow-lg relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+                        <div className="relative z-10 flex h-full flex-col justify-between">
+                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Квал.</div>
+                            <div className="inline-flex items-center gap-2 font-black text-white text-2xl leading-none tracking-tight">
+                                <BadgeCheck className="w-5 h-5 text-emerald-300" />
+                                Да
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,7 +76,7 @@ const TestPacket: React.FC = () => {
             <div className="flex flex-col items-center md:items-end gap-8 min-w-[280px] bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
                 <div className="text-center md:text-right w-full">
                     <div className="text-lg text-indigo-300 line-through font-medium mb-2 decoration-indigo-400/50">25 000 ₽</div>
-                    <div className="text-5xl md:text-6xl font-black text-white tracking-tighter drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">10 000 ₽</div>
+                    <div className="text-5xl md:text-6xl font-black text-white tracking-tighter drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">15 000 ₽</div>
                 </div>
 
                 <a 

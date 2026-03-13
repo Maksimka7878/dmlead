@@ -95,7 +95,7 @@ const HomePage = () => {
                                     </div>
 
                                     <div className="mt-6 flex-1 flex flex-col items-center">
-                                        <h3 className="text-[1.9rem] md:text-[2rem] leading-[1.02] font-bold text-slate-900 tracking-tight max-w-[13rem]">
+                                        <h3 className="flex min-h-[4.2rem] items-center justify-center text-[1.9rem] md:text-[2rem] leading-[1.02] font-bold text-slate-900 tracking-tight max-w-[13rem]">
                                             {item.title}
                                         </h3>
                                         <p className="mt-4 text-[15px] text-slate-500 leading-[1.55] font-medium max-w-[14rem]">
@@ -196,28 +196,31 @@ const HomePage = () => {
             {/* Guarantee Section */}
             <section id="guarantee" className="py-32 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="mb-20">
-                        <div className="inline-block px-5 py-2 rounded-full bg-emerald-100/80 backdrop-blur-sm border border-emerald-200 text-emerald-800 text-sm font-bold mb-6 shadow-sm">
+                    <div className="mb-20 space-y-6">
+                        <div className="inline-block px-5 py-2 rounded-full bg-emerald-100/80 backdrop-blur-sm border border-emerald-200 text-emerald-800 text-sm font-bold shadow-sm">
                             Гарантия качества 100%
                         </div>
-                        <h2 className="text-5xl md:text-6xl font-black text-slate-900 max-w-3xl leading-tight">
-                            Мы бесплатно заменяем <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">нецелевые лиды</span>
+                        <h2 className="max-w-5xl text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[0.96]">
+                            <span className="block">Мы бесплатно заменяем</span>
+                            <span className="mt-3 block w-fit text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
+                                нецелевые лиды
+                            </span>
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {GUARANTEES.map((item) => (
-                            <div key={item.id} className="liquid-glass rounded-[2.5rem] p-10 hover:bg-white/60 transition-all duration-500 group">
-                                <div className="flex items-start gap-8">
+                            <div key={item.id} className="liquid-glass rounded-[2.5rem] p-10 h-full hover:bg-white/60 transition-all duration-500 group">
+                                <div className="flex items-start gap-8 h-full">
                                     <div className="p-5 rounded-3xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                                         {React.cloneElement(item.icon as React.ReactElement, { className: "w-8 h-8" })}
                                     </div>
-                                    <div>
+                                    <div className="flex min-h-[190px] flex-1 flex-col">
                                         <h3 className="text-2xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                                        <p className="text-slate-600 mb-6 leading-relaxed font-medium">{item.scenario}</p>
-                                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/40 rounded-xl text-xs text-slate-700 font-bold border border-white/50 shadow-sm">
-                                            <div className="p-1 bg-emerald-500 rounded-full">
-                                                <Check className="w-3 h-3 text-white" />
+                                        <p className="text-slate-600 leading-relaxed font-medium">{item.scenario}</p>
+                                        <div className="mt-auto pt-6 inline-flex self-start items-center gap-3 px-5 py-3 bg-white/40 rounded-xl text-sm text-slate-700 font-bold border border-white/50 shadow-sm whitespace-nowrap">
+                                            <div className="flex h-9 w-9 items-center justify-center bg-emerald-500 rounded-full shrink-0">
+                                                <Check className="w-4 h-4 text-white" />
                                             </div>
                                             {item.proof}
                                         </div>
@@ -238,8 +241,8 @@ const HomePage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
                             { title: "Telegram Ads", desc: "Гипер-сегментация по интересам и каналам конкурентов.", color: "bg-blue-500", icon: <Send /> },
-                            { title: "Яндекс Директ", desc: "Перформанс-кампании на горячий спрос в поиске.", color: "bg-amber-500", icon: <Target /> },
-                            { title: "Квиз-маркетинг", desc: "Фильтрация неплатежеспособных на этапе заявки.", color: "bg-purple-500", icon: <BarChart3 /> },
+                            { title: "РСЯ", desc: "Перформанс-кампании на горячий спрос в поиске.", color: "bg-amber-500", icon: <Target /> },
+                            { title: "Квиз-рассылки", desc: "Фильтрация неплатежеспособных на этапе заявки.", color: "bg-purple-500", icon: <BarChart3 /> },
                         ].map((method, idx) => (
                             <div key={idx} className="relative group liquid-glass rounded-[3rem] p-0 overflow-hidden hover:-translate-y-2 transition-transform duration-500">
                                 {/* Colored Glow Header */}

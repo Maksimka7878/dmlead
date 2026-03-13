@@ -43,7 +43,7 @@ const Calculator: React.FC = () => {
       {/* Background glow for the glass card */}
       <div className="absolute inset-4 bg-blue-400/20 rounded-[3rem] blur-2xl"></div>
 
-      <div className="relative liquid-glass rounded-[2.5rem] p-0 h-full flex flex-col shadow-2xl transition-transform hover:scale-[1.01] duration-500">
+      <div className="relative liquid-glass rounded-[2.5rem] p-0 h-full flex flex-col shadow-2xl overflow-hidden duration-500">
         
         {/* Header with frosted separation */}
         <div className="p-8 pb-6 border-b border-white/20 flex items-center justify-between backdrop-blur-md bg-white/5 flex-none">

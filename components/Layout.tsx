@@ -74,7 +74,7 @@ const Layout = () => {
 
         const timer = window.setTimeout(() => {
             setShowTelegramPrompt(true);
-        }, 20000);
+        }, 11000);
 
         return () => window.clearTimeout(timer);
     }, []);
@@ -108,38 +108,38 @@ const Layout = () => {
             </div>
 
             {/* Floating Liquid Navbar */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled ? 'pt-4' : 'pt-6'}`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled ? 'pt-5' : 'pt-7'}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
                     <div className={`
                         transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
                         flex justify-between items-center
                         ${scrolled
-                            ? 'liquid-glass rounded-full px-6 py-3 w-auto gap-12 shadow-2xl bg-white/70'
-                            : 'bg-transparent px-6 py-4 w-full max-w-6xl'}
+                            ? 'liquid-glass rounded-full px-7 py-3.5 w-auto gap-12 shadow-2xl bg-white/70'
+                            : 'bg-transparent px-6 py-5 w-full max-w-6xl'}
                     `}>
 
                         <a href="/" className="flex items-center gap-3 group cursor-pointer">
                             {/* Logo Text */}
-                            <span className="text-2xl font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase">
+                            <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-3xl' : 'text-[2.2rem]'}`}>
                                 DM<span className="text-blue-600 mx-[1px]">.</span>LEADS
                             </span>
                         </a>
 
                         {/* Desktop Links */}
-                        <div className={`hidden md:flex items-center space-x-1 text-sm font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
+                        <div className={`hidden md:flex items-center space-x-1 text-base font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
                             {['Процесс', 'Гарантии', 'Цены', 'Методы'].map((item) => {
                                 const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : 'process';
                                 return (
                                     <a
                                         key={item}
                                         href={getLink(id)}
-                                        className="px-5 py-2 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group"
+                                        className="px-5 py-2.5 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group"
                                     >
                                         {item}
                                     </a>
                                 );
                             })}
-                            <a href="/articles" className="px-5 py-2 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group">
+                            <a href="/articles" className="px-5 py-2.5 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group">
                                 Блог
                             </a>
                         </div>
@@ -149,11 +149,11 @@ const Layout = () => {
                                 href={TELEGRAM_URL}
                                 target="_blank"
                                 rel="noreferrer"
-                                className={`hidden md:flex group relative items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-0.5 ${scrolled ? 'text-sm' : ''}`}
+                                className={`hidden md:flex group relative items-center gap-2 px-7 py-3 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-0.5 ${scrolled ? 'text-base' : 'text-lg'}`}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/30 to-blue-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                                 <span className="relative z-10 flex items-center gap-2 font-bold">
-                                    <Send className="w-4 h-4" />
+                                    <Send className="w-5 h-5" />
                                     Telegram
                                 </span>
                             </a>
