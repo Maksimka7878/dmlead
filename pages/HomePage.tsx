@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneCall, Check, BarChart3, Target, Send, UserX, ClipboardCheck, Zap } from 'lucide-react';
+import { PhoneCall, Check, BarChart3, Send, UserX, ClipboardCheck, Zap } from 'lucide-react';
 import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
 import Calculator from '../components/Calculator';
@@ -218,9 +218,9 @@ const HomePage = () => {
                                     <div className="flex min-h-[190px] flex-1 flex-col">
                                         <h3 className="text-2xl font-bold text-slate-900 mb-3">{item.title}</h3>
                                         <p className="text-slate-600 leading-relaxed font-medium">{item.scenario}</p>
-                                        <div className="mt-auto pt-6 inline-flex self-start items-center gap-3 px-5 py-3 bg-white/40 rounded-xl text-sm text-slate-700 font-bold border border-white/50 shadow-sm whitespace-nowrap">
-                                            <div className="flex h-9 w-9 items-center justify-center bg-emerald-500 rounded-full shrink-0">
-                                                <Check className="w-4 h-4 text-white" />
+                                        <div className="mt-auto pt-6 inline-flex w-fit self-start items-center gap-2.5 px-3.5 py-2 bg-white/40 rounded-[0.95rem] text-[1rem] text-slate-700 font-semibold border border-white/50 shadow-sm whitespace-nowrap">
+                                            <div className="flex h-8 w-8 items-center justify-center bg-emerald-500 rounded-full shrink-0">
+                                                <Check className="w-3.5 h-3.5 text-white" />
                                             </div>
                                             {item.proof}
                                         </div>
@@ -240,17 +240,35 @@ const HomePage = () => {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { title: "Telegram Ads", desc: "Гипер-сегментация по интересам и каналам конкурентов.", color: "bg-blue-500", icon: <Send /> },
-                            { title: "РСЯ", desc: "Перформанс-кампании на горячий спрос в поиске.", color: "bg-amber-500", icon: <Target /> },
-                            { title: "Квиз-рассылки", desc: "Фильтрация неплатежеспособных на этапе заявки.", color: "bg-purple-500", icon: <BarChart3 /> },
+                            {
+                                title: "Telegram Ads",
+                                desc: "Гипер-сегментация по интересам и каналам конкурентов.",
+                                color: "bg-blue-500",
+                                shadowColor: "shadow-blue-500/40",
+                                icon: <Send className="w-10 h-10" />
+                            },
+                            {
+                                title: "РСЯ",
+                                desc: "Перформанс-кампании на горячий спрос в поиске.",
+                                color: "bg-gradient-to-br from-red-500 to-rose-600",
+                                shadowColor: "shadow-rose-500/45",
+                                icon: <span className="text-[2.8rem] font-black leading-none text-white select-none">Я</span>
+                            },
+                            {
+                                title: "Квиз-рассылки",
+                                desc: "Фильтрация неплатежеспособных на этапе заявки.",
+                                color: "bg-purple-500",
+                                shadowColor: "shadow-purple-500/40",
+                                icon: <BarChart3 className="w-10 h-10" />
+                            },
                         ].map((method, idx) => (
                             <div key={idx} className="relative group liquid-glass rounded-[3rem] p-0 overflow-hidden hover:-translate-y-2 transition-transform duration-500">
                                 {/* Colored Glow Header */}
                                 <div className={`h-24 ${method.color} opacity-10 group-hover:opacity-20 transition-opacity`}></div>
 
                                 <div className="p-10 -mt-12 flex flex-col items-center text-center relative z-10">
-                                    <div className={`w-24 h-24 rounded-3xl ${method.color} shadow-2xl shadow-${method.color}/40 flex items-center justify-center text-white mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 border-4 border-white/20 backdrop-blur-md`}>
-                                        {React.cloneElement(method.icon as React.ReactElement, { className: "w-10 h-10" })}
+                                    <div className={`w-24 h-24 rounded-3xl ${method.color} shadow-2xl ${method.shadowColor} flex items-center justify-center text-white mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 border-4 border-white/20 backdrop-blur-md`}>
+                                        {method.icon}
                                     </div>
                                     <h3 className="text-2xl font-bold text-slate-900 mb-4">{method.title}</h3>
                                     <p className="text-slate-500 leading-relaxed font-medium">{method.desc}</p>
