@@ -5,9 +5,9 @@ import React from 'react';
 export const PRICING_DATA: MarketCategory[] = [
   {
     id: MarketType.PRIMARY,
-    title: 'Новостройки (Первичный рынок)',
+    title: 'Новостройки',
     tiers: [
-      { name: 'Стандарт', description: 'Бюджет до 20 млн ₽', price: 3500 },
+      { name: 'Стандарт', description: 'Объекты до 400 000 ₽/м²', price: 3500 },
       { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 5000 },
       { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 9000 },
       { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 13000 },
@@ -32,7 +32,8 @@ export const PRICING_DATA: MarketCategory[] = [
 ];
 
 export const DISCOUNTS: DiscountRule[] = [
-  { minCount: 50, percentage: 20 },
+  { minCount: 100, percentage: 20 },
+  { minCount: 50, percentage: 15 },
   { minCount: 30, percentage: 10 },
   { minCount: 0, percentage: 0 },
 ];
@@ -81,12 +82,12 @@ export const PROCESS_STEPS = [
   },
   {
     title: "Передача",
-    desc: "Моментальная передача после квалификации без очередей.",
+    desc: "Передача лида после квалификации в течение 5 минут.",
     icon: <CheckCircle className="w-8 h-8 text-blue-600" />
   },
   {
     title: "Обратная связь",
-    desc: "В течение 5 дней даете фидбек. Бесплатная замена брака.",
+    desc: "В течение 5 дней принимаем обратную связь и бесплатно заменяем нецелевые лиды.",
     icon: <BadgeCheck className="w-8 h-8 text-blue-600" />
   }
 ];

@@ -1,11 +1,9 @@
-import React, { Suspense } from 'react';
-import { PhoneCall, Check, BarChart3, ShieldCheck, Target, Send, ChevronRight, Zap } from 'lucide-react';
+import React from 'react';
+import { PhoneCall, Check, BarChart3, Target, Send, UserX, ClipboardCheck, Zap } from 'lucide-react';
 import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
-
-const Calculator = React.lazy(() => import('../components/Calculator'));
-const TestPacket = React.lazy(() => import('../components/TestPacket'));
-const SEOContent = React.lazy(() => import('../components/SEOContent'));
 import SEO from '../components/SEO';
+import Calculator from '../components/Calculator';
+import TestPacket from '../components/TestPacket';
 
 const HomePage = () => {
     return (
@@ -28,6 +26,16 @@ const HomePage = () => {
                     "itemListElement": [
                         { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dmitryleads.ru/" }
                     ]
+                },
+                {
+                    "@context": "https://schema.org",
+                    "@type": "CollectionPage",
+                    "@id": "https://dmitryleads.ru/articles#collection",
+                    "url": "https://dmitryleads.ru/articles",
+                    "name": "Блог DmitryLeads — лидогенерация в недвижимости",
+                    "isPartOf": { "@id": "https://dmitryleads.ru/#website" },
+                    "about": { "@id": "https://dmitryleads.ru/#organization" },
+                    "inLanguage": "ru-RU"
                 }
             ]} />
             {/* Hero Section */}
@@ -46,34 +54,55 @@ const HomePage = () => {
 
                     <p className="text-lg md:text-2xl text-slate-600 mb-14 max-w-3xl mx-auto leading-relaxed font-medium">
                         Мы не продаем контакты. Мы поставляем <span className="font-bold text-slate-900">готовых к сделке клиентов</span>,
-                        квалифицированных по бюджету и срокам.
+                        квалифицированных по всем параметрам и ожидающих звонка от вашего брокера.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                        <a href="#pricing" className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold rounded-[2rem] transition-all hover:scale-105 hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.5)] shadow-[0_10px_20px_-10px_rgba(59,130,246,0.4)] overflow-hidden">
-                            <div className="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
-                            <span className="relative z-10 flex items-center gap-2">
-                                Рассчитать стоимость <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                        </a>
-                        <a href="#guarantee" className="px-10 py-5 bg-white/40 hover:bg-white/60 backdrop-blur-md border border-white/60 text-slate-700 text-lg font-bold rounded-[2rem] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                            Политика гарантий
-                        </a>
-                    </div>
-
-                    {/* Hero Grid Feature - Liquid Bubbles */}
-                    <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                    {/* Hero Grid Feature - Liquid Cards */}
+                    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto">
                         {[
-                            { text: "Без спама", icon: <ShieldCheck className="text-emerald-600 w-6 h-6" />, color: "bg-emerald-50" },
-                            { text: "Квалификация", icon: <Target className="text-blue-600 w-6 h-6" />, color: "bg-blue-50" },
-                            { text: "Замена брака", icon: <Zap className="text-amber-500 w-6 h-6" />, color: "bg-amber-50" },
-                            { text: "Белые каналы", icon: <Check className="text-purple-600 w-6 h-6" />, color: "bg-purple-50" }
+                            {
+                                title: "Без спама",
+                                desc: "Отсекаем риелторов и случайные заявки",
+                                icon: <UserX className="text-emerald-600 w-6 h-6" />,
+                                color: "bg-emerald-50"
+                            },
+                            {
+                                title: "Выявленные потребности",
+                                desc: "Клиент полностью квалифицирован перед передачей",
+                                icon: <ClipboardCheck className="text-blue-600 w-6 h-6" />,
+                                color: "bg-blue-50"
+                            },
+                            {
+                                title: "Гарантия замены лида",
+                                desc: "Бесплатно меняем нецелевые лиды",
+                                icon: <Zap className="text-amber-500 w-6 h-6" />,
+                                color: "bg-amber-50"
+                            },
+                            {
+                                title: "Проверенные источники",
+                                desc: "Стабильный поток из надежных каналов",
+                                icon: <Check className="text-purple-600 w-6 h-6" />,
+                                color: "bg-purple-50"
+                            }
                         ].map((item, i) => (
-                            <div key={i} className="liquid-glass rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:bg-white/60 transition-all duration-300 group cursor-default">
-                                <div className={`p-4 rounded-full ${item.color} shadow-inner group-hover:scale-110 transition-transform duration-300 border border-white/50`}>
-                                    {item.icon}
+                            <div
+                                key={i}
+                                className="group liquid-glass rounded-[2rem] min-h-[17rem] p-7 md:p-8 border border-white/70 shadow-[0_12px_24px_rgba(15,23,42,0.05)] hover:bg-white/60 hover:-translate-y-1 transition-all duration-300"
+                            >
+                                <div className="flex h-full flex-col items-center text-center">
+                                    <div className={`w-16 h-16 rounded-2xl ${item.color} border border-white/70 flex items-center justify-center shadow-lg shadow-slate-200/30 group-hover:scale-105 transition-transform duration-300`}>
+                                        {item.icon}
+                                    </div>
+
+                                    <div className="mt-6 flex-1 flex flex-col items-center">
+                                        <h3 className="text-[1.9rem] md:text-[2rem] leading-[1.02] font-bold text-slate-900 tracking-tight max-w-[13rem]">
+                                            {item.title}
+                                        </h3>
+                                        <p className="mt-4 text-[15px] text-slate-500 leading-[1.55] font-medium max-w-[14rem]">
+                                            {item.desc}
+                                        </p>
+                                    </div>
                                 </div>
-                                <span className="text-base font-bold text-slate-700">{item.text}</span>
                             </div>
                         ))}
                     </div>
@@ -86,7 +115,7 @@ const HomePage = () => {
                     <div className="mb-20 md:flex md:justify-between md:items-end">
                         <div className="max-w-xl">
                             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Процесс работы</h2>
-                            <p className="text-slate-600 text-xl font-medium">Прозрачный путь от заявки до сделки. <br /> Никаких черных ящиков.</p>
+                            <p className="text-slate-600 text-xl font-medium">Процесс, который экономит время вашего отдела продаж. <br /> Получаете только целевых клиентов, готовых к диалогу.</p>
                         </div>
                     </div>
 
@@ -127,7 +156,7 @@ const HomePage = () => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch mb-16">
                         {/* Left: Info - Liquid Cards */}
-                        <div className="space-y-8 flex flex-col justify-between">
+                        <div className="h-full flex flex-col justify-between gap-8">
                             {PRICING_DATA.map((category) => (
                                 <div key={category.id} className="liquid-glass rounded-[2.5rem] p-8 transition-transform hover:scale-[1.02] duration-500">
                                     <h3 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-4">
@@ -156,15 +185,11 @@ const HomePage = () => {
 
                         {/* Right: Calculator */}
                         <div className="h-full">
-                            <Suspense fallback={<div className="h-full min-h-[400px] flex items-center justify-center text-slate-400 bg-white/20 rounded-3xl backdrop-blur-sm">Загрузка калькулятора...</div>}>
-                                <Calculator />
-                            </Suspense>
+                            <Calculator />
                         </div>
                     </div>
 
-                    <Suspense fallback={<div className="h-48 flex items-center justify-center text-slate-400">Загрузка предложения...</div>}>
-                        <TestPacket />
-                    </Suspense>
+                    <TestPacket />
                 </div>
             </section>
 
@@ -232,11 +257,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
-
-            {/* Invisible Blog Section for SEO */}
-            <Suspense fallback={null}>
-                <SEOContent />
-            </Suspense>
         </>
     );
 };
