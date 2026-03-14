@@ -88,7 +88,7 @@ const HomePage = () => {
                         ].map((item, i) => (
                             <div
                                 key={i}
-                                className="group liquid-glass rounded-[2rem] min-h-[17rem] p-7 md:p-8 border border-white/70 shadow-[0_12px_24px_rgba(15,23,42,0.05)] hover:bg-white/60 hover:-translate-y-1 transition-all duration-300"
+                                className="bg-white rounded-[2.5rem] p-10 h-full hover:bg-slate-50 transition-all duration-300 group relative overflow-hidden shadow-2xl shadow-blue-900/5 backdrop-blur-md"
                             >
                                 <div className="flex h-full flex-col items-center text-center">
                                     <div className={`w-16 h-16 rounded-2xl ${item.color} border border-white/70 flex items-center justify-center shadow-lg shadow-slate-200/30 group-hover:scale-105 transition-transform duration-300`}>
@@ -122,7 +122,7 @@ const HomePage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {PROCESS_STEPS.map((step, idx) => (
-                            <div key={idx} className="group relative liquid-glass rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-500">
+                            <div key={idx} className="bg-white rounded-[2.5rem] p-10 h-full hover:bg-slate-50 transition-all duration-300 group relative overflow-hidden shadow-xl shadow-slate-200/50 border border-slate-100/50">
                                 {/* Number Watermark */}
                                 <div className="absolute top-4 right-6 text-9xl font-black text-blue-900/5 group-hover:text-blue-900/10 transition-colors select-none z-0">
                                     {idx + 1}
@@ -159,7 +159,7 @@ const HomePage = () => {
                         {/* Left: Info - Liquid Cards */}
                         <div className="h-full flex flex-col justify-between gap-8">
                             {PRICING_DATA.map((category) => (
-                                <div key={category.id} className="liquid-glass rounded-[2.5rem] p-8 transition-transform hover:scale-[1.02] duration-500">
+                                <div key={category.id} className="bg-white rounded-[2.5rem] p-8 transition-transform hover:scale-[1.02] duration-500 shadow-xl shadow-blue-900/5">
                                     <h3 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-4">
                                         <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full shadow-lg shadow-blue-500/30"></div>
                                         {category.title}
@@ -211,7 +211,7 @@ const HomePage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {GUARANTEES.map((item) => (
-                            <div key={item.id} className="liquid-glass rounded-[2rem] p-7 h-full hover:bg-white/60 transition-all duration-500 group">
+                            <div key={item.id} className="bg-white rounded-[2.5rem] p-10 h-full hover:bg-slate-50 transition-all duration-300 group relative overflow-hidden shadow-xl shadow-slate-200/50 border border-slate-100/50">
                                 <div className="flex items-start gap-5 h-full">
                                     <div className="p-4 rounded-2xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                                         {React.cloneElement(item.icon as React.ReactElement, { className: "w-7 h-7" })}
