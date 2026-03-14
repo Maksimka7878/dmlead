@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
 
 const TELEGRAM_URL = 'https://t.me/DMitryLeads';
@@ -142,12 +142,12 @@ const Layout = () => {
                             : 'bg-transparent px-6 py-5 w-full max-w-6xl'}
                     `}>
 
-                        <a href="/" className="flex items-center gap-3 group cursor-pointer">
+                        <Link to="/" className="flex items-center gap-3 group cursor-pointer">
                             {/* Logo Text */}
                             <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-3xl' : 'text-[2.2rem]'}`}>
                                 DM<span className="text-blue-600 mx-[1px]">.</span>LEADS
                             </span>
-                        </a>
+                        </Link>
 
                         {/* Desktop Links */}
                         <div className={`hidden md:flex items-center space-x-1 text-base font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
@@ -163,9 +163,9 @@ const Layout = () => {
                                     </a>
                                 );
                             })}
-                            <a href="/articles" className="px-5 py-2.5 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group">
+                            <Link to="/articles" className="px-5 py-2.5 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group">
                                 Блог
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="flex items-center gap-4">
@@ -203,9 +203,9 @@ const Layout = () => {
                                 </a>
                             );
                         })}
-                        <a href="/articles" onClick={() => setMobileMenuOpen(false)} className="p-4 rounded-2xl bg-white/50 border border-white/60 text-slate-800 shadow-sm hover:scale-95 transition-transform">
+                        <Link to="/articles" onClick={() => setMobileMenuOpen(false)} className="p-4 rounded-2xl bg-white/50 border border-white/60 text-slate-800 shadow-sm hover:scale-95 transition-transform">
                             Блог
-                        </a>
+                        </Link>
                         <a href={TELEGRAM_URL} target="_blank" rel="noreferrer" className="bg-blue-600 text-white py-4 rounded-2xl mt-4 shadow-xl shadow-blue-500/30">Написать в Telegram</a>
                     </div>
                 </div>
@@ -393,7 +393,7 @@ const Layout = () => {
 
                             <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('olga') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
                                 <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-emerald-100/50">
-                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передала информацию:»</p>
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передал информацию:»</p>
                                     <p><span className="font-bold text-slate-900">• Запрос:</span> 1-спальная квартира (70 м²) для себя в Центральном районе.</p>
                                     <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-emerald-700 font-bold">125–130 млн ₽</span>. Готова к сделке сразу.</p>
                                     <p><span className="font-bold text-slate-900">• Приоритеты:</span> Камерность, наличие паркинга. Отказалась от ЖК «Таганское».</p>
@@ -426,7 +426,7 @@ const Layout = () => {
 
                             <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('maxim') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
                                 <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-purple-100/50">
-                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передала информацию:»</p>
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передал информацию:»</p>
                                     <p><span className="font-bold text-slate-900">• Цель:</span> Перепродажа до получения ключей (бизнес- и премиум-класс, стадия pre-sale).</p>
                                     <p><span className="font-bold text-slate-900">• Объект:</span> Евро-двушки (40–50 м²) в локациях ЗАО, СЗАО, САО.</p>
                                     <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-purple-700 font-bold">до 40 млн ₽ за лот</span>. 100% наличные.</p>
