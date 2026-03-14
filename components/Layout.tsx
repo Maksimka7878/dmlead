@@ -341,7 +341,7 @@ const Layout = () => {
                         {/* Lead Case 1: Vyacheslav */}
                         <div 
                             onClick={() => toggleLead('vyacheslav')}
-                            className={`bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl transition-all duration-300 cursor-pointer group relative overflow-hidden h-full ${expandedLeads.has('vyacheslav') ? 'ring-2 ring-blue-500/20' : 'hover:-translate-y-1'}`}
+                            className={`liquid-glass !bg-blue-50/30 rounded-[2rem] p-6 md:p-8 border-blue-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('vyacheslav') ? 'ring-2 ring-blue-500/20 shadow-blue-500/10' : 'hover:scale-[1.02] hover:bg-blue-50/50'}`}
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-4">
@@ -374,7 +374,7 @@ const Layout = () => {
                         {/* Lead Case 2: Olga */}
                         <div 
                             onClick={() => toggleLead('olga')}
-                            className={`bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl transition-all duration-300 cursor-pointer group relative overflow-hidden h-full ${expandedLeads.has('olga') ? 'ring-2 ring-emerald-500/20' : 'hover:-translate-y-1'}`}
+                            className={`liquid-glass !bg-emerald-50/30 rounded-[2rem] p-6 md:p-8 border-emerald-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('olga') ? 'ring-2 ring-emerald-500/20 shadow-emerald-500/10' : 'hover:scale-[1.02] hover:bg-emerald-50/50'}`}
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-4">
@@ -407,7 +407,7 @@ const Layout = () => {
                         {/* Lead Case 3: Maxim */}
                         <div 
                             onClick={() => toggleLead('maxim')}
-                            className={`bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl transition-all duration-300 cursor-pointer group relative overflow-hidden h-full ${expandedLeads.has('maxim') ? 'ring-2 ring-purple-500/20' : 'hover:-translate-y-1'}`}
+                            className={`liquid-glass !bg-purple-50/30 rounded-[2rem] p-6 md:p-8 border-purple-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('maxim') ? 'ring-2 ring-purple-500/20 shadow-purple-500/10' : 'hover:scale-[1.02] hover:bg-purple-50/50'}`}
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-4">
@@ -440,7 +440,7 @@ const Layout = () => {
                         {/* Lead Case 4: Viktor */}
                         <div 
                             onClick={() => toggleLead('viktor')}
-                            className={`bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-xl transition-all duration-300 cursor-pointer group relative overflow-hidden h-full ${expandedLeads.has('viktor') ? 'ring-2 ring-amber-500/20' : 'hover:-translate-y-1'}`}
+                            className={`liquid-glass !bg-amber-50/30 rounded-[2rem] p-6 md:p-8 border-amber-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('viktor') ? 'ring-2 ring-amber-500/20 shadow-amber-500/10' : 'hover:scale-[1.02] hover:bg-amber-50/50'}`}
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-4">
