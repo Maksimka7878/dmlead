@@ -1,7 +1,6 @@
 import React from 'react';
-import { PhoneCall, Check, MessageCircleQuestionMark, Send, UserX, ClipboardCheck, Zap, BookOpen, Calendar, ArrowRight } from 'lucide-react';
+import { PhoneCall, Check, MessageCircleQuestionMark, Send, UserX, ClipboardCheck, Zap, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ARTICLES } from '../data/articles';
 import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
 import Calculator from '../components/Calculator';
@@ -276,55 +275,6 @@ const HomePage = () => {
                                     <p className="text-slate-500 leading-relaxed font-medium">{method.desc}</p>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Blog Preview Section */}
-            <section className="py-24 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                        <div className="max-w-2xl">
-                            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">База знаний</h2>
-                            <p className="text-xl text-slate-600 font-medium leading-relaxed">
-                                Экспертные материалы о лидогенерации, квалификации и воронке продаж в недвижимости.
-                            </p>
-                        </div>
-                        <Link 
-                            to="/articles" 
-                            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-bold text-lg transition-colors group"
-                        >
-                            Все статьи
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {ARTICLES.slice(0, 3).map((article) => (
-                            <Link 
-                                key={article.id} 
-                                to="/articles"
-                                className="group relative liquid-glass rounded-[2rem] p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full bg-white/40 border-white/60 shadow-sm"
-                            >
-                                <div className="flex items-center gap-3 text-sm font-bold text-slate-400 mb-6 uppercase tracking-wider">
-                                    <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full uppercase text-[11px]">{article.category}</span>
-                                    <div className="flex items-center gap-1">
-                                        <Calendar className="w-3 h-3" />
-                                        {article.date}
-                                    </div>
-                                </div>
-                                <h3 className="text-2xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight">
-                                    {article.title}
-                                </h3>
-                                <p className="text-slate-500 font-medium mb-8 flex-grow line-clamp-3">
-                                    {article.summary}
-                                </p>
-                                <div className="flex items-center gap-2 text-blue-600 font-bold group-hover:gap-3 transition-all">
-                                    Читать полностью
-                                    <ArrowRight className="w-4 h-4" />
-                                </div>
-                            </Link>
                         ))}
                     </div>
                 </div>
