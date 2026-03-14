@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Send, Menu, X, Check, ArrowUpRight } from 'lucide-react';
+import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
 
 const TELEGRAM_URL = 'https://t.me/DMitryLeads';
 const TELEGRAM_HANDLE = '@DMitryLeads';
 const TELEGRAM_AVATAR_SRC = '/telegram-avatar.jpg';
+
+const PRIMARY_QUALIFICATION_FIELDS = [
+    { label: 'Район', Icon: MapPin },
+    { label: 'Срок сдачи', Icon: CalendarClock },
+    { label: 'Квадратура', Icon: Square },
+    { label: 'Комнатность', Icon: BedDouble },
+    { label: 'Срок покупки', Icon: Clock3 },
+    { label: 'Цена', Icon: Coins },
+];
+
+const EXTRA_QUALIFICATION_FIELDS = [
+    { label: 'Форма оплаты', Icon: CreditCard },
+    { label: 'Какие ЖК смотрел', Icon: Building2 },
+    { label: 'Личные пожелания по ЖК', Icon: ClipboardList },
+    { label: 'Ваш вариант', Icon: Sparkles },
+];
 
 const TelegramAvatar = ({
     sizeClass,
@@ -40,7 +56,15 @@ const Layout = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [showTelegramPrompt, setShowTelegramPrompt] = useState(false);
+    const [expandedLeads, setExpandedLeads] = useState<Set<string>>(new Set());
     const location = useLocation();
+
+    const toggleLead = (id: string) => {
+        const next = new Set(expandedLeads);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        setExpandedLeads(next);
+    };
 
     useEffect(() => {
         let ticking = false;
@@ -232,13 +256,223 @@ const Layout = () => {
             )}
 
             {/* Footer */}
-            <footer className="relative pt-32 pb-16 overflow-hidden">
+            <footer className="relative pt-48 pb-16 overflow-hidden">
                 {/* Glass Overlay for Footer */}
                 <div className="absolute inset-x-0 bottom-0 h-full bg-white/40 backdrop-blur-3xl border-t border-white/50 -z-10"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="liquid-glass rounded-[3rem] p-12 md:p-16 mb-16 flex flex-col md:flex-row justify-between items-center gap-16">
-                        <div className="text-center md:text-left max-w-xl">
+                    <div className="mb-20">
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight">
+                            Пример квалификации контакта
+                        </h2>
+                    </div>
+                    <div className="liquid-glass rounded-[2.5rem] p-8 md:p-10 mb-24 overflow-hidden">
+                        <div className="mb-8 max-w-3xl">
+                            <h3 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+                                Детальный портрет вашего будущего клиента
+                            </h3>
+                            <p className="mt-3 text-slate-600 text-base md:text-lg font-medium leading-relaxed">
+                                Мы собираем максимум информации на этапе квалификации, чтобы ваши менеджеры закрывали сделки, а не тратили время на пустые звонки.
+                            </p>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="liquid-glass !bg-white/20 rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-blue-500/5">
+                                <div className="mb-8 flex items-center gap-4">
+                                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20">1</div>
+                                    <h4 className="text-2xl font-bold text-slate-900 tracking-tight">Основные параметры</h4>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                                    {PRIMARY_QUALIFICATION_FIELDS.map((item) => (
+                                        <div
+                                            key={item.label}
+                                            className="group relative overflow-hidden liquid-glass rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/60 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-300/50"
+                                        >
+                                            <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 backdrop-blur-md shadow-md border border-white group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 mb-4">
+                                                <item.Icon className="w-5 h-5 text-blue-600" />
+                                            </div>
+                                            <div className="text-[15px] font-bold text-slate-800 leading-tight relative z-10">
+                                                {item.label}
+                                            </div>
+                                            <div className="absolute -bottom-4 -right-4 p-2 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity">
+                                                <item.Icon className="w-20 h-20 text-blue-600" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="liquid-glass !bg-white/20 rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-emerald-500/5">
+                                <div className="mb-8 flex items-center gap-4">
+                                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-500/20">2</div>
+                                    <h4 className="text-2xl font-bold text-slate-900 tracking-tight">Дополнительная квалификация</h4>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    {EXTRA_QUALIFICATION_FIELDS.map((item) => (
+                                        <div
+                                            key={item.label}
+                                            className="group relative overflow-hidden liquid-glass rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/60 hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-300/50"
+                                        >
+                                            <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 backdrop-blur-md shadow-md border border-white group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 mb-4">
+                                                <item.Icon className="w-5 h-5 text-emerald-600" />
+                                            </div>
+                                            <div className="text-[15px] font-bold text-slate-800 leading-tight relative z-10">
+                                                {item.label}
+                                            </div>
+                                            <div className="absolute -bottom-4 -right-4 p-2 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity">
+                                                <item.Icon className="w-20 h-20 text-emerald-600" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className="mb-20">
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+                            Реальные примеры наших квалификаций
+                        </h2>
+                        <p className="mt-3 text-slate-500 font-medium">Нажмите на карточки, чтобы раскрыть детали запросов</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
+                        {/* Lead Case 1: Vyacheslav */}
+                        <div 
+                            onClick={() => toggleLead('vyacheslav')}
+                            className={`liquid-glass !bg-blue-50/30 rounded-[2rem] p-6 md:p-8 border-blue-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('vyacheslav') ? 'ring-2 ring-blue-500/20 shadow-blue-500/10' : 'hover:scale-[1.02] hover:bg-blue-50/50'}`}
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-2xl bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 shadow-lg shadow-blue-500/10 shrink-0">
+                                        <User className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-slate-900 leading-tight">Вячеслав</h4>
+                                        <div className="text-[13px] font-bold text-blue-600 uppercase tracking-wider mt-0.5">Премиум-запрос</div>
+                                    </div>
+                                </div>
+                                <div className={`transition-transform duration-300 ${expandedLeads.has('vyacheslav') ? 'rotate-180' : ''}`}>
+                                    <ChevronDown className="w-5 h-5 text-slate-400" />
+                                </div>
+                            </div>
+                            
+                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('vyacheslav') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
+                                <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-blue-100/50">
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передал информацию:»</p>
+                                    <p><span className="font-bold text-slate-900">• Цель:</span> Квартира для жизни на 20-30 лет. Нужен простор и «воздух», не менее 85-100 м².</p>
+                                    <p><span className="font-bold text-slate-900">• Локация:</span> Север, Запад, р-н Динамо, Тверской, в пределе Садового кольца.</p>
+                                    <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-blue-700 font-bold">90–100 млн ₽</span>. Рассрочка на стадии строительства.</p>
+                                    <div className="mt-4 pt-4 italic text-slate-500 text-sm">
+                                        «Заинтересовал ЖК «Enigma» и ЖК «Серёгина 5». Не понравился ЖК Сизар-Сити из-за очередей у лифта.»
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Lead Case 2: Olga */}
+                        <div 
+                            onClick={() => toggleLead('olga')}
+                            className={`liquid-glass !bg-emerald-50/30 rounded-[2rem] p-6 md:p-8 border-emerald-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('olga') ? 'ring-2 ring-emerald-500/20 shadow-emerald-500/10' : 'hover:scale-[1.02] hover:bg-emerald-50/50'}`}
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-2xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-lg shadow-emerald-500/10 shrink-0">
+                                        <User className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-slate-900 leading-tight">Ольга</h4>
+                                        <div className="text-[13px] font-bold text-emerald-600 uppercase tracking-wider mt-0.5">Клубный формат</div>
+                                    </div>
+                                </div>
+                                <div className={`transition-transform duration-300 ${expandedLeads.has('olga') ? 'rotate-180' : ''}`}>
+                                    <ChevronDown className="w-5 h-5 text-slate-400" />
+                                </div>
+                            </div>
+
+                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('olga') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
+                                <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-emerald-100/50">
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передала информацию:»</p>
+                                    <p><span className="font-bold text-slate-900">• Запрос:</span> 1-спальная квартира (70 м²) для себя в Центральном районе.</p>
+                                    <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-emerald-700 font-bold">125–130 млн ₽</span>. Готова к сделке сразу.</p>
+                                    <p><span className="font-bold text-slate-900">• Приоритеты:</span> Камерность, наличие паркинга. Отказалась от ЖК «Таганское».</p>
+                                    <div className="mt-4 pt-4 italic text-slate-500 text-sm">
+                                        «Критична близость к центру и инфраструктура, но фитнес внутри дома не принципиален.»
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Lead Case 3: Maxim */}
+                        <div 
+                            onClick={() => toggleLead('maxim')}
+                            className={`liquid-glass !bg-purple-50/30 rounded-[2rem] p-6 md:p-8 border-purple-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('maxim') ? 'ring-2 ring-purple-500/20 shadow-purple-500/10' : 'hover:scale-[1.02] hover:bg-purple-50/50'}`}
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-2xl bg-purple-100 border border-purple-200 flex items-center justify-center text-purple-600 shadow-lg shadow-purple-500/10 shrink-0">
+                                        <User className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-slate-900 leading-tight">Максим</h4>
+                                        <div className="text-[13px] font-bold text-purple-600 uppercase tracking-wider mt-0.5">Инвест-решение</div>
+                                    </div>
+                                </div>
+                                <div className={`transition-transform duration-300 ${expandedLeads.has('maxim') ? 'rotate-180' : ''}`}>
+                                    <ChevronDown className="w-5 h-5 text-slate-400" />
+                                </div>
+                            </div>
+
+                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('maxim') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
+                                <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-purple-100/50">
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передала информацию:»</p>
+                                    <p><span className="font-bold text-slate-900">• Цель:</span> Перепродажа до получения ключей (бизнес- и премиум-класс, стадия pre-sale).</p>
+                                    <p><span className="font-bold text-slate-900">• Объект:</span> Евро-двушки (40–50 м²) в локациях ЗАО, СЗАО, САО.</p>
+                                    <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-purple-700 font-bold">до 40 млн ₽ за лот</span>. 100% наличные.</p>
+                                    <div className="mt-4 pt-4 italic text-slate-500 text-sm">
+                                        «Готов забрать сразу 2 лота под эксклюзив. Ждет конкретных цифр доходности сегодня во второй половине дня.»
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Lead Case 4: Viktor */}
+                        <div 
+                            onClick={() => toggleLead('viktor')}
+                            className={`liquid-glass !bg-amber-50/30 rounded-[2rem] p-6 md:p-8 border-amber-200/50 shadow-lg transition-all duration-500 cursor-pointer group relative overflow-hidden ${expandedLeads.has('viktor') ? 'ring-2 ring-amber-500/20 shadow-amber-500/10' : 'hover:scale-[1.02] hover:bg-amber-50/50'}`}
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-2xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 shadow-lg shadow-amber-500/10 shrink-0">
+                                        <User className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-slate-900 leading-tight">Виктор</h4>
+                                        <div className="text-[13px] font-bold text-amber-600 uppercase tracking-wider mt-0.5">Сохранение капитала</div>
+                                    </div>
+                                </div>
+                                <div className={`transition-transform duration-300 ${expandedLeads.has('viktor') ? 'rotate-180' : ''}`}>
+                                    <ChevronDown className="w-5 h-5 text-slate-400" />
+                                </div>
+                            </div>
+
+                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedLeads.has('viktor') ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
+                                <div className="space-y-4 text-slate-700 leading-relaxed text-[15px] pt-2 border-t border-amber-100/50">
+                                    <p className="italic text-slate-500 text-sm mb-4">«Звонил Тимур, ваш личный ассистент, передал информацию:»</p>
+                                    <p><span className="font-bold text-slate-900">• Цель:</span> Вывод активов из фондового рынка в недвижимость. Ищет надежный бизнес-класс (Level, MR Group, Sminex).</p>
+                                    <p><span className="font-bold text-slate-900">• Объект:</span> Пул из 2-3 однокомнатных квартир в одном ЖК на старте продаж.</p>
+                                    <p><span className="font-bold text-slate-900">• Бюджет:</span> <span className="text-amber-700 font-bold">до 70 млн ₽ за сделку</span>. 100% наличные сразу.</p>
+                                    <div className="mt-4 pt-4 italic text-slate-500 text-sm">
+                                        «Готов завтра встретиться с топ-брокером для финализации стратегии. Интересует вход на минимальной цене.»
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="liquid-glass rounded-[3rem] p-12 md:p-16 mb-16 flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24">
+                        <div className="text-center md:text-left max-w-lg">
                             <h2 className="text-4xl font-bold text-slate-900 mb-6">Начнем работу?</h2>
                             <p className="text-slate-600 mb-10 text-xl font-medium leading-relaxed">
                                 Напишите нам в Telegram. Мы проанализируем ваш запрос и предложим оптимальную стратегию.

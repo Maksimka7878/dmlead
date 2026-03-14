@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneCall, Check, BarChart3, Send, UserX, ClipboardCheck, Zap } from 'lucide-react';
+import { PhoneCall, Check, MessageCircleQuestionMark, Send, UserX, ClipboardCheck, Zap } from 'lucide-react';
 import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
 import Calculator from '../components/Calculator';
@@ -68,7 +68,7 @@ const HomePage = () => {
                             },
                             {
                                 title: "Выявленные потребности",
-                                desc: "Клиент полностью квалифицирован перед передачей",
+                                desc: "Клиент полностью квалифицирован нашим колл-центром перед передачей",
                                 icon: <ClipboardCheck className="text-blue-600 w-6 h-6" />,
                                 color: "bg-blue-50"
                             },
@@ -210,17 +210,17 @@ const HomePage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {GUARANTEES.map((item) => (
-                            <div key={item.id} className="liquid-glass rounded-[2.5rem] p-10 h-full hover:bg-white/60 transition-all duration-500 group">
-                                <div className="flex items-start gap-8 h-full">
-                                    <div className="p-5 rounded-3xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
-                                        {React.cloneElement(item.icon as React.ReactElement, { className: "w-8 h-8" })}
+                            <div key={item.id} className="liquid-glass rounded-[2rem] p-7 h-full hover:bg-white/60 transition-all duration-500 group">
+                                <div className="flex items-start gap-5 h-full">
+                                    <div className="p-4 rounded-2xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
+                                        {React.cloneElement(item.icon as React.ReactElement, { className: "w-7 h-7" })}
                                     </div>
-                                    <div className="flex min-h-[190px] flex-1 flex-col">
-                                        <h3 className="text-2xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                                        <p className="text-slate-600 leading-relaxed font-medium">{item.scenario}</p>
-                                        <div className="mt-auto pt-6 inline-flex w-fit self-start items-center gap-2.5 px-3.5 py-2 bg-white/40 rounded-[0.95rem] text-[1rem] text-slate-700 font-semibold border border-white/50 shadow-sm whitespace-nowrap">
-                                            <div className="flex h-8 w-8 items-center justify-center bg-emerald-500 rounded-full shrink-0">
-                                                <Check className="w-3.5 h-3.5 text-white" />
+                                    <div className="flex flex-1 flex-col">
+                                        <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed font-medium">{item.scenario}</p>
+                                        <div className="mt-4 inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-sm text-slate-700 font-semibold border border-white/50 shadow-sm whitespace-nowrap">
+                                            <div className="flex h-7 w-7 items-center justify-center bg-emerald-500 rounded-full shrink-0">
+                                                <Check className="w-3 h-3 text-white" />
                                             </div>
                                             {item.proof}
                                         </div>
@@ -259,7 +259,7 @@ const HomePage = () => {
                                 desc: "Фильтрация неплатежеспособных на этапе заявки.",
                                 color: "bg-purple-500",
                                 shadowColor: "shadow-purple-500/40",
-                                icon: <BarChart3 className="w-10 h-10" />
+                                icon: <MessageCircleQuestionMark className="w-10 h-10" />
                             },
                         ].map((method, idx) => (
                             <div key={idx} className="relative group liquid-glass rounded-[3rem] p-0 overflow-hidden hover:-translate-y-2 transition-transform duration-500">
