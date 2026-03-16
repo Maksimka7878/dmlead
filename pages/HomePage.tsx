@@ -197,11 +197,11 @@ const HomePage = () => {
             {/* Guarantee Section */}
             <section id="guarantee" className="py-32 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="mb-20 space-y-6">
+                    <div className="mb-20 space-y-6 pt-10 md:pt-0">
                         <div className="inline-block px-5 py-2 rounded-full bg-emerald-100/80 backdrop-blur-sm border border-emerald-200 text-emerald-800 text-sm font-bold shadow-sm">
                             Гарантия качества 100%
                         </div>
-                        <h2 className="max-w-5xl text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[0.96]">
+                        <h2 className="max-w-5xl text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-[0.96]">
                             <span className="block">Мы бесплатно заменяем</span>
                             <span className="mt-3 block w-fit text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
                                 нецелевые лиды
@@ -219,7 +219,7 @@ const HomePage = () => {
                                     <div className="flex flex-1 flex-col">
                                         <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
                                         <p className="text-slate-600 text-sm leading-relaxed font-medium">{item.scenario}</p>
-                                        <div className="mt-4 inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-sm text-slate-700 font-semibold border border-white/50 shadow-sm whitespace-nowrap">
+                                        <div className="mt-4 inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-sm text-slate-700 font-semibold border border-white/50 shadow-sm">
                                             <div className="flex h-7 w-7 items-center justify-center bg-emerald-500 rounded-full shrink-0">
                                                 <Check className="w-3 h-3 text-white" />
                                             </div>

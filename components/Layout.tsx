@@ -144,7 +144,7 @@ const Layout = () => {
 
                         <Link to="/" className="flex items-center gap-3 group cursor-pointer">
                             {/* Logo Text */}
-                            <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-3xl' : 'text-[2.2rem]'}`}>
+                            <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-2xl md:text-3xl' : 'text-[1.8rem] md:text-[2.2rem]'}`}>
                                 DM<span className="text-blue-600 mx-[1px]">.</span>LEADS
                             </span>
                         </Link>
