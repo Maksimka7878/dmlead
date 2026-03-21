@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
+import { Send, Menu, X, Check, ArrowUpRight, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
 
 const TELEGRAM_URL = 'https://t.me/DMitryLeads';
 const TELEGRAM_HANDLE = '@DMitryLeads';
