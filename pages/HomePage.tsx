@@ -3,9 +3,8 @@ import { PhoneCall, Check, MessageCircleQuestionMark, Send, UserX, ClipboardChec
 import { Link } from 'react-router-dom';
 import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
-
-const Calculator = React.lazy(() => import('../components/Calculator'));
-const TestPacket = React.lazy(() => import('../components/TestPacket'));
+import Calculator from '../components/Calculator';
+import TestPacket from '../components/TestPacket';
 
 const HomePage = () => {
     return (
@@ -187,15 +186,11 @@ const HomePage = () => {
 
                         {/* Right: Calculator */}
                         <div className="h-full">
-                            <React.Suspense fallback={<div className="h-full min-h-[400px] flex items-center justify-center bg-white/20 rounded-[2.5rem] animate-pulse">Загрузка калькулятора...</div>}>
-                                <Calculator />
-                            </React.Suspense>
+                            <Calculator />
                         </div>
                     </div>
 
-                    <React.Suspense fallback={<div className="h-32 bg-white/20 rounded-3xl animate-pulse mt-8"></div>}>
-                        <TestPacket />
-                    </React.Suspense>
+                    <TestPacket />
                 </div>
             </section>
 
