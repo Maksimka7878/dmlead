@@ -7,10 +7,10 @@ export const PRICING_DATA: MarketCategory[] = [
     id: MarketType.PRIMARY,
     title: 'Новостройки',
     tiers: [
-      { name: 'Стандарт', description: 'Объекты до 400 000 ₽/м²', price: 3500 },
-      { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 5000 },
-      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 9000 },
-      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 13000 },
+      { name: 'Стандарт', description: 'Объекты до 400 000 ₽/м²', price: 4000 },
+      { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 7000 },
+      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 11000 },
+      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 17000 },
     ]
   },
   {
@@ -25,8 +25,8 @@ export const PRICING_DATA: MarketCategory[] = [
     id: MarketType.COMMERCIAL,
     title: 'Коммерческая недвижимость',
     tiers: [
-      { name: 'Стандарт', description: 'Запрос 20–50 млн ₽', price: 4000 },
-      { name: 'Премиум', description: 'Запрос от 50 млн ₽', price: 6000 },
+      { name: 'Офисы класса А', description: 'Запрос 20–50 млн ₽', price: 21000 },
+      { name: 'Офис класса Б', description: 'Запрос от 50 млн ₽', price: 14000 },
     ]
   }
 ];
