@@ -83,7 +83,7 @@ const TestPacket: React.FC = () => {
                         className="text-5xl md:text-6xl text-white tracking-tighter drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
                         style={{ fontWeight: 860 }}
                     >
-                        15 000 ₽
+                        20 000 ₽
                     </div>
                 </div>
 

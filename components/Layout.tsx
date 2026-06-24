@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
+import { PRICING_DATA } from '../constants';
+import Calculator from './Calculator';
+import TestPacket from './TestPacket';
 
 const TELEGRAM_URL = 'https://t.me/DMitryLeads';
 const TELEGRAM_HANDLE = '@DMitryLeads';
@@ -123,9 +126,9 @@ const Layout = () => {
             {/* Dynamic Background - Liquid Lava Lamp */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 {/* Primary Blobs */}
-                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-300/40 rounded-full mix-blend-multiply filter blur-[100px] animate-blob"></div>
-                <div className="absolute top-[10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-300/40 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"></div>
-                <div className="absolute bottom-[-10%] left-[20%] w-[60vw] h-[60vw] bg-indigo-300/40 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000"></div>
+                <div className="region-blob absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[var(--blob-1)] rounded-full mix-blend-multiply filter blur-[100px] animate-blob"></div>
+                <div className="region-blob absolute top-[10%] right-[-10%] w-[50vw] h-[50vw] bg-[var(--blob-2)] rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"></div>
+                <div className="region-blob absolute bottom-[-10%] left-[20%] w-[60vw] h-[60vw] bg-[var(--blob-3)] rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000"></div>
 
                 {/* Subtle Noise Texture */}
                 <div className="absolute inset-0 bg-noise-overlay opacity-30 contrast-100 brightness-100 mix-blend-overlay"></div>
@@ -145,7 +148,7 @@ const Layout = () => {
                         <Link to="/" className="flex items-center gap-3 group cursor-pointer">
                             {/* Logo Text */}
                             <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-2xl md:text-3xl' : 'text-[1.8rem] md:text-[2.2rem]'}`}>
-                                DM<span className="text-blue-600 mx-[1px]">.</span>LEADS
+                                DM<span className="text-[var(--accent)] transition-colors duration-700 mx-[1px]">.</span>LEADS
                             </span>
                         </Link>
 
@@ -296,7 +299,7 @@ const Layout = () => {
                         <div className="space-y-6">
                             <div className="liquid-glass !bg-white/20 rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-blue-500/5">
                                 <div className="mb-8 flex items-center gap-4">
-                                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20">1</div>
+                                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--accent)] transition-colors duration-700 text-white font-bold shadow-lg shadow-blue-500/20">1</div>
                                     <h4 className="text-2xl font-bold text-slate-900 tracking-tight">Основные параметры</h4>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
@@ -306,13 +309,13 @@ const Layout = () => {
                                             className="group relative overflow-hidden liquid-glass rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/60 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-300/50"
                                         >
                                             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 backdrop-blur-md shadow-md border border-white group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 mb-4">
-                                                <item.Icon className="w-5 h-5 text-blue-600" />
+                                                <item.Icon className="w-5 h-5 text-[var(--accent)] transition-colors duration-700" />
                                             </div>
                                             <div className="text-[15px] font-bold text-slate-800 leading-tight relative z-10">
                                                 {item.label}
                                             </div>
                                             <div className="absolute -bottom-4 -right-4 p-2 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity">
-                                                <item.Icon className="w-20 h-20 text-blue-600" />
+                                                <item.Icon className="w-20 h-20 text-[var(--accent)]" />
                                             </div>
                                         </div>
                                     ))}
@@ -487,6 +490,52 @@ const Layout = () => {
                             </div>
                         </div>
                     </div>
+
+                    {isHome && (
+                        <section id="pricing" className="relative mb-24 scroll-mt-28">
+                            <div className="text-center mb-10 md:mb-20">
+                                <h2 className="text-4xl md:text-7xl font-black text-slate-900 mb-4 md:mb-6">
+                                    Прайс на лиды
+                                </h2>
+                                <p className="text-base md:text-xl text-slate-500 font-medium">Прозрачное ценообразование. Чем больше объём, тем выгоднее.</p>
+                            </div>
+
+                            {/* Top row: Two info cards side by side */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+                                {PRICING_DATA.map((category) => (
+                                    <div key={category.id} className="liquid-glass rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 transition-transform hover:scale-[1.02] duration-500">
+                                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 md:mb-8 flex items-center gap-3 md:gap-4">
+                                            <div className="w-1.5 h-6 md:w-2 md:h-8 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)] rounded-full shadow-lg shadow-blue-500/30"></div>
+                                            {category.title}
+                                        </h3>
+                                        <div className="grid gap-3 md:gap-4">
+                                            {category.tiers.map((tier) => (
+                                                <div key={tier.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 rounded-xl md:rounded-2xl bg-white/40 border border-white/60 hover:bg-white/70 hover:border-blue-300 transition-all duration-300 shadow-sm group">
+                                                    <div>
+                                                        <div className="font-bold text-base md:text-lg text-slate-900">{tier.name}</div>
+                                                        <div className="text-xs md:text-sm text-slate-500 font-medium">{tier.description}</div>
+                                                    </div>
+                                                    <div className="mt-3 sm:mt-0 flex flex-col items-start sm:items-end">
+                                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 bg-white/50 px-2 rounded">Цена за лид</span>
+                                                        <div className="font-mono font-bold text-[var(--accent)] transition-[color,transform] duration-700 text-lg md:text-xl group-hover:scale-105 origin-left sm:origin-right drop-shadow-sm">
+                                                            {tier.price.toLocaleString('ru-RU')} ₽
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Bottom: Calculator full width */}
+                            <div className="mb-16">
+                                <Calculator />
+                            </div>
+
+                            <TestPacket />
+                        </section>
+                    )}
 
                     <div className="liquid-glass rounded-[3rem] p-12 md:p-16 mb-16 flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24">
                         <div className="text-center md:text-left max-w-lg">

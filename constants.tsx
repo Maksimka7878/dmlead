@@ -7,26 +7,18 @@ export const PRICING_DATA: MarketCategory[] = [
     id: MarketType.PRIMARY,
     title: 'Новостройки',
     tiers: [
-      { name: 'Стандарт', description: 'Объекты до 400 000 ₽/м²', price: 4000 },
+      { name: 'Комфорт', description: 'Объекты до 400 000 ₽/м²', price: 4000 },
       { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 7000 },
       { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 11000 },
       { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 17000 },
     ]
   },
   {
-    id: MarketType.SECONDARY,
-    title: 'Вторичная недвижимость',
-    tiers: [
-      { name: 'Стандарт', description: 'Запрос 20–60 млн ₽', price: 2500 },
-      { name: 'Премиум', description: 'Запрос от 60 млн ₽', price: 4000 },
-    ]
-  },
-  {
     id: MarketType.COMMERCIAL,
-    title: 'Коммерческая недвижимость',
+    title: 'Коммерция',
     tiers: [
-      { name: 'Офисы класса А', description: 'Запрос 20–50 млн ₽', price: 21000 },
-      { name: 'Офис класса Б', description: 'Запрос от 50 млн ₽', price: 14000 },
+      { name: 'Офисы', description: 'Классы А, Б', price: 7000 },
+      { name: 'Ритейл', description: 'Торговые помещения', price: 7000 },
     ]
   }
 ];
@@ -63,7 +55,7 @@ export const GUARANTEES = [
   {
     id: 4,
     title: "Несоответствие бюджета",
-    scenario: "Клиент ищет 'Стандарт', хотя лид продан как 'Бизнес'.",
+    scenario: "Клиент ищет 'Комфорт', хотя лид продан как 'Бизнес'.",
     proof: "Запись диалога.",
     icon: <CreditCard className="w-6 h-6 text-yellow-500" />
   }

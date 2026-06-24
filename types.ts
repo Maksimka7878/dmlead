@@ -1,6 +1,5 @@
 export enum MarketType {
   PRIMARY = 'PRIMARY',
-  SECONDARY = 'SECONDARY',
   COMMERCIAL = 'COMMERCIAL'
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { PhoneCall, Check, MessageCircleQuestionMark, Send, UserX, ClipboardCheck, Zap, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PRICING_DATA, GUARANTEES, PROCESS_STEPS } from '../constants';
+import { GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
-import Calculator from '../components/Calculator';
-import TestPacket from '../components/TestPacket';
+import RegionSwitcher from '../components/RegionSwitcher';
+import RegionSilhouettes from '../components/RegionSilhouettes';
 
 const HomePage = () => {
     return (
@@ -41,13 +41,20 @@ const HomePage = () => {
             ]} />
             {/* Hero Section */}
             <section className="relative pt-24 pb-12 md:pt-36 md:pb-20 lg:pt-56 lg:pb-32 overflow-hidden">
+                {/* Декор: региональные силуэты (меняются под выбранный регион) */}
+                <RegionSilhouettes />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+
+                    {/* Переключатель регионов / направлений */}
+                    <div className="mb-8 md:mb-12">
+                        <RegionSwitcher />
+                    </div>
 
                     <h1 className="text-4xl md:text-7xl lg:text-9xl font-black tracking-tighter text-slate-900 mb-5 md:mb-8 leading-[0.95] drop-shadow-sm">
                         Лиды на недвижимость <br className="hidden md:block" />
                         <span className="relative inline-block mt-2">
                             <span className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200 blur-2xl opacity-50 -z-10"></span>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 pb-2 md:pb-4">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[var(--accent-2)] pb-2 md:pb-4">
                                 Высшего Класса
                             </span>
                         </span>
@@ -130,7 +137,7 @@ const HomePage = () => {
 
                                 <div className="relative z-10">
                                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-white to-blue-50 border border-white flex items-center justify-center mb-5 md:mb-8 shadow-lg shadow-blue-500/10 group-hover:scale-110 transition-transform duration-500">
-                                        {React.cloneElement(step.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7 text-blue-600" })}
+                                        {React.cloneElement(step.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7 text-[var(--accent)] transition-colors duration-700" })}
                                     </div>
                                     <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 md:mb-4">{step.title}</h3>
                                     <p className="text-slate-500 text-sm md:text-base leading-relaxed font-medium">{step.desc}</p>
@@ -138,59 +145,6 @@ const HomePage = () => {
                             </div>
                         ))}
                     </div>
-                </div>
-            </section>
-
-            {/* Pricing & Calculator Section */}
-            <section id="pricing" className="py-16 md:py-24 relative">
-                {/* Subtle background shift */}
-                <div className="absolute inset-0 bg-white/30 backdrop-blur-3xl -z-10 clip-path-slant"></div>
-
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-                    <div className="text-center mb-10 md:mb-20">
-                        <h2 className="text-4xl md:text-7xl font-black text-slate-900 mb-4 md:mb-6">
-                            Прайс на лиды
-                        </h2>
-                        <p className="text-base md:text-xl text-slate-500 font-medium">Прозрачное ценообразование. Чем больше объём, тем выгоднее.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch mb-16">
-                        {/* Left: Info - Liquid Cards */}
-                        <div className="h-full flex flex-col justify-between gap-6 md:gap-8">
-                            {PRICING_DATA.map((category) => (
-                                <div key={category.id} className="liquid-glass rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 transition-transform hover:scale-[1.02] duration-500">
-                                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 md:mb-8 flex items-center gap-3 md:gap-4">
-                                        <div className="w-1.5 h-6 md:w-2 md:h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full shadow-lg shadow-blue-500/30"></div>
-                                        {category.title}
-                                    </h3>
-                                    <div className="grid gap-3 md:gap-4">
-                                        {category.tiers.map((tier) => (
-                                            <div key={tier.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 rounded-xl md:rounded-2xl bg-white/40 border border-white/60 hover:bg-white/70 hover:border-blue-300 transition-all duration-300 shadow-sm group">
-                                                <div>
-                                                    <div className="font-bold text-base md:text-lg text-slate-900">{tier.name}</div>
-                                                    <div className="text-xs md:text-sm text-slate-500 font-medium">{tier.description}</div>
-                                                </div>
-                                                <div className="mt-3 sm:mt-0 flex flex-col items-start sm:items-end">
-                                                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 bg-white/50 px-2 rounded">Цена за лид</span>
-                                                    <div className="font-mono font-bold text-blue-600 text-lg md:text-xl group-hover:scale-105 transition-transform origin-left sm:origin-right drop-shadow-sm">
-                                                        {tier.price.toLocaleString('ru-RU')} ₽
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Right: Calculator */}
-                        <div className="h-full">
-                            <Calculator />
-                        </div>
-                    </div>
-
-                    <TestPacket />
                 </div>
             </section>
 

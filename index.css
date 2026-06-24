@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Региональная тема: дефолт — Москва. Значения перезаписываются из RegionContext. */
+:root {
+  --accent: #2563EB;
+  --accent-2: #6366F1;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --blob-1: rgba(96, 165, 250, 0.45);
+  --blob-2: rgba(167, 139, 250, 0.40);
+  --blob-3: rgba(129, 140, 248, 0.40);
+}
+
+/* Плавный переход цвета фоновых блобов при смене региона */
+.region-blob {
+  transition: background-color 1s ease;
+}
+
 /* Global typography softening across the whole site */
 .font-black {
   font-weight: 800;
@@ -109,7 +124,7 @@
   -webkit-appearance: none;
   appearance: none;
   margin-top: -9px;
-  background: radial-gradient(circle at 30% 30%, #60a5fa 0%, #3b82f6 65%, #2563eb 100%);
+  background: var(--accent);
   height: 28px;
   width: 28px;
   border-radius: 50%;
@@ -134,12 +149,12 @@
 
 .premium-range::-moz-range-progress {
   height: 10px;
-  background: linear-gradient(to right, #3b82f6, #6366f1);
+  background: linear-gradient(to right, var(--accent), var(--accent-2));
   border-radius: 9999px;
 }
 
 .premium-range::-moz-range-thumb {
-  background: radial-gradient(circle at 30% 30%, #60a5fa 0%, #3b82f6 65%, #2563eb 100%);
+  background: var(--accent);
   height: 28px;
   width: 28px;
   border-radius: 50%;
