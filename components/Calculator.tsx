@@ -63,7 +63,7 @@ const Calculator: React.FC = () => {
         
         <div className="p-6 pt-5 flex-1 flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Left: Market type + Tier selector */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 flex flex-col gap-6">
             {/* Market Selector */}
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Тип недвижимости</label>
@@ -109,14 +109,14 @@ const Calculator: React.FC = () => {
             </div>
 
             {/* Tier Selector */}
-            <div>
+            <div className="flex-1 flex flex-col">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Класс / Сегмент</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 flex-1 auto-rows-fr">
                 {currentCategory.tiers.map((tier, idx) => (
                   <div
                     key={tier.name}
                     onClick={() => setSelectedTierIndex(idx)}
-                    className={`cursor-pointer rounded-2xl p-4 transition-all duration-300 border relative group/card backdrop-blur-sm ${
+                    className={`cursor-pointer rounded-2xl p-4 transition-all duration-300 border relative group/card backdrop-blur-sm h-full flex flex-col justify-center ${
                       selectedTierIndex === idx
                         ? 'bg-[var(--accent-soft)] border-[var(--accent)] shadow-lg shadow-blue-500/10'
                         : 'bg-white/10 border-white/20 hover:bg-white/30 hover:border-white/50'
