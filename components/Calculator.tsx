@@ -112,32 +112,53 @@ const Calculator: React.FC = () => {
             <div className="flex-1 flex flex-col">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Класс / Сегмент</label>
               <div className="grid grid-cols-2 gap-3 flex-1 auto-rows-fr">
-                {currentCategory.tiers.map((tier, idx) => (
+                {currentCategory.tiers.map((tier, idx) => {
+                  const isSelected = selectedTierIndex === idx;
+                  return (
                   <div
                     key={tier.name}
                     onClick={() => setSelectedTierIndex(idx)}
-                    className={`cursor-pointer rounded-2xl p-4 transition-all duration-300 border relative group/card backdrop-blur-sm h-full flex flex-col justify-center ${
-                      selectedTierIndex === idx
-                        ? 'bg-[var(--accent-soft)] border-[var(--accent)] shadow-lg shadow-blue-500/10'
-                        : 'bg-white/10 border-white/20 hover:bg-white/30 hover:border-white/50'
+                    aria-pressed={isSelected}
+                    className={`liquid-glass group/card relative cursor-pointer overflow-hidden rounded-3xl p-5 md:p-6 h-full flex flex-col justify-between border transition-all duration-300 ${
+                      isSelected
+                        ? '!bg-[var(--accent-soft)] border-[var(--accent)]/55 ring-1 ring-[var(--accent)]/25 shadow-xl shadow-[var(--accent)]/10 -translate-y-0.5'
+                        : 'border-white/50 hover:-translate-y-1 hover:bg-white/55 hover:border-white/70'
                     }`}
                   >
-                    <div className="flex justify-between items-center mb-1.5">
-                      <span className={`font-bold text-base transition-colors ${selectedTierIndex === idx ? 'text-[var(--accent)]' : 'text-slate-800'}`}>
-                          {tier.name}
-                      </span>
-                      {selectedTierIndex === idx && (
-                          <div className="w-5 h-5 rounded-full bg-[var(--accent)] flex items-center justify-center">
-                              <Check className="w-3 h-3 text-white" />
-                          </div>
-                      )}
+                    {/* Accent glow on selection */}
+                    <div
+                      className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'opacity-0'}`}
+                      style={{ background: 'var(--accent-soft)' }}
+                    />
+
+                    <div className="relative z-10">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2.5">
+                          <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></span>
+                          <span className={`font-bold text-base md:text-lg tracking-tight transition-colors ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}>
+                            {tier.name}
+                          </span>
+                        </div>
+                        <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${
+                          isSelected
+                            ? 'bg-[var(--accent)] scale-100 opacity-100'
+                            : 'bg-white/60 border border-white/70 scale-90 opacity-0 group-hover/card:opacity-100'
+                        }`}>
+                          <Check className={`h-3.5 w-3.5 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
+                        </div>
+                      </div>
+                      <div className="mt-2 text-[12px] text-slate-500 font-medium leading-relaxed">{tier.description}</div>
                     </div>
-                    <div className="text-[11px] text-slate-500 mb-2 leading-relaxed">{tier.description}</div>
-                    <div className="text-xs font-mono text-slate-700 font-bold bg-white/40 inline-block px-2 py-0.5 rounded-lg">
-                      {tier.price.toLocaleString('ru-RU')} ₽ / лид
+
+                    <div className="relative z-10 mt-4">
+                      <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-0.5">Цена за лид</div>
+                      <div className={`font-mono font-bold text-lg md:text-xl tracking-tight transition-colors ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}>
+                        {tier.price.toLocaleString('ru-RU')} <span className="text-sm font-semibold text-slate-400">₽</span>
+                      </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
