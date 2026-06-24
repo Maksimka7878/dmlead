@@ -111,7 +111,7 @@ const Calculator: React.FC = () => {
             {/* Tier Selector */}
             <div className="flex-1 flex flex-col justify-center">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Класс / Сегмент</label>
-              <div className="grid grid-cols-2 gap-3 auto-rows-fr">
+              <div className="grid grid-cols-2 gap-3 content-center min-h-[34.75rem]">
                 {currentCategory.tiers.map((tier, idx) => {
                   const isSelected = selectedTierIndex === idx;
                   return (
@@ -119,7 +119,7 @@ const Calculator: React.FC = () => {
                     key={tier.name}
                     onClick={() => setSelectedTierIndex(idx)}
                     aria-pressed={isSelected}
-                    className={`liquid-glass group/card relative cursor-pointer overflow-hidden rounded-3xl p-5 md:p-6 min-h-[15rem] flex flex-col justify-between border transition-all duration-300 ${
+                    className={`liquid-glass group/card relative cursor-pointer overflow-hidden rounded-3xl p-5 md:p-6 h-[17rem] flex flex-col justify-between border transition-all duration-300 ${
                       isSelected
                         ? '!bg-[var(--accent-soft)] border-[var(--accent)]/55 ring-1 ring-[var(--accent)]/25 shadow-xl shadow-[var(--accent)]/10 -translate-y-0.5'
                         : 'border-white/50 hover:-translate-y-1 hover:bg-white/55 hover:border-white/70'
