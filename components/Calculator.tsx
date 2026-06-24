@@ -145,7 +145,7 @@ const Calculator: React.FC = () => {
           {/* Right: Slider + Results */}
           <div className="flex-1 flex flex-col gap-6 justify-between">
 
-            <div className="bg-white/20 rounded-[2.5rem] p-8 border border-white/30 shadow-inner relative overflow-hidden group/slider">
+            <div className="bg-white/20 rounded-[2.5rem] p-8 border border-white/30 shadow-inner relative overflow-hidden group/slider lg:mt-7">
               {/* Subtle pulsing glow for the slider section */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
               
