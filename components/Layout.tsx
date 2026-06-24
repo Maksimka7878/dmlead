@@ -154,7 +154,7 @@ const Layout = () => {
 
                         {/* Desktop Links */}
                         <div className={`hidden md:flex items-center space-x-1 text-base font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
-                            {['Процесс', 'Цены', 'Гарантии', 'Методы', 'Блог'].map((item) => {
+                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
                                 const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
                                 const href = item === 'Блог' ? '/articles' : getLink(id);
                                 
@@ -209,9 +209,9 @@ const Layout = () => {
             {mobileMenuOpen && (
                 <div className="fixed inset-0 z-40 bg-white/80 backdrop-blur-3xl pt-28 px-6 md:hidden animate-fade-in">
                     <div className="flex flex-col space-y-4 text-xl font-bold text-center">
-                        {['Процесс', 'Цены', 'Гарантии', 'Методы', 'Блог'].map((item) => {
+                        {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
                             const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
-                            
+
                             if (item === 'Блог') {
                                 return (
                                     <Link key={item} to="/articles" onClick={() => setMobileMenuOpen(false)} className="p-4 rounded-2xl bg-white/50 border border-white/60 text-slate-800 shadow-sm hover:scale-95 transition-transform">
