@@ -541,7 +541,7 @@ const Layout = () => {
                                                     </div>
                                                     <div className="mt-3 sm:mt-0 flex flex-col items-start sm:items-end">
                                                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 bg-white/50 px-2 rounded">Цена за лид</span>
-                                                        <div className="font-mono font-bold text-[var(--accent)] text-lg md:text-xl drop-shadow-sm">
+                                                        <div className="font-mono font-bold text-[var(--accent)] text-lg md:text-xl drop-shadow-sm origin-left sm:origin-right transform-gpu transition-transform duration-300 group-hover:scale-[1.04]">
                                                             {tier.price.toLocaleString('ru-RU')} ₽
                                                         </div>
                                                     </div>
