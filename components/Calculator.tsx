@@ -256,18 +256,20 @@ const Calculator: React.FC = () => {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/30 rounded-full blur-[60px] -mr-20 -mt-20"></div>
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-[40px] -ml-10 -mb-10"></div>
 
-                  <div className="flex justify-between items-center mb-3 relative z-10">
-                      <span className="text-slate-700/85 text-sm font-semibold">Цена за лид:</span>
-                      <span className="font-mono text-slate-900 text-lg font-bold">{pricePerLead.toLocaleString('ru-RU')} ₽</span>
+                  <div className="flex justify-between items-center gap-3 mb-3 relative z-10">
+                      <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-slate-700/85 text-sm font-semibold whitespace-nowrap">Цена за лид:</span>
+                          <span
+                              aria-hidden={discountPercent === 0}
+                              className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 whitespace-nowrap transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
+                          >
+                              −{discountPercent}%
+                              <span className="font-mono font-semibold text-emerald-600/90">−{savedAmount.toLocaleString('ru-RU')} ₽</span>
+                          </span>
+                      </div>
+                      <span className="font-mono text-slate-900 text-lg font-bold whitespace-nowrap">{pricePerLead.toLocaleString('ru-RU')} ₽</span>
                   </div>
-                  <div
-                      aria-hidden={discountPercent === 0}
-                      className={`flex justify-between items-center mb-4 text-emerald-400 relative z-10 transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
-                  >
-                      <span className="text-xs uppercase font-bold tracking-widest bg-emerald-500/10 px-2 py-1 rounded">Скидка {discountPercent}%</span>
-                      <span className="font-mono text-sm">-{savedAmount.toLocaleString('ru-RU')} ₽</span>
-                  </div>
-                  
+
                   <div className="h-px bg-gradient-to-r from-transparent via-slate-400/20 to-transparent my-3"></div>
                   
                   <div className="flex justify-between items-end relative z-10">
