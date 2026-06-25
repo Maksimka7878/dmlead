@@ -137,7 +137,7 @@ const HomePage = () => {
 
                                 <div className="relative z-10">
                                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-white to-blue-50 border border-white flex items-center justify-center mb-5 md:mb-8 shadow-lg shadow-blue-500/10 group-hover:scale-110 transition-transform duration-500">
-                                        {React.cloneElement(step.icon as React.ReactElement, { className: "w-6 h-6 md:w-7 md:h-7 text-[var(--accent)] transition-colors duration-700" })}
+                                        {React.cloneElement(step.icon as React.ReactElement<{ className?: string }>, { className: "w-6 h-6 md:w-7 md:h-7 text-[var(--accent)] transition-colors duration-700" })}
                                     </div>
                                     <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 md:mb-4">{step.title}</h3>
                                     <p className="text-slate-500 text-sm md:text-base leading-relaxed font-medium">{step.desc}</p>
@@ -168,7 +168,7 @@ const HomePage = () => {
                             <div key={item.id} className="liquid-glass rounded-3xl md:rounded-[2rem] p-5 md:p-7 h-full hover:bg-white/60 transition-all duration-500 group">
                                 <div className="flex items-start gap-4 md:gap-5 h-full">
                                     <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
-                                        {React.cloneElement(item.icon as React.ReactElement, { className: "w-5 h-5 md:w-7 md:h-7" })}
+                                        {React.cloneElement(item.icon as React.ReactElement<{ className?: string }>, { className: "w-5 h-5 md:w-7 md:h-7" })}
                                     </div>
                                     <div className="flex flex-1 flex-col self-stretch">
                                         <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1 md:mb-2">{item.title}</h3>

@@ -330,7 +330,7 @@ const Layout = () => {
                                     {PRIMARY_QUALIFICATION_FIELDS.map((item) => (
                                         <div
                                             key={item.label}
-                                            className="group relative overflow-hidden liquid-glass rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/60 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-300/50"
+                                            className="group relative overflow-hidden liquid-glass rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/60 hover:shadow-2xl hover:shadow-[var(--accent-soft)] hover:border-[var(--accent)]"
                                         >
                                             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 backdrop-blur-md shadow-md border border-white group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 mb-4">
                                                 <item.Icon className="w-5 h-5 text-[var(--accent)] transition-colors duration-700" />
@@ -529,12 +529,12 @@ const Layout = () => {
                                 {PRICING_DATA.map((category) => (
                                     <div key={category.id} className="liquid-glass rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 transition-transform hover:scale-[1.02] duration-500">
                                         <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 md:mb-8 flex items-center gap-3 md:gap-4">
-                                            <div className="w-1.5 h-6 md:w-2 md:h-8 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)] rounded-full shadow-lg shadow-blue-500/30"></div>
+                                            <div className="w-1.5 h-6 md:w-2 md:h-8 bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)] rounded-full shadow-lg shadow-[var(--accent-soft)]"></div>
                                             {category.title}
                                         </h3>
                                         <div className="grid gap-3 md:gap-4">
                                             {category.tiers.map((tier) => (
-                                                <div key={tier.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 rounded-xl md:rounded-2xl bg-white/40 border border-white/60 hover:bg-white/70 hover:border-blue-300 transition-all duration-300 shadow-sm group">
+                                                <div key={tier.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 rounded-xl md:rounded-2xl bg-white/40 border border-white/60 hover:bg-white/70 hover:border-[var(--accent)] transition-all duration-300 shadow-sm group">
                                                     <div>
                                                         <div className="font-bold text-base md:text-lg text-slate-900">{tier.name}</div>
                                                         <div className="text-xs md:text-sm text-slate-500 font-medium">{tier.description}</div>

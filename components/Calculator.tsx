@@ -80,7 +80,7 @@ const Calculator: React.FC = () => {
   return (
     <div className="relative group z-10 h-full">
       {/* Background glow for the glass card */}
-      <div className="absolute inset-4 bg-blue-400/20 rounded-[3rem] blur-2xl"></div>
+      <div className="absolute inset-4 bg-[var(--accent-soft)] rounded-[3rem] blur-2xl"></div>
 
       <div className="relative liquid-glass rounded-[2.5rem] p-0 h-full flex flex-col shadow-2xl overflow-hidden duration-500">
         
@@ -116,7 +116,7 @@ const Calculator: React.FC = () => {
                     }}
                     className={`relative w-full rounded-2xl px-4 py-3.5 text-left transition-all duration-300 overflow-hidden border backdrop-blur-md ${
                       selectedMarket === market.id
-                        ? 'text-white border-white/40 shadow-[0_10px_26px_rgba(37,99,235,0.35)] bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[var(--accent-2)] -translate-y-0.5'
+                        ? 'text-white border-white/40 shadow-[0_10px_26px_var(--accent-soft)] bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[var(--accent-2)] -translate-y-0.5'
                         : 'text-slate-700 bg-white/28 border-white/40 hover:bg-white/42 hover:border-white/60'
                     }`}
                     aria-pressed={selectedMarket === market.id}
@@ -207,7 +207,7 @@ const Calculator: React.FC = () => {
 
             <div className="bg-white/20 rounded-[2.5rem] p-8 border border-white/30 shadow-inner relative overflow-hidden group/slider">
               {/* Subtle pulsing glow for the slider section */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--accent-soft)] to-transparent"></div>
               
               <div className="flex justify-between items-center mb-10 relative z-10">
                 <div>
@@ -229,7 +229,7 @@ const Calculator: React.FC = () => {
                   max={MAX_LEADS}
                   step={LEAD_STEP}
                   value={leadCount}
-                  onChange={(e) => setLeadCount(parseInt(e.target.value, 10))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLeadCount(parseInt(e.target.value, 10))}
                   style={{ background: sliderBackground }}
                   className="premium-range z-20"
                 />
@@ -240,10 +240,9 @@ const Calculator: React.FC = () => {
                 {SLIDER_MARKS.map((mark) => {
                   const isActive = leadCount >= mark.value;
                   const isDiscountMark = mark.discount !== null && mark.discount > 0;
-                  const markValueLabel = 'label' in mark ? mark.label : `${mark.value}`;
                   const markLabel = isDiscountMark
-                    ? `${markValueLabel} лидов, скидка ${mark.discount}%`
-                    : `${markValueLabel} лидов`;
+                    ? `${mark.value} лидов, скидка ${mark.discount}%`
+                    : `${mark.value} лидов`;
 
                   return (
                     <button
@@ -251,14 +250,14 @@ const Calculator: React.FC = () => {
                       type="button"
                       onClick={() => setLeadCount(mark.value)}
                       aria-label={markLabel}
-                      className="flex flex-col items-center gap-2 rounded-xl py-1 transition-all cursor-pointer hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/40"
+                      className="flex flex-col items-center gap-2 rounded-xl py-1 transition-all cursor-pointer hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-soft)]"
                     >
                       <div
                         className={`w-3 h-3 rounded-full border transition-all ${
                           isActive
                             ? isDiscountMark
                               ? 'bg-emerald-500 border-emerald-300 shadow-[0_0_0_4px_rgba(16,185,129,0.18)]'
-                              : 'bg-[var(--accent)] border-blue-300 shadow-[0_0_0_4px_rgba(59,130,246,0.16)]'
+                              : 'bg-[var(--accent)] border-[var(--accent-soft)] shadow-[0_0_0_4px_var(--accent-soft)]'
                             : 'bg-slate-300 border-slate-200'
                         }`}
                       ></div>
@@ -270,7 +269,7 @@ const Calculator: React.FC = () => {
                               : isActive ? 'text-[var(--accent)]' : 'text-slate-400'
                           }`}
                         >
-                          {'label' in mark ? mark.label : mark.value}
+                          {mark.value}
                         </span>
                         {isDiscountMark && (
                           <span className={`text-[10px] font-bold ${isActive ? 'text-emerald-600' : 'text-slate-400'}`}>
@@ -292,7 +291,7 @@ const Calculator: React.FC = () => {
               {/* Summary Panel */}
               <div className="rounded-3xl p-6 relative overflow-hidden text-white shadow-2xl border border-white/40 bg-[linear-gradient(135deg,rgba(125,153,255,0.18),rgba(182,200,255,0.26))] backdrop-blur-xl">
                   {/* Internal Glows */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/30 rounded-full blur-[60px] -mr-20 -mt-20"></div>
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--accent-soft)] rounded-full blur-[60px] -mr-20 -mt-20"></div>
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-[40px] -ml-10 -mb-10"></div>
 
                   <div className="flex justify-between items-center gap-3 mb-3 relative z-10">
@@ -323,7 +322,7 @@ const Calculator: React.FC = () => {
                   href="https://t.me/DMitryLeads" 
                   target="_blank" 
                   rel="noreferrer"
-                  className="block w-full text-center bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 relative overflow-hidden group hover:-translate-y-1 hover:brightness-110"
+                  className="block w-full text-center bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-[var(--accent-soft)] relative overflow-hidden group hover:-translate-y-1 hover:brightness-110"
               >
                   <div className="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
                   <span className="relative z-10 text-lg tracking-wide">Обсудить заказ</span>
