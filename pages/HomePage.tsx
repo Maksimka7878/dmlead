@@ -172,8 +172,8 @@ const HomePage = () => {
                                     </div>
                                     <div className="flex flex-1 flex-col">
                                         <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1 md:mb-2">{item.title}</h3>
-                                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">{item.scenario}</p>
-                                        <div className="mt-3 md:mt-4 inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-xs md:text-sm text-slate-700 font-semibold border border-white/50 shadow-sm">
+                                        <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium mb-3 md:mb-4">{item.scenario}</p>
+                                        <div className="mt-auto inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-xs md:text-sm text-slate-700 font-semibold border border-white/50 shadow-sm">
                                             <div className="flex h-6 w-6 md:h-7 md:w-7 items-center justify-center bg-emerald-500 rounded-full shrink-0">
                                                 <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-white" />
                                             </div>
