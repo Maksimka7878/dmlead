@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, BadgeCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 const TestPacket: React.FC = () => {
   return (
@@ -63,9 +63,8 @@ const TestPacket: React.FC = () => {
                     <div className="bg-black/20 backdrop-blur-md rounded-2xl p-5 min-h-[132px] border border-white/10 shadow-lg relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
                         <div className="relative z-10 flex h-full flex-col justify-between">
-                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Квал.</div>
+                            <div className="text-xs text-indigo-200 uppercase tracking-widest opacity-80 font-bold">Квал</div>
                             <div className="inline-flex items-center gap-2 font-black text-white text-2xl leading-none tracking-tight">
-                                <BadgeCheck className="w-5 h-5 text-emerald-300" />
                                 Да
                             </div>
                         </div>
@@ -76,7 +75,7 @@ const TestPacket: React.FC = () => {
             <div className="flex flex-col items-center md:items-end gap-8 min-w-[280px] bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
                 <div className="text-center md:text-right w-full">
                     <div className="relative mb-2 inline-block text-xl font-semibold text-indigo-100/90">
-                        <span>25 000 ₽</span>
+                        <span>35 000 ₽</span>
                         <span className="pointer-events-none absolute left-0 right-0 top-1/2 h-[2.5px] -translate-y-1/2 rounded-full bg-rose-200/95 shadow-[0_0_10px_rgba(254,202,202,0.4)]" />
                     </div>
                     <div
