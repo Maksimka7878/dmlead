@@ -150,7 +150,7 @@ const Calculator: React.FC = () => {
             {/* Tier Selector */}
             <div className="flex-1 flex flex-col justify-center">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Класс / Сегмент</label>
-              <div className="grid grid-cols-2 gap-3 content-center min-h-[22.75rem]">
+              <div key={selectedMarket} className="grid grid-cols-2 gap-3 content-center min-h-[22.75rem] animate-segment-in">
                 {currentCategory.tiers.map((tier, idx) => {
                   const isSelected = selectedTierIndex === idx;
                   return (

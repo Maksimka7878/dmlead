@@ -107,6 +107,16 @@
   animation: fadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Плавная смена сегмента в калькуляторе (Новостройки <-> Коммерция) */
+@keyframes segmentIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-segment-in {
+  animation: segmentIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Premium Range Slider Styling */
 .premium-range {
   -webkit-appearance: none;
