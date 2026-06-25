@@ -1,7 +1,42 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { MarketType, PricingTier } from '../types';
 import { PRICING_DATA, DISCOUNTS } from '../constants';
 import { Briefcase, Check, House, ShoppingCart, Sliders } from 'lucide-react';
+
+// Плавная анимация числа (count-up/down) при смене сегмента или количества.
+const useAnimatedNumber = (value: number, duration = 550): number => {
+  const [display, setDisplay] = useState(value);
+  const fromRef = useRef(value);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const from = fromRef.current;
+    const to = value;
+    if (from === to) return;
+    const start = performance.now();
+    cancelAnimationFrame(rafRef.current);
+
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      const current = from + (to - from) * eased;
+      fromRef.current = current;
+      setDisplay(current);
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        fromRef.current = to;
+        setDisplay(to);
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [value, duration]);
+
+  return display;
+};
+
+const ruble = (n: number) => Math.round(n).toLocaleString('ru-RU');
 
 const MIN_LEADS = 10;
 const MAX_LEADS = 100;
@@ -37,6 +72,10 @@ const Calculator: React.FC = () => {
       savedAmount: discountAmount
     };
   }, [currentTier, leadCount]);
+
+  const animTotal = useAnimatedNumber(total);
+  const animPerLead = useAnimatedNumber(pricePerLead);
+  const animSaved = useAnimatedNumber(savedAmount);
 
   return (
     <div className="relative group z-10 h-full">
@@ -264,10 +303,10 @@ const Calculator: React.FC = () => {
                               className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-[12px] font-bold text-white whitespace-nowrap shadow-md shadow-emerald-500/40 ring-1 ring-emerald-300/60 transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
                           >
                               −{discountPercent}%
-                              <span className="font-mono font-semibold text-emerald-50">−{savedAmount.toLocaleString('ru-RU')} ₽</span>
+                              <span className="font-mono font-semibold text-emerald-50 tabular-nums">−{ruble(animSaved)} ₽</span>
                           </span>
                       </div>
-                      <span className="font-mono text-slate-900 text-lg font-bold whitespace-nowrap">{pricePerLead.toLocaleString('ru-RU')} ₽</span>
+                      <span className="font-mono text-slate-900 text-lg font-bold whitespace-nowrap tabular-nums">{ruble(animPerLead)} ₽</span>
                   </div>
 
                   <div className="h-px bg-gradient-to-r from-transparent via-slate-400/20 to-transparent my-3"></div>
@@ -275,7 +314,7 @@ const Calculator: React.FC = () => {
                   <div className="flex justify-between items-end relative z-10">
                       <span className="text-lg font-semibold text-slate-800 pb-1">Итого:</span>
                       <span className="text-5xl font-black text-slate-950 tracking-tighter tabular-nums drop-shadow-[0_6px_18px_rgba(255,255,255,0.45)]">
-                          {total.toLocaleString('ru-RU')} <span className="text-2xl text-slate-500 font-semibold">₽</span>
+                          {ruble(animTotal)} <span className="text-2xl text-slate-500 font-semibold">₽</span>
                       </span>
                   </div>
               </div>
