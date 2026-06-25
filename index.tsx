@@ -10,7 +10,6 @@ if (!rootElement) {
 }
 
 const root = ReactDOM.createRoot(rootElement);
-console.log('Vite App Mounting...');
 root.render(
   <React.StrictMode>
     <HelmetProvider>

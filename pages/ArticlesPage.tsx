@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, BookOpen, Calendar, Tag } from 'lucide-react';
 import { ARTICLES } from '../data/articles';
 
@@ -46,10 +47,10 @@ const ArticlesPage = () => {
 
                 {/* Header */}
                 <div className="mb-12">
-                    <a href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold mb-6 transition-colors group">
+                    <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold mb-6 transition-colors group">
                         <ChevronLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
                         Вернуться на главную
-                    </a>
+                    </Link>
                     <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
                         Блог о лидогенерации
                     </h1>
@@ -112,7 +113,7 @@ const ArticlesPage = () => {
                         </a>
                     </div>
                     {/* Background decoration */}
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-noise-overlay opacity-20 mix-blend-overlay"></div>
                 </div>
 
             </div>
