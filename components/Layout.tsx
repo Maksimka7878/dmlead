@@ -135,14 +135,15 @@ const Layout = () => {
             </div>
 
             {/* Floating Liquid Navbar */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled ? 'pt-5' : 'pt-7'}`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${scrolled ? 'pt-4' : 'pt-7'}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
                     <div className={`
-                        transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
-                        flex justify-between items-center
+                        flex justify-between items-center w-full rounded-full border
+                        backdrop-blur-md backdrop-saturate-150
+                        transition-[max-width,padding,background-color,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
                         ${scrolled
-                            ? 'liquid-glass rounded-full px-7 py-3.5 w-auto gap-12 shadow-2xl bg-white/70'
-                            : 'bg-transparent px-6 py-5 w-full max-w-6xl'}
+                            ? 'max-w-5xl px-7 py-3.5 bg-white/70 border-white/70 shadow-2xl shadow-blue-900/10'
+                            : 'max-w-7xl px-6 py-5 bg-white/0 border-white/0 shadow-none'}
                     `}>
 
                         <Link to="/" className="flex items-center gap-3 group cursor-pointer">
