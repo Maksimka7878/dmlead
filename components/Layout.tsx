@@ -226,7 +226,7 @@ const Layout = () => {
                                         <ArrowUpRight className="h-5 w-5 text-slate-400 transition-colors group-hover:text-[var(--accent)]" />
                                     </>
                                 );
-                                const cls = "group flex items-center justify-between liquid-glass rounded-2xl px-6 py-4 text-lg font-bold text-slate-800 transition-all duration-300 hover:bg-white/70 active:scale-[0.98]";
+                                const cls = "group flex items-center justify-between liquid-glass rounded-full px-7 py-4 text-lg font-bold text-slate-800 transition-all duration-300 hover:bg-white/70 active:scale-[0.98]";
 
                                 return item === 'Блог' ? (
                                     <Link key={item} to="/articles" onClick={() => setMobileMenuOpen(false)} className={cls}>
@@ -245,7 +245,7 @@ const Layout = () => {
                             target="_blank"
                             rel="noreferrer"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] py-4 text-lg font-bold text-white shadow-xl shadow-[var(--accent-soft)] transition-all hover:brightness-110 active:scale-[0.98]"
+                            className="mt-6 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] py-4 text-lg font-bold text-white shadow-xl shadow-[var(--accent-soft)] transition-all hover:brightness-110 active:scale-[0.98]"
                         >
                             <Send className="h-5 w-5" />
                             Написать в Telegram
