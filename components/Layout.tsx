@@ -207,26 +207,49 @@ const Layout = () => {
 
             {/* Mobile Menu Overlay */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-40 bg-white/80 backdrop-blur-3xl pt-28 px-6 md:hidden animate-fade-in">
-                    <div className="flex flex-col space-y-4 text-xl font-bold text-center">
-                        {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
-                            const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
+                <div className="fixed inset-0 z-40 overflow-hidden md:hidden animate-fade-in">
+                    {/* Liquid-glass backdrop matching the site */}
+                    <div className="absolute inset-0 bg-[#F0F4F8]/90 backdrop-blur-3xl" />
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,var(--accent-soft),transparent_55%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.10),transparent_45%)]" />
 
-                            if (item === 'Блог') {
-                                return (
-                                    <Link key={item} to="/articles" onClick={() => setMobileMenuOpen(false)} className="p-4 rounded-2xl bg-white/50 border border-white/60 text-slate-800 shadow-sm hover:scale-95 transition-transform">
-                                        {item}
-                                    </Link>
+                    <div className="relative z-10 flex h-full flex-col px-5 pt-28 pb-10">
+                        <div className="flex flex-col gap-3">
+                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
+                                const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
+
+                                const inner = (
+                                    <>
+                                        <span className="flex items-center gap-3">
+                                            <span className="h-5 w-1 rounded-full bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]" />
+                                            {item}
+                                        </span>
+                                        <ArrowUpRight className="h-5 w-5 text-slate-400 transition-colors group-hover:text-[var(--accent)]" />
+                                    </>
                                 );
-                            }
+                                const cls = "group flex items-center justify-between liquid-glass rounded-2xl px-6 py-4 text-lg font-bold text-slate-800 transition-all duration-300 hover:bg-white/70 active:scale-[0.98]";
 
-                            return (
-                                <a key={item} href={getLink(id)} onClick={() => setMobileMenuOpen(false)} className="p-4 rounded-2xl bg-white/50 border border-white/60 text-slate-800 shadow-sm hover:scale-95 transition-transform">
-                                    {item}
-                                </a>
-                            );
-                        })}
-                        <a href={TELEGRAM_URL} target="_blank" rel="noreferrer" className="bg-blue-600 text-white py-4 rounded-2xl mt-4 shadow-xl shadow-blue-500/30">Написать в Telegram</a>
+                                return item === 'Блог' ? (
+                                    <Link key={item} to="/articles" onClick={() => setMobileMenuOpen(false)} className={cls}>
+                                        {inner}
+                                    </Link>
+                                ) : (
+                                    <a key={item} href={getLink(id)} onClick={() => setMobileMenuOpen(false)} className={cls}>
+                                        {inner}
+                                    </a>
+                                );
+                            })}
+                        </div>
+
+                        <a
+                            href={TELEGRAM_URL}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] py-4 text-lg font-bold text-white shadow-xl shadow-[var(--accent-soft)] transition-all hover:brightness-110 active:scale-[0.98]"
+                        >
+                            <Send className="h-5 w-5" />
+                            Написать в Telegram
+                        </a>
                     </div>
                 </div>
             )}
