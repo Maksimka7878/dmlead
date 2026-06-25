@@ -170,7 +170,7 @@ const HomePage = () => {
                                     <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-white/50 border border-white/60 shadow-lg shadow-slate-200/50 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                                         {React.cloneElement(item.icon as React.ReactElement, { className: "w-5 h-5 md:w-7 md:h-7" })}
                                     </div>
-                                    <div className="flex flex-1 flex-col">
+                                    <div className="flex flex-1 flex-col self-stretch">
                                         <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1 md:mb-2">{item.title}</h3>
                                         <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium mb-3 md:mb-4">{item.scenario}</p>
                                         <div className="mt-auto inline-flex w-fit self-start items-center gap-2 px-3 py-1.5 bg-white/40 rounded-[0.8rem] text-xs md:text-sm text-slate-700 font-semibold border border-white/50 shadow-sm">
