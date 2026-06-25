@@ -261,10 +261,10 @@ const Calculator: React.FC = () => {
                           <span className="text-slate-700/85 text-sm font-semibold whitespace-nowrap">Цена за лид:</span>
                           <span
                               aria-hidden={discountPercent === 0}
-                              className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 whitespace-nowrap transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
+                              className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-[12px] font-bold text-white whitespace-nowrap shadow-md shadow-emerald-500/40 ring-1 ring-emerald-300/60 transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
                           >
                               −{discountPercent}%
-                              <span className="font-mono font-semibold text-emerald-600/90">−{savedAmount.toLocaleString('ru-RU')} ₽</span>
+                              <span className="font-mono font-semibold text-emerald-50">−{savedAmount.toLocaleString('ru-RU')} ₽</span>
                           </span>
                       </div>
                       <span className="font-mono text-slate-900 text-lg font-bold whitespace-nowrap">{pricePerLead.toLocaleString('ru-RU')} ₽</span>
