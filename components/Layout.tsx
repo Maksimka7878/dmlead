@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import FooterLinks from './FooterLinks';
+
+// Пункты меню, ведущие на отдельные страницы, а не на якоря главной.
+const ROUTE_ITEMS: Record<string, string> = { 'Услуги': '/lidy', 'Блог': '/blog' };
 import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Building2, CreditCard, MapPin, Square, BedDouble, ClipboardList, Sparkles, Coins, ChevronDown, User } from 'lucide-react';
 import { PRICING_DATA } from '../constants';
 import Calculator from './Calculator';
@@ -155,15 +159,15 @@ const Layout = () => {
 
                         {/* Desktop Links */}
                         <div className={`hidden md:flex items-center space-x-1 text-base font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
-                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
+                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Услуги', 'Блог'].map((item) => {
                                 const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
-                                const href = item === 'Блог' ? '/articles' : getLink(id);
+                                const href = ROUTE_ITEMS[item] ?? getLink(id);
                                 
-                                if (item === 'Блог') {
+                                if (ROUTE_ITEMS[item]) {
                                     return (
                                         <Link
                                             key={item}
-                                            to="/articles"
+                                            to={ROUTE_ITEMS[item]}
                                             className="px-5 py-2.5 rounded-full hover:bg-white/50 hover:text-blue-600 transition-all relative group"
                                         >
                                             {item}
@@ -215,7 +219,7 @@ const Layout = () => {
 
                     <div className="relative z-10 flex h-full flex-col px-5 pt-28 pb-10">
                         <div className="flex flex-col gap-3">
-                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Блог'].map((item) => {
+                            {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Услуги', 'Блог'].map((item) => {
                                 const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
 
                                 const inner = (
@@ -229,8 +233,8 @@ const Layout = () => {
                                 );
                                 const cls = "group flex items-center justify-between liquid-glass rounded-full px-7 py-4 text-lg font-bold text-slate-800 transition-all duration-300 hover:bg-white/70 active:scale-[0.98]";
 
-                                return item === 'Блог' ? (
-                                    <Link key={item} to="/articles" onClick={() => setMobileMenuOpen(false)} className={cls}>
+                                return ROUTE_ITEMS[item] ? (
+                                    <Link key={item} to={ROUTE_ITEMS[item]} onClick={() => setMobileMenuOpen(false)} className={cls}>
                                         {inner}
                                     </Link>
                                 ) : (
@@ -625,6 +629,8 @@ const Layout = () => {
                             </div>
                         </div>
                     </div>
+
+                    <FooterLinks />
 
                     <div className="flex flex-col md:flex-row justify-center items-center text-slate-500 text-sm font-medium">
                         <span>&copy; {new Date().getFullYear()} DmitryLeads. Premium Real Estate Traffic.</span>

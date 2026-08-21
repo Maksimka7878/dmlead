@@ -13,11 +13,11 @@ const HomePage = () => {
                 {
                     "@context": "https://schema.org",
                     "@type": "WebPage",
-                    "@id": "https://dmitryleads.ru/#webpage",
-                    "url": "https://dmitryleads.ru/",
+                    "@id": "https://dmleads.ru/#webpage",
+                    "url": "https://dmleads.ru/",
                     "name": "Лиды на недвижимость | Премиальные клиенты | DmitryLeads",
-                    "isPartOf": { "@id": "https://dmitryleads.ru/#website" },
-                    "about": { "@id": "https://dmitryleads.ru/#organization" },
+                    "isPartOf": { "@id": "https://dmleads.ru/#website" },
+                    "about": { "@id": "https://dmleads.ru/#organization" },
                     "inLanguage": "ru-RU",
                     "description": "Качественные лиды на недвижимость в Москве и Дубае. Премиальные клиенты, готовые к сделке."
                 },
@@ -25,17 +25,17 @@ const HomePage = () => {
                     "@context": "https://schema.org",
                     "@type": "BreadcrumbList",
                     "itemListElement": [
-                        { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dmitryleads.ru/" }
+                        { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dmleads.ru/" }
                     ]
                 },
                 {
                     "@context": "https://schema.org",
                     "@type": "CollectionPage",
-                    "@id": "https://dmitryleads.ru/articles#collection",
-                    "url": "https://dmitryleads.ru/articles",
+                    "@id": "https://dmleads.ru/articles#collection",
+                    "url": "https://dmleads.ru/articles",
                     "name": "Блог DmitryLeads — лидогенерация в недвижимости",
-                    "isPartOf": { "@id": "https://dmitryleads.ru/#website" },
-                    "about": { "@id": "https://dmitryleads.ru/#organization" },
+                    "isPartOf": { "@id": "https://dmleads.ru/#website" },
+                    "about": { "@id": "https://dmleads.ru/#organization" },
                     "inLanguage": "ru-RU"
                 }
             ]} />

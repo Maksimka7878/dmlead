@@ -16,12 +16,12 @@ const BASE_SCHEMAS = [
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "@id": "https://dmitryleads.ru/#organization",
+        "@id": "https://dmleads.ru/#organization",
         "name": "DmitryLeads",
-        "url": "https://dmitryleads.ru",
+        "url": "https://dmleads.ru",
         "logo": {
             "@type": "ImageObject",
-            "url": "https://dmitryleads.ru/icon-512.png",
+            "url": "https://dmleads.ru/icon-512.png",
             "width": 512,
             "height": 512
         },
@@ -40,17 +40,17 @@ const BASE_SCHEMAS = [
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "@id": "https://dmitryleads.ru/#website",
-        "url": "https://dmitryleads.ru",
+        "@id": "https://dmleads.ru/#website",
+        "url": "https://dmleads.ru",
         "name": "DmitryLeads",
         "inLanguage": "ru-RU",
-        "publisher": { "@id": "https://dmitryleads.ru/#organization" }
+        "publisher": { "@id": "https://dmleads.ru/#organization" }
     },
     {
         "@context": "https://schema.org",
         "@type": "Service",
         "serviceType": "Лидогенерация в сфере недвижимости",
-        "provider": { "@id": "https://dmitryleads.ru/#organization" },
+        "provider": { "@id": "https://dmleads.ru/#organization" },
         "areaServed": [
             { "@type": "City", "name": "Москва" },
             { "@type": "City", "name": "Дубай" }
@@ -59,8 +59,8 @@ const BASE_SCHEMAS = [
         "offers": {
             "@type": "AggregateOffer",
             "priceCurrency": "RUB",
-            "lowPrice": "1500",
-            "highPrice": "10000",
+            "lowPrice": "4000",
+            "highPrice": "17000",
             "offerCount": "6"
         }
     }
@@ -78,7 +78,7 @@ const SEO: React.FC<SEOProps> = ({
     const defaultTitle = "Лиды на недвижимость | Премиальные клиенты | DmitryLeads";
     const defaultDescription = "Качественные лиды на недвижимость в Москве и Дубае. Премиальные клиенты, готовые к сделке. Гарантия качества и замена брака. Таргетированная реклама и контекст.";
     const defaultKeywords = "лиды недвижимость, купить лиды недвижимость, премиальные лиды, лидогенерация недвижимость, клиенты на недвижимость, трафик недвижимость";
-    const siteUrl = "https://dmitryleads.ru";
+    const siteUrl = "https://dmleads.ru";
     const canonicalUrl = `${siteUrl}${path}`;
     const ogImage = `${siteUrl}/og-image.jpg`;
 

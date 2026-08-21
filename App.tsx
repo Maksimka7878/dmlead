@@ -1,31 +1,38 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import BlogIndexPage from './pages/BlogIndexPage';
+import BlogPostPage from './pages/BlogPostPage';
+import LandingIndexPage from './pages/LandingIndexPage';
+import LandingPage from './pages/LandingPage';
+import NotFound from './pages/NotFound';
 import Layout from './components/Layout';
 import { RegionProvider } from './components/RegionContext';
 
-const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
+/** Роуты вынесены отдельно от Router: клиент оборачивает их в BrowserRouter,
+ *  пререндер — в StaticRouter. */
+export const AppRoutes: React.FC = () => (
+    <Routes>
+        <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/lidy" element={<LandingIndexPage />} />
+            <Route path="/lidy/:slug" element={<LandingPage />} />
+            <Route path="/blog" element={<BlogIndexPage />} />
+            <Route path="/blog/page/:page" element={<BlogIndexPage />} />
+            <Route path="/blog/kategoriya/:cat" element={<BlogIndexPage />} />
+            <Route path="/blog/kategoriya/:cat/page/:page" element={<BlogIndexPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+            {/* Старый адрес блога — сохраняем переход, чтобы не терять ссылки */}
+            <Route path="/articles" element={<Navigate to="/blog" replace />} />
+            <Route path="*" element={<NotFound />} />
+        </Route>
+    </Routes>
+);
 
-function App() {
-    return (
-        <RegionProvider>
-            <Router>
-                <Routes>
-                    <Route element={<Layout />}>
-                        <Route path="/" element={<HomePage />} />
-                        <Route
-                            path="/articles"
-                            element={
-                                <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-slate-500">Загрузка блога...</div>}>
-                                    <ArticlesPage />
-                                </Suspense>
-                            }
-                        />
-                    </Route>
-                </Routes>
-            </Router>
-        </RegionProvider>
-    );
-}
+const App: React.FC<{ children?: React.ReactNode }> = () => (
+    <RegionProvider>
+        <AppRoutes />
+    </RegionProvider>
+);
 
 export default App;
