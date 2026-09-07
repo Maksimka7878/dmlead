@@ -1,41 +1,9 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { MarketType, PricingTier } from '../types';
 import { PRICING_DATA, DISCOUNTS } from '../constants';
 import { Briefcase, Check, House, ShoppingCart, Sliders } from 'lucide-react';
-import { PricingModeToggle, usePricingMode, tierPrice } from './PricingMode';
-
-// Плавная анимация числа (count-up/down) при смене сегмента или количества.
-const useAnimatedNumber = (value: number, duration = 550): number => {
-  const [display, setDisplay] = useState(value);
-  const fromRef = useRef(value);
-  const rafRef = useRef<number>(0);
-
-  useEffect(() => {
-    const from = fromRef.current;
-    const to = value;
-    if (from === to) return;
-    const start = performance.now();
-    cancelAnimationFrame(rafRef.current);
-
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      const current = from + (to - from) * eased;
-      fromRef.current = current;
-      setDisplay(current);
-      if (t < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        fromRef.current = to;
-        setDisplay(to);
-      }
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [value, duration]);
-
-  return display;
-};
+import { PricingModeToggle, TierPrice, usePricingMode, tierPrice } from './PricingMode';
+import { useAnimatedNumber } from './useAnimatedNumber';
 
 const ruble = (n: number) => Math.round(n).toLocaleString('ru-RU');
 
@@ -200,18 +168,11 @@ const Calculator: React.FC<{ showModeToggle?: boolean }> = ({ showModeToggle = t
 
                     <div className="relative z-10 mt-4">
                       <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-0.5">Цена за лид</div>
-                      <div className="flex items-baseline gap-2">
-                        <div className={`font-mono font-bold text-lg md:text-xl tracking-tight transition-colors ${
-                          noReplace ? 'text-emerald-600' : isSelected ? 'text-[var(--accent)]' : 'text-slate-800'
-                        }`}>
-                          {tierPrice(tier, noReplace).toLocaleString('ru-RU')} <span className="text-sm font-semibold text-slate-400">₽</span>
-                        </div>
-                        {noReplace && (
-                          <span className="font-mono text-xs font-semibold text-slate-400 line-through decoration-slate-400/70">
-                            {tier.price.toLocaleString('ru-RU')} ₽
-                          </span>
-                        )}
-                      </div>
+                      <TierPrice
+                        tier={tier}
+                        align="start"
+                        className={`text-lg md:text-xl tracking-tight ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}
+                      />
                     </div>
                   </div>
                   );

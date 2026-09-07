@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { PricingTier } from '../types';
 import { RefreshCw, Zap } from 'lucide-react';
+import { useAnimatedNumber } from './useAnimatedNumber';
 
 interface PricingModeValue {
   /** true — тариф без бесплатной замены нецелевых лидов (дешевле). */
@@ -50,24 +51,38 @@ export const tierPrice = (tier: PricingTier, noReplace: boolean): number =>
 export const tierModeDiscount = (tier: PricingTier): number =>
   Math.round((1 - tier.priceNoReplace / tier.price) * 100);
 
+const MODE_HINTS = [
+  'Нецелевые лиды бесплатно заменяем в течение 5 дней по 4 гарантиям.',
+  'Лиды вдвое дешевле: нецелевые не заменяем и не возвращаем деньги.',
+];
+
 export const PricingModeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { noReplace, setNoReplace } = usePricingMode();
 
-  const base =
-    'relative z-10 flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold transition-all duration-300';
+  const label =
+    'relative z-10 flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold transition-colors duration-500';
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className="liquid-glass relative flex w-full max-w-xl gap-1.5 rounded-3xl p-1.5 border border-white/60 shadow-lg">
+      <div className="liquid-glass relative flex w-full max-w-xl rounded-3xl p-1.5 border border-white/60 shadow-lg">
+        {/* Скользящая капсула: переезжает и перекрашивается за один переход */}
+        <div
+          className="pointer-events-none absolute top-1.5 left-1.5 h-[calc(100%-12px)] w-[calc((100%-12px)/2)] rounded-2xl transition-[transform,background-color,box-shadow] duration-500 ease-[cubic-bezier(.34,.66,0,1)]"
+          style={{
+            transform: `translateX(${noReplace ? 100 : 0}%)`,
+            backgroundImage: noReplace
+              ? 'linear-gradient(90deg,#10b981,#34d399)'
+              : 'linear-gradient(90deg,var(--accent),var(--accent-2))',
+            boxShadow: noReplace
+              ? '0 8px 22px rgba(16,185,129,0.30)'
+              : '0 8px 22px var(--accent-soft)',
+          }}
+        />
         <button
           type="button"
           onClick={() => setNoReplace(false)}
           aria-pressed={!noReplace}
-          className={`${base} ${
-            noReplace
-              ? 'text-slate-600 hover:bg-white/50'
-              : 'bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white shadow-md shadow-[var(--accent-soft)]'
-          }`}
+          className={`${label} ${noReplace ? 'text-slate-600' : 'text-white'}`}
         >
           <RefreshCw className="h-4 w-4" />
           С заменами
@@ -76,16 +91,12 @@ export const PricingModeToggle: React.FC<{ className?: string }> = ({ className 
           type="button"
           onClick={() => setNoReplace(true)}
           aria-pressed={noReplace}
-          className={`${base} ${
-            noReplace
-              ? 'bg-gradient-to-r from-emerald-500 to-emerald-400 text-white shadow-md shadow-emerald-500/30'
-              : 'text-slate-600 hover:bg-white/50'
-          }`}
+          className={`${label} ${noReplace ? 'text-white' : 'text-slate-600'}`}
         >
           <Zap className="h-4 w-4" />
           Без замен
           <span
-            className={`rounded-full px-2 py-0.5 text-[11px] font-black tracking-tight ${
+            className={`rounded-full px-2 py-0.5 text-[11px] font-black tracking-tight transition-colors duration-500 ${
               noReplace ? 'bg-white/25 text-white' : 'bg-emerald-100 text-emerald-700'
             }`}
           >
@@ -93,32 +104,51 @@ export const PricingModeToggle: React.FC<{ className?: string }> = ({ className 
           </span>
         </button>
       </div>
-      <p className="mt-3 text-center text-xs md:text-sm font-medium text-slate-500">
-        {noReplace
-          ? 'Лиды вдвое дешевле: нецелевые не заменяем и не возвращаем деньги.'
-          : 'Нецелевые лиды бесплатно заменяем в течение 5 дней по 4 гарантиям.'}
-      </p>
+
+      {/* Подпись: обе строки в одной сетке — высота не скачет, тексты перекрёстно гаснут */}
+      <div className="mt-3 grid text-center text-xs md:text-sm font-medium text-slate-500">
+        {MODE_HINTS.map((hint, i) => (
+          <span
+            key={hint}
+            aria-hidden={noReplace !== Boolean(i)}
+            className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+              noReplace === Boolean(i) ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {hint}
+          </span>
+        ))}
+      </div>
     </div>
   );
 };
 
-/** Цена за лид с зачёркнутой базовой ценой в режиме «без замен». */
-export const TierPrice: React.FC<{ tier: PricingTier; className?: string }> = ({ tier, className = '' }) => {
+/** Цена за лид: базовая цена всегда занимает свою строку, поэтому при
+ *  переключении режима блок не меняет высоту — только плавно проявляется. */
+export const TierPrice: React.FC<{ tier: PricingTier; className?: string; align?: 'end' | 'start' }> = ({
+  tier,
+  className = '',
+  align = 'end',
+}) => {
   const { noReplace } = usePricingMode();
-
-  if (!noReplace) {
-    return (
-      <div className={`font-mono font-bold ${className}`}>{tier.price.toLocaleString('ru-RU')} ₽</div>
-    );
-  }
+  const animated = useAnimatedNumber(tierPrice(tier, noReplace));
 
   return (
-    <div className="flex flex-col items-start sm:items-end">
-      <span className="font-mono text-xs md:text-sm font-semibold text-slate-400 line-through decoration-slate-400/70">
+    <div className={`flex flex-col ${align === 'end' ? 'items-start sm:items-end' : 'items-start'}`}>
+      <span
+        aria-hidden={!noReplace}
+        className={`font-mono text-xs md:text-sm font-semibold leading-4 text-slate-400 line-through decoration-slate-400/70 transition-opacity duration-500 ${
+          noReplace ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
         {tier.price.toLocaleString('ru-RU')} ₽
       </span>
-      <div className={`font-mono font-bold !text-emerald-600 ${className}`}>
-        {tier.priceNoReplace.toLocaleString('ru-RU')} ₽
+      <div
+        className={`font-mono font-bold tabular-nums transition-colors duration-500 ${
+          noReplace ? '!text-emerald-600' : ''
+        } ${className}`}
+      >
+        {Math.round(animated).toLocaleString('ru-RU')} ₽
       </div>
     </div>
   );
