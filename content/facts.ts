@@ -12,14 +12,14 @@ export const FACTS = {
     { from: 100, percent: 20 },
   ],
   primaryTiers: [
-    { name: 'Комфорт', note: 'объекты до 400 000 ₽/м²', price: 4000 },
-    { name: 'Бизнес', note: 'объекты до 800 000 ₽/м²', price: 7000 },
-    { name: 'Премиум', note: 'объекты до 1 200 000 ₽/м²', price: 11000 },
+    { name: 'Комфорт', note: 'объекты до 400 000 ₽/м²', price: 3600 },
+    { name: 'Бизнес', note: 'объекты до 800 000 ₽/м²', price: 7700 },
+    { name: 'Премиум', note: 'объекты до 1 200 000 ₽/м²', price: 11600 },
     { name: 'De Luxe', note: 'объекты от 1 200 000 ₽/м²', price: 17000 },
   ],
   commercialTiers: [
-    { name: 'Офисы', note: 'классы А и Б', price: 7000 },
-    { name: 'Ритейл', note: 'торговые помещения', price: 7000 },
+    { name: 'Офисы', note: 'классы А и Б', price: 7700 },
+    { name: 'Ритейл', note: 'торговые помещения', price: 7700 },
   ],
   replacementCases: [
     'клиент не отвечает после 3+ попыток контакта в разные дни и время',
@@ -35,4 +35,4 @@ export const FACTS = {
   ],
 } as const;
 
-export const priceRangeText = 'от 4 000 ₽ за лид в комфорт-классе до 17 000 ₽ в сегменте De Luxe';
+export const priceRangeText = 'от 3 600 ₽ за лид в комфорт-классе до 17 000 ₽ в сегменте De Luxe';

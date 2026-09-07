@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import NotFound from './pages/NotFound';
 import Layout from './components/Layout';
 import { RegionProvider } from './components/RegionContext';
+import { PricingModeProvider } from './components/PricingMode';
 
 /** Роуты вынесены отдельно от Router: клиент оборачивает их в BrowserRouter,
  *  пререндер — в StaticRouter. */
@@ -31,7 +32,9 @@ export const AppRoutes: React.FC = () => (
 
 const App: React.FC<{ children?: React.ReactNode }> = () => (
     <RegionProvider>
-        <AppRoutes />
+        <PricingModeProvider>
+            <AppRoutes />
+        </PricingModeProvider>
     </RegionProvider>
 );
 

@@ -74,7 +74,7 @@ export const pageSchema = (page: ContentPage): object[] => {
       offers: {
         '@type': 'AggregateOffer',
         priceCurrency: 'RUB',
-        lowPrice: '4000',
+        lowPrice: '3600',
         highPrice: '17000',
         offerCount: '6',
         url: url(path),

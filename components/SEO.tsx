@@ -59,7 +59,7 @@ const BASE_SCHEMAS = [
         "offers": {
             "@type": "AggregateOffer",
             "priceCurrency": "RUB",
-            "lowPrice": "4000",
+            "lowPrice": "3600",
             "highPrice": "17000",
             "offerCount": "6"
         }

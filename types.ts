@@ -7,6 +7,8 @@ export interface PricingTier {
   name: string;
   description: string;
   price: number;
+  /** Цена в режиме «без замен»: нецелевые лиды не заменяются. */
+  priceNoReplace: number;
 }
 
 export interface MarketCategory {

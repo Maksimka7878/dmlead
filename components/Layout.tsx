@@ -8,6 +8,7 @@ import { Send, Menu, X, Check, ArrowUpRight, Layers3, CalendarClock, Clock3, Bui
 import { PRICING_DATA } from '../constants';
 import Calculator from './Calculator';
 import TestPacket from './TestPacket';
+import { PricingModeToggle, TierPrice } from './PricingMode';
 
 const TELEGRAM_URL = 'https://t.me/DMitryLeads';
 const TELEGRAM_HANDLE = '@DMitryLeads';
@@ -528,6 +529,11 @@ const Layout = () => {
                                 <p className="text-base md:text-xl text-slate-500 font-medium">Прозрачное ценообразование. Чем больше объём, тем выгоднее.</p>
                             </div>
 
+                            {/* Переключатель тарифа: с заменами / без замен (−50%) */}
+                            <div className="mb-8 md:mb-10 flex justify-center">
+                                <PricingModeToggle className="w-full max-w-xl" />
+                            </div>
+
                             {/* Top row: Two info cards side by side */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
                                 {PRICING_DATA.map((category) => (
@@ -545,9 +551,10 @@ const Layout = () => {
                                                     </div>
                                                     <div className="mt-3 sm:mt-0 flex flex-col items-start sm:items-end">
                                                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 bg-white/50 px-2 rounded">Цена за лид</span>
-                                                        <div className="font-mono font-bold text-[var(--accent)] text-lg md:text-xl drop-shadow-sm origin-left sm:origin-right transform-gpu transition-transform duration-300 group-hover:scale-[1.04]">
-                                                            {tier.price.toLocaleString('ru-RU')} ₽
-                                                        </div>
+                                                        <TierPrice
+                                                            tier={tier}
+                                                            className="text-[var(--accent)] text-lg md:text-xl drop-shadow-sm origin-left sm:origin-right transform-gpu transition-transform duration-300 group-hover:scale-[1.04]"
+                                                        />
                                                     </div>
                                                 </div>
                                             ))}
@@ -558,7 +565,7 @@ const Layout = () => {
 
                             {/* Bottom: Calculator full width */}
                             <div className="mb-16">
-                                <Calculator />
+                                <Calculator showModeToggle={false} />
                             </div>
 
                             <TestPacket />

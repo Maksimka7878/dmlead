@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { MarketType, PricingTier } from '../types';
 import { PRICING_DATA, DISCOUNTS } from '../constants';
 import { Briefcase, Check, House, ShoppingCart, Sliders } from 'lucide-react';
+import { PricingModeToggle, usePricingMode, tierPrice } from './PricingMode';
 
 // Плавная анимация числа (count-up/down) при смене сегмента или количества.
 const useAnimatedNumber = (value: number, duration = 550): number => {
@@ -49,10 +50,11 @@ const SLIDER_MARKS = [
   { value: 100, discount: 20 },
 ] as const;
 
-const Calculator: React.FC = () => {
+const Calculator: React.FC<{ showModeToggle?: boolean }> = ({ showModeToggle = true }) => {
   const [selectedMarket, setSelectedMarket] = useState<MarketType>(MarketType.PRIMARY);
   const [selectedTierIndex, setSelectedTierIndex] = useState<number>(1);
   const [leadCount, setLeadCount] = useState<number>(MIN_LEADS);
+  const { noReplace } = usePricingMode();
 
   const currentCategory = PRICING_DATA.find(c => c.id === selectedMarket) || PRICING_DATA[0];
   const currentTier: PricingTier = currentCategory.tiers[selectedTierIndex] || currentCategory.tiers[0];
@@ -60,7 +62,7 @@ const Calculator: React.FC = () => {
   const sliderBackground = `linear-gradient(90deg, var(--accent) 0%, var(--accent-2) ${sliderProgress}%, rgba(226,232,240,0.75) ${sliderProgress}%, rgba(226,232,240,0.75) 100%)`;
 
   const { total, discountPercent, pricePerLead, savedAmount } = useMemo(() => {
-    const basePrice = currentTier.price * leadCount;
+    const basePrice = tierPrice(currentTier, noReplace) * leadCount;
     const activeDiscount = DISCOUNTS.find(d => leadCount >= d.minCount) || { percentage: 0 };
     const discountAmount = (basePrice * activeDiscount.percentage) / 100;
     const finalTotal = basePrice - discountAmount;
@@ -71,7 +73,7 @@ const Calculator: React.FC = () => {
       pricePerLead: finalTotal / leadCount,
       savedAmount: discountAmount
     };
-  }, [currentTier, leadCount]);
+  }, [currentTier, leadCount, noReplace]);
 
   const animTotal = useAnimatedNumber(total);
   const animPerLead = useAnimatedNumber(pricePerLead);
@@ -99,6 +101,13 @@ const Calculator: React.FC = () => {
               <ShoppingCart className="w-5 h-5 text-[var(--accent)]" />
           </div>
         </div>
+
+        {/* Тариф: с заменами / без замен (−50%) */}
+        {showModeToggle && (
+          <div className="px-6 pt-5 flex-none">
+            <PricingModeToggle className="w-full" />
+          </div>
+        )}
         
         <div className="p-6 pt-5 flex-1 flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Left: Market type + Tier selector */}
@@ -191,8 +200,17 @@ const Calculator: React.FC = () => {
 
                     <div className="relative z-10 mt-4">
                       <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-0.5">Цена за лид</div>
-                      <div className={`font-mono font-bold text-lg md:text-xl tracking-tight transition-colors ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}>
-                        {tier.price.toLocaleString('ru-RU')} <span className="text-sm font-semibold text-slate-400">₽</span>
+                      <div className="flex items-baseline gap-2">
+                        <div className={`font-mono font-bold text-lg md:text-xl tracking-tight transition-colors ${
+                          noReplace ? 'text-emerald-600' : isSelected ? 'text-[var(--accent)]' : 'text-slate-800'
+                        }`}>
+                          {tierPrice(tier, noReplace).toLocaleString('ru-RU')} <span className="text-sm font-semibold text-slate-400">₽</span>
+                        </div>
+                        {noReplace && (
+                          <span className="font-mono text-xs font-semibold text-slate-400 line-through decoration-slate-400/70">
+                            {tier.price.toLocaleString('ru-RU')} ₽
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
