@@ -53,7 +53,7 @@ export const tierModeDiscount = (tier: PricingTier): number =>
 
 const MODE_HINTS = [
   'Нецелевые лиды бесплатно заменяем в течение 5 дней по 4 гарантиям.',
-  'Комфорт дешевле на 50%, остальные классы — на 25%: нецелевые лиды не заменяем.',
+  'Комфорт дешевле на 50%, остальные классы — на 30%: нецелевые лиды не заменяем.',
 ];
 
 export const PricingModeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
