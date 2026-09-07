@@ -75,7 +75,7 @@ const TestPacket: React.FC = () => {
             <div className="flex flex-col items-center md:items-end gap-8 min-w-[280px] bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
                 <div className="text-center md:text-right w-full">
                     <div className="relative mb-2 inline-block text-xl font-semibold text-indigo-100/90">
-                        <span>35 000 ₽</span>
+                        <span>38 500 ₽</span>
                         <span className="pointer-events-none absolute left-0 right-0 top-1/2 h-[2.5px] -translate-y-1/2 rounded-full bg-rose-200/95 shadow-[0_0_10px_rgba(254,202,202,0.4)]" />
                     </div>
                     <div
