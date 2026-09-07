@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { MarketType, PricingTier } from '../types';
 import { PRICING_DATA, DISCOUNTS } from '../constants';
 import { Briefcase, Check, House, ShoppingCart, Sliders } from 'lucide-react';
-import { PricingModeToggle, TierPrice, usePricingMode, tierPrice } from './PricingMode';
+import { PricingModeBadge, PricingModeToggle, TierPrice, usePricingMode, tierPrice } from './PricingMode';
 import { useAnimatedNumber } from './useAnimatedNumber';
 
 const ruble = (n: number) => Math.round(n).toLocaleString('ru-RU');
@@ -63,7 +63,10 @@ const Calculator: React.FC<{ showModeToggle?: boolean }> = ({ showModeToggle = t
                 </div>
                 Калькулятор
               </h3>
-              <p className="text-slate-500 text-sm mt-1 pl-1">Соберите свой пакет</p>
+              <div className="mt-2 pl-1 flex items-center gap-2 flex-wrap">
+                <p className="text-slate-500 text-sm">Соберите свой пакет</p>
+                <PricingModeBadge />
+              </div>
           </div>
           <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-50/50 to-white/50 border border-white/50 flex items-center justify-center shadow-lg shadow-blue-500/10">
               <ShoppingCart className="w-5 h-5 text-[var(--accent)]" />
@@ -290,7 +293,12 @@ const Calculator: React.FC<{ showModeToggle?: boolean }> = ({ showModeToggle = t
                   <div className="h-px bg-gradient-to-r from-transparent via-slate-400/20 to-transparent my-3"></div>
                   
                   <div className="flex justify-between items-end relative z-10">
-                      <span className="text-lg font-semibold text-slate-800 pb-1">Итого:</span>
+                      <span className="text-lg font-semibold text-slate-800 pb-1">
+                        Итого:
+                        <span className={`block text-[11px] font-bold uppercase tracking-wider transition-colors duration-500 ${noReplace ? 'text-emerald-600' : 'text-slate-500'}`}>
+                          {noReplace ? 'тариф без замен' : 'тариф с заменами'}
+                        </span>
+                      </span>
                       <span className="text-5xl font-black text-slate-950 tracking-tighter tabular-nums drop-shadow-[0_6px_18px_rgba(255,255,255,0.45)]">
                           {ruble(animTotal)} <span className="text-2xl text-slate-500 font-semibold">₽</span>
                       </span>

@@ -123,6 +123,24 @@ export const PricingModeToggle: React.FC<{ className?: string }> = ({ className 
   );
 };
 
+/** Компактный индикатор режима — для мест, где тумблер не показан (калькулятор на главной). */
+export const PricingModeBadge: React.FC<{ className?: string }> = ({ className = '' }) => {
+  const { noReplace } = usePricingMode();
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors duration-500 ${
+        noReplace
+          ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+          : 'border-[var(--accent)]/25 bg-[var(--accent-soft)] text-[var(--accent)]'
+      } ${className}`}
+    >
+      {noReplace ? <Zap className="h-3.5 w-3.5" /> : <RefreshCw className="h-3.5 w-3.5" />}
+      {noReplace ? 'Без замен · −50%' : 'С заменами'}
+    </span>
+  );
+};
+
 /** Цена за лид: базовая цена всегда занимает свою строку, поэтому при
  *  переключении режима блок не меняет высоту — только плавно проявляется. */
 export const TierPrice: React.FC<{ tier: PricingTier; className?: string; align?: 'end' | 'start' }> = ({
