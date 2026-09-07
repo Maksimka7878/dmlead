@@ -12,7 +12,7 @@ export const FACTS = {
     { from: 100, percent: 20 },
   ],
   primaryTiers: [
-    { name: 'Комфорт', note: 'объекты до 400 000 ₽/м²', price: 3600 },
+    { name: 'Комфорт', note: 'объекты до 500 000 ₽/м²', price: 3600 },
     { name: 'Бизнес', note: 'объекты до 800 000 ₽/м²', price: 7700 },
     { name: 'Премиум', note: 'объекты до 1 200 000 ₽/м²', price: 11600 },
     { name: 'De Luxe', note: 'объекты от 1 200 000 ₽/м²', price: 17000 },
