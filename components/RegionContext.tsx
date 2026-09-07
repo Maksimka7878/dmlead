@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { REGIONS, RegionId, RegionTheme, DEFAULT_REGION, getTheme } from '../regions';
+import { REGIONS, RegionId, RegionTheme, DEFAULT_REGION, REGION_SWITCHER_ENABLED, getTheme } from '../regions';
 
 interface RegionContextValue {
   region: RegionId;
@@ -13,8 +13,9 @@ const STORAGE_KEY = 'dmleads-region';
 export const RegionProvider = ({ children }: { children: React.ReactNode }) => {
   const [region, setRegion] = useState<RegionId>(DEFAULT_REGION);
 
-  // Восстанавливаем выбор из прошлой сессии.
+  // Восстанавливаем выбор из прошлой сессии (пока переключатель скрыт — всегда регион по умолчанию).
   useEffect(() => {
+    if (!REGION_SWITCHER_ENABLED) return;
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY) as RegionId | null;
       if (saved && REGIONS.some((r) => r.id === saved)) {

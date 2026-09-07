@@ -58,5 +58,9 @@ export const REGIONS: RegionTheme[] = [
 
 export const DEFAULT_REGION: RegionId = 'msk';
 
+/** Переключатель регионов временно скрыт: сайт работает только по Москве.
+ *  Код переключателя и тем регионов сохранён — вернуть можно этим флагом. */
+export const REGION_SWITCHER_ENABLED = false;
+
 export const getTheme = (id: RegionId): RegionTheme =>
   REGIONS.find((r) => r.id === id) || REGIONS[0];

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { GUARANTEES, PROCESS_STEPS } from '../constants';
 import SEO from '../components/SEO';
 import RegionSwitcher from '../components/RegionSwitcher';
+import { REGION_SWITCHER_ENABLED } from '../regions';
 import RegionSilhouettes from '../components/RegionSilhouettes';
 
 const HomePage = () => {
@@ -45,10 +46,12 @@ const HomePage = () => {
                 <RegionSilhouettes />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
 
-                    {/* Переключатель регионов / направлений */}
-                    <div className="mb-8 md:mb-12">
-                        <RegionSwitcher />
-                    </div>
+                    {/* Переключатель регионов / направлений — скрыт до запуска других регионов */}
+                    {REGION_SWITCHER_ENABLED && (
+                        <div className="mb-8 md:mb-12">
+                            <RegionSwitcher />
+                        </div>
+                    )}
 
                     <h1 className="text-4xl md:text-7xl lg:text-9xl font-black tracking-tighter text-slate-900 mb-5 md:mb-8 leading-[0.95] drop-shadow-sm">
                         Лиды на недвижимость <br className="hidden md:block" />
