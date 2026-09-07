@@ -8,17 +8,17 @@ export const PRICING_DATA: MarketCategory[] = [
     title: 'Новостройки',
     tiers: [
       { name: 'Комфорт', description: 'Объекты до 500 000 ₽/м²', price: 3600, priceNoReplace: 1800 },
-      { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 7700, priceNoReplace: 3850 },
-      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 11600, priceNoReplace: 5800 },
-      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 17000, priceNoReplace: 8500 },
+      { name: 'Бизнес', description: 'Объекты до 800 000 ₽/м²', price: 7700, priceNoReplace: 5775 },
+      { name: 'Премиум', description: 'Объекты до 1 200 000 ₽/м²', price: 11600, priceNoReplace: 8700 },
+      { name: 'De Luxe', description: 'Объекты от 1 200 000 ₽/м²', price: 17000, priceNoReplace: 12750 },
     ]
   },
   {
     id: MarketType.COMMERCIAL,
     title: 'Коммерция',
     tiers: [
-      { name: 'Офисы', description: 'Классы А, Б', price: 7700, priceNoReplace: 3850 },
-      { name: 'Ритейл', description: 'Торговые помещения', price: 7700, priceNoReplace: 3850 },
+      { name: 'Офисы', description: 'Классы А, Б', price: 7700, priceNoReplace: 5775 },
+      { name: 'Ритейл', description: 'Торговые помещения', price: 7700, priceNoReplace: 5775 },
     ]
   }
 ];

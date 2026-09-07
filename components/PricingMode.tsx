@@ -53,7 +53,7 @@ export const tierModeDiscount = (tier: PricingTier): number =>
 
 const MODE_HINTS = [
   'Нецелевые лиды бесплатно заменяем в течение 5 дней по 4 гарантиям.',
-  'Лиды вдвое дешевле: нецелевые не заменяем и не возвращаем деньги.',
+  'Комфорт дешевле на 50%, остальные классы — на 25%: нецелевые лиды не заменяем.',
 ];
 
 export const PricingModeToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
@@ -100,7 +100,7 @@ export const PricingModeToggle: React.FC<{ className?: string }> = ({ className 
               noReplace ? 'bg-white/25 text-white' : 'bg-emerald-100 text-emerald-700'
             }`}
           >
-            −50%
+            до −50%
           </span>
         </button>
       </div>
@@ -136,7 +136,7 @@ export const PricingModeBadge: React.FC<{ className?: string }> = ({ className =
       } ${className}`}
     >
       {noReplace ? <Zap className="h-3.5 w-3.5" /> : <RefreshCw className="h-3.5 w-3.5" />}
-      {noReplace ? 'Без замен · −50%' : 'С заменами'}
+      {noReplace ? 'Без замен · до −50%' : 'С заменами'}
     </span>
   );
 };
@@ -155,11 +155,16 @@ export const TierPrice: React.FC<{ tier: PricingTier; className?: string; align?
     <div className={`flex flex-col ${align === 'end' ? 'items-start sm:items-end' : 'items-start'}`}>
       <span
         aria-hidden={!noReplace}
-        className={`font-mono text-xs md:text-sm font-semibold leading-4 text-slate-400 line-through decoration-slate-400/70 transition-opacity duration-500 ${
+        className={`flex items-center gap-1.5 leading-4 transition-opacity duration-500 ${
           noReplace ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {tier.price.toLocaleString('ru-RU')} ₽
+        <span className="font-mono text-xs md:text-sm font-semibold text-slate-400 line-through decoration-slate-400/70">
+          {tier.price.toLocaleString('ru-RU')} ₽
+        </span>
+        <span className="rounded-full bg-emerald-100 px-1.5 text-[10px] font-black leading-4 text-emerald-700">
+          −{tierModeDiscount(tier)}%
+        </span>
       </span>
       <div
         className={`font-mono font-bold tabular-nums transition-colors duration-500 ${
