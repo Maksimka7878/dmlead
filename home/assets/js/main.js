@@ -759,7 +759,9 @@
     var cv = $('.flow__canvas'); if (!cv) return;
     var ctx = cv.getContext('2d'); if (!ctx) return;
     var W = 1, H = 1, dpr = 1, parts = [], visible = false, raf = 0, last = performance.now(), t = 0;
-    var GATES = [0.33, 0.59, 0.84], PASS = [0.46, 0.52, 1];
+    // Трафик → AI-проверка → колл-центр → ручная проверка → лид
+    var GATES = [0.24, 0.45, 0.66, 0.86], PASS = [0.5, 0.55, 0.8, 1], LAST = GATES.length;
+    var PULL = [0, 0.35, 1, 2, 4], FOCUS = [0, 0, 0.45, 0.75, 0.95];
     function spawn(p, anywhere) {
       p.x = anywhere ? Math.random() * W : -Math.random() * 60 - 6;
       p.y = H * (0.2 + Math.random() * 0.68);
@@ -773,7 +775,7 @@
             else { p.x = Math.random() * GATES[g] * W; break; }
           }
         }
-        if (p.stage >= 2) p.y = lerp(p.y, H * 0.56, p.stage === 3 ? 0.95 : 0.55);
+        if (p.stage >= 2) p.y = lerp(p.y, H * 0.56, FOCUS[p.stage]);
       }
     }
     function resize() {
@@ -792,8 +794,8 @@
       ctx.lineWidth = 1;
       GATES.forEach(function (g, i) {
         var x = Math.round(g * W) + 0.5;
-        ctx.strokeStyle = i === 2 ? 'rgba(99,102,241,.55)' : 'rgba(15,23,42,.16)';
-        ctx.setLineDash(i === 2 ? [] : [2, 5]);
+        ctx.strokeStyle = i === LAST - 1 ? 'rgba(99,102,241,.55)' : 'rgba(15,23,42,.16)';
+        ctx.setLineDash(i === LAST - 1 ? [] : [2, 5]);
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
       });
       ctx.setLineDash([]);
@@ -807,25 +809,24 @@
         var p = parts[i];
         if (!p.dead) {
           var targetVy = Math.sin(t * 1.4 + p.seed) * (p.stage >= 2 ? 4 : 14);
-          if (p.stage === 1) targetVy += (ny - p.y) * 0.35;
-          if (p.stage === 2) targetVy += (ny - p.y) * 1.4;
-          if (p.stage === 3) targetVy += (ny - p.y) * 4;
+          targetVy += (ny - p.y) * PULL[p.stage];
           p.vy += (targetVy - p.vy) * Math.min(1, dt * 3);
-          p.x += p.vx * dt * (p.stage === 3 ? 1.6 : 1);
+          p.x += p.vx * dt * (p.stage === LAST ? 1.6 : 1);
           p.y += p.vy * dt;
-          if (p.stage < 3 && p.x >= GATES[p.stage] * W) {
+          if (p.stage < LAST && p.x >= GATES[p.stage] * W) {
             if (Math.random() < PASS[p.stage]) p.stage++;
             else { p.dead = true; p.vy = 10 + Math.random() * 30; p.vx *= 0.35; }
           }
-          if (p.stage === 3 && p.x >= nx - 3) { spawn(p, false); continue; }
+          if (p.stage === LAST && p.x >= nx - 3) { spawn(p, false); continue; }
         } else {
           p.vy += 140 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.a -= dt * 1.5;
         }
         if (p.x > W + 12 || p.y > H + 12 || p.a <= 0) { spawn(p, false); continue; }
         var len, col, lw = 1;
         if (p.dead) { col = 'rgba(148,163,184,' + (0.6 * p.a).toFixed(3) + ')'; len = 4; }
-        else if (p.stage === 3) { col = 'rgba(37,99,235,1)'; len = 26; lw = 2; }
-        else if (p.stage === 2) { col = 'rgba(15,23,42,.8)'; len = 18; lw = 1.4; }
+        else if (p.stage === LAST) { col = 'rgba(37,99,235,1)'; len = 26; lw = 2; }
+        else if (p.stage === 3) { col = 'rgba(15,23,42,.88)'; len = 21; lw = 1.6; }
+        else if (p.stage === 2) { col = 'rgba(15,23,42,.8)'; len = 17; lw = 1.4; }
         else if (p.stage === 1) { col = 'rgba(71,85,105,.72)'; len = 12; lw = 1.2; }
         else { col = 'rgba(100,116,139,.55)'; len = 8; lw = 1.1; }
         ctx.strokeStyle = col; ctx.lineWidth = lw;
