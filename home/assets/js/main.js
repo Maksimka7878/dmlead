@@ -930,81 +930,164 @@
     // 0.175 → «17,5%»
     function pct(d) { return String(Math.round(d * 1000) / 10).replace('.', ',') + '%'; }
     var MIN = 10, MAX = 1000;
-    var st = { type: 'new', cls: 'business', repl: true, qty: 10, touched: false };
+    var packBox = $('[data-pack]', form), packList = $('[data-pack-list]', form), packAdd = $('[data-pack-add]', form);
+    // Составной пакет: несколько позиций (сегмент + количество). Шаги 1–3 правят активную позицию,
+    // замена нецелевых — общая. Скидка за объём считается по каждому сегменту отдельно.
+    var st = { repl: true, items: [{ type: 'new', cls: 'business', qty: 10 }], active: 0, touched: false, fresh: -1 };
     var calc = { summary: '', total: '', orderText: '' };
     window.__dmCalc = function () { return { touched: st.touched, summary: calc.summary, total: calc.total, orderText: calc.orderText }; };
 
+    function cur() { return st.items[st.active]; }
     function disc(q) { var d = 0; TIERS.forEach(function (t) { if (q >= t[0]) d = t[1]; }); return d; }
     function leads(n) { return n + NBSP + plural(n, 'лид', 'лида', 'лидов'); }
+    function clsName(it) { return CLASSES[it.type].filter(function (c) { return c[0] === it.cls; })[0][1]; }
+    function typeName(t) { return t === 'new' ? 'Новостройки' : 'Коммерция'; }
+    function takenBy(cls) { for (var i = 0; i < st.items.length; i++) if (i !== st.active && st.items[i].cls === cls) return i; return -1; }
+    function freeCls(type) { var f = CLASSES[type].filter(function (c) { return !st.items.some(function (it) { return it.cls === c[0]; }); })[0]; return f ? f[0] : null; }
+    function lineOf(it) {
+      var base = priceOf(it.cls, st.repl), d = disc(it.qty), lead = Math.round(base * (1 - d));
+      return { base: base, d: d, lead: lead, total: lead * it.qty, save: (base - lead) * it.qty };
+    }
     function renderChips() {
+      var it = cur();
       box.textContent = '';
-      var list = CLASSES[st.type];
-      if (!list.some(function (c) { return c[0] === st.cls; })) st.cls = list[st.type === 'new' ? 1 : 0][0];
+      var list = CLASSES[it.type];
+      if (!list.some(function (c) { return c[0] === it.cls; }) || takenBy(it.cls) >= 0) it.cls = freeCls(it.type) || list[0][0];
       list.forEach(function (c) {
         var label = document.createElement('label');
         var input = document.createElement('input');
         input.type = 'radio'; input.name = 'cls'; input.id = 'cls-' + c[0]; input.value = c[0];
-        input.checked = c[0] === st.cls;
+        input.checked = c[0] === it.cls;
+        var taken = takenBy(c[0]) >= 0;
+        input.disabled = taken;
         var span = document.createElement('span');
         var b = document.createElement('b'); b.textContent = c[1];
         var strong = document.createElement('strong'); strong.setAttribute('data-chip-price', c[0]);
         var small = document.createElement('small'); small.textContent = c[2].replace(/ (?=\d{3})/g, NBSP);
         span.appendChild(b); span.appendChild(strong); span.appendChild(small);
+        if (taken) { var tag = document.createElement('i'); tag.textContent = 'уже в пакете'; span.appendChild(tag); }
         label.appendChild(input); label.appendChild(span);
         box.appendChild(label);
       });
+      $$('input[name="type"]', form).forEach(function (r) {
+        r.checked = r.value === it.type;
+        // тип без свободных сегментов выбрать нельзя
+        r.disabled = r.value !== it.type && !freeCls(r.value);
+      });
+      qtyIn.value = String(it.qty);
+    }
+    function renderPack() {
+      var multi = st.items.length > 1;
+      packBox.hidden = !multi;
+      packList.textContent = '';
+      st.items.forEach(function (it, i) {
+        var d = disc(it.qty);
+        var wrap = document.createElement('span');
+        wrap.className = 'pack__item' + (i === st.active ? ' is-on' : '') + (i === st.fresh ? ' is-new' : '');
+        var pick = document.createElement('button');
+        pick.type = 'button'; pick.className = 'pack__pick'; pick.setAttribute('role', 'tab');
+        pick.setAttribute('aria-selected', String(i === st.active)); pick.setAttribute('data-pack-pick', i);
+        pick.textContent = clsName(it) + ' · ' + it.qty;
+        if (d > 0) { var sm = document.createElement('small'); sm.textContent = '−' + pct(d); pick.appendChild(sm); }
+        var del = document.createElement('button');
+        del.type = 'button'; del.className = 'pack__del'; del.setAttribute('data-pack-del', i);
+        del.setAttribute('aria-label', 'Убрать ' + clsName(it) + ' из пакета'); del.textContent = '×';
+        wrap.appendChild(pick); wrap.appendChild(del);
+        packList.appendChild(wrap);
+      });
+      packAdd.hidden = !freeCls('new') && !freeCls('commercial');
+      $('b', packAdd).textContent = multi ? 'Добавить ещё сегмент' : 'Собрать составной пакет';
     }
     function update() {
-      var base = priceOf(st.cls, st.repl);
-      var d = disc(st.qty);
-      var lead = Math.round(base * (1 - d));
-      var total = lead * st.qty;
-      var clsName = CLASSES[st.type].filter(function (c) { return c[0] === st.cls; })[0][1];
-      var typeName = st.type === 'new' ? 'Новостройки' : 'Коммерция';
+      var it = cur(), multi = st.items.length > 1;
+      var ln = lineOf(it);
+      var lines = st.items.map(lineOf);
+      var total = 0, save = 0, qty = 0;
+      lines.forEach(function (l, i) { total += l.total; save += l.save; qty += st.items[i].qty; });
+
       $$('[data-chip-price]', box).forEach(function (el) { el.textContent = fmtRub(priceOf(el.getAttribute('data-chip-price'), st.repl)); });
-      odoSet($('[data-r-lead]'), fmtRub(lead));
-      var baseEl = $('[data-r-base]');
-      if (d > 0) { baseEl.hidden = false; baseEl.textContent = fmtRub(base); } else { baseEl.hidden = true; }
-      $('[data-r-disc]').textContent = d > 0 ? '−' + pct(d) : '—';
-      $('[data-r-save]').textContent = d > 0 ? fmtRub((base - lead) * st.qty) : '—';
+      $$('[data-r-single]').forEach(function (el) { el.hidden = multi; });
+      var linesEl = $('[data-r-lines]');
+      linesEl.hidden = !multi;
+      linesEl.textContent = '';
+      if (multi) {
+        st.items.forEach(function (x, i) {
+          var l = lines[i];
+          var li = document.createElement('li');
+          if (i === st.fresh) li.className = 'is-new';
+          var left = document.createElement('span');
+          var b = document.createElement('b'); b.textContent = typeName(x.type) + ' · ' + clsName(x);
+          var sm = document.createElement('small');
+          sm.textContent = leads(x.qty) + ' × ' + fmtRub(l.lead);
+          if (l.d > 0) { var em = document.createElement('em'); em.textContent = ' · −' + pct(l.d); sm.appendChild(em); }
+          left.appendChild(b); left.appendChild(sm);
+          var right = document.createElement('strong'); right.textContent = fmtRub(l.total);
+          li.appendChild(left); li.appendChild(right);
+          linesEl.appendChild(li);
+        });
+      } else {
+        odoSet($('[data-r-lead]'), fmtRub(ln.lead));
+        var baseEl = $('[data-r-base]');
+        if (ln.d > 0) { baseEl.hidden = false; baseEl.textContent = fmtRub(ln.base); } else { baseEl.hidden = true; }
+        $('[data-r-disc]').textContent = ln.d > 0 ? '−' + pct(ln.d) : '—';
+      }
+      $('[data-r-save]').textContent = save > 0 ? fmtRub(save) : '—';
       odoSet($('[data-r-total]'), fmtRub(total));
       $('[data-r-tariff]').textContent = st.repl ? 'С заменами' : 'Без замен';
-      $('[data-r-summary]').textContent = typeName + ' · ' + clsName + ' · ' + leads(st.qty);
+      var summary = multi
+        ? 'Составной пакет · ' + leads(qty)
+        : typeName(it.type) + ' · ' + clsName(it) + ' · ' + leads(it.qty);
+      $('[data-r-summary]').textContent = summary;
       $$('[data-bar-total]').forEach(function (el) { el.textContent = fmtRub(total); });
-      $$('[data-bar-lead]').forEach(function (el) { el.textContent = fmtRub(lead) + ' за лид' + (d > 0 ? ' · −' + pct(d) : ''); });
-      presets.forEach(function (b) { b.classList.toggle('is-on', Number(b.getAttribute('data-qty')) === st.qty); });
-      // next volume discount
-      var next = TIERS.filter(function (t) { return st.qty < t[0]; })[0];
+      $$('[data-bar-lead]').forEach(function (el) {
+        el.textContent = multi ? leads(qty) + ' · ' + st.items.length + ' ' + plural(st.items.length, 'сегмент', 'сегмента', 'сегментов')
+          : fmtRub(ln.lead) + ' за лид' + (ln.d > 0 ? ' · −' + pct(ln.d) : '');
+      });
+      presets.forEach(function (b) { b.classList.toggle('is-on', Number(b.getAttribute('data-qty')) === it.qty); });
+      // next volume discount — для активной позиции
+      var next = TIERS.filter(function (t) { return it.qty < t[0]; })[0];
+      var scope = multi ? 'на ' + clsName(it) : 'на весь пакет';
       if (next) {
-        var need = next[0] - st.qty;
+        var need = next[0] - it.qty;
         nudge.innerHTML = '';
-        nudge.appendChild(document.createTextNode('Ещё ' + leads(need) + ' — и скидка ' + pct(next[1]) + ' на весь пакет.'));
+        nudge.appendChild(document.createTextNode('Ещё ' + leads(need) + ' — и скидка ' + pct(next[1]) + ' ' + scope + '.'));
         var add = document.createElement('button'); add.type = 'button'; add.setAttribute('data-qty-to', next[0]);
         add.textContent = 'Добавить ' + need; nudge.appendChild(add);
       } else {
-        nudge.textContent = 'У вас максимальная скидка за объём — 20%.';
+        nudge.textContent = 'Максимальная скидка за объём — 20% ' + scope + '.';
       }
       $('[data-repl-title]').textContent = st.repl ? 'С заменами' : 'Без замен';
       $('[data-repl-note]').textContent = st.repl
         ? 'Бесплатно заменяем нецелевые лиды в течение 5 дней.'
         : 'Цена за лид ниже на 25–50%, но нецелевые лиды не заменяются.';
-      calc.summary = typeName + ' · ' + clsName + ' · ' + leads(st.qty) + ' · ' + (st.repl ? 'с заменами' : 'без замен');
+      renderPack();
+      st.fresh = -1; // анимация появления — только у только что добавленной позиции
+
+      var tariff = st.repl ? 'с заменами' : 'без замен';
+      calc.summary = summary + ' · ' + tariff;
       calc.total = fmtRub(total);
-      calc.orderText = 'Здравствуйте! Хочу обсудить пакет лидов: ' + typeName + ', ' + clsName + ', ' + st.qty + ' шт., ' +
-        (st.repl ? 'с заменами' : 'без замен') + '. Цена за лид — ' + fmtRub(lead) + ', итого — ' + fmtRub(total) + '.';
+      calc.orderText = multi
+        ? 'Здравствуйте! Хочу обсудить составной пакет лидов (' + tariff + '):\n' +
+          st.items.map(function (x, i) {
+            var l = lines[i];
+            return '— ' + typeName(x.type) + ', ' + clsName(x) + ': ' + x.qty + ' шт. × ' + fmtRub(l.lead) + (l.d > 0 ? ' (−' + pct(l.d) + ')' : '') + ' = ' + fmtRub(l.total);
+          }).join('\n') + '\nИтого — ' + fmtRub(total) + '.'
+        : 'Здравствуйте! Хочу обсудить пакет лидов: ' + typeName(it.type) + ', ' + clsName(it) + ', ' + it.qty + ' шт., ' +
+          tariff + '. Цена за лид — ' + fmtRub(ln.lead) + ', итого — ' + fmtRub(total) + '.';
     }
     function setQty(q, keepInput) {
       q = Math.round(Number(q));
       if (!isFinite(q)) q = MIN;
-      st.qty = clamp(q, MIN, MAX);
-      if (!keepInput) qtyIn.value = String(st.qty);
+      cur().qty = clamp(q, MIN, MAX);
+      if (!keepInput) qtyIn.value = String(cur().qty);
       st.touched = true;
       update();
     }
+    function select(i) { st.active = i; renderChips(); update(); }
     form.addEventListener('change', function (e) {
       var t = e.target;
-      if (t.name === 'type') { st.type = t.value; renderChips(); }
-      else if (t.name === 'cls') { st.cls = t.value; }
+      if (t.name === 'type') { cur().type = t.value; renderChips(); }
+      else if (t.name === 'cls') { cur().cls = t.value; }
       else if (t.name === 'repl') { st.repl = t.checked; }
       else if (t === qtyIn) { setQty(qtyIn.value); return; }
       st.touched = true;
@@ -1017,14 +1100,32 @@
     qtyIn.addEventListener('blur', function () { setQty(qtyIn.value); });
     qtyIn.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); setQty(qtyIn.value); qtyIn.blur(); }
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); setQty(st.qty + (e.key === 'ArrowUp' ? 1 : -1)); }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); setQty(cur().qty + (e.key === 'ArrowUp' ? 1 : -1)); }
     });
     form.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-step], [data-qty], [data-qty-to]');
+      var b = e.target.closest('[data-step], [data-qty], [data-qty-to], [data-pack-add], [data-pack-pick], [data-pack-del]');
       if (!b) return;
-      if (b.hasAttribute('data-step')) setQty(st.qty + Number(b.getAttribute('data-step')));
+      if (b.hasAttribute('data-step')) setQty(cur().qty + Number(b.getAttribute('data-step')));
       else if (b.hasAttribute('data-qty')) setQty(b.getAttribute('data-qty'));
-      else setQty(b.getAttribute('data-qty-to'));
+      else if (b.hasAttribute('data-qty-to')) setQty(b.getAttribute('data-qty-to'));
+      else if (b.hasAttribute('data-pack-add')) {
+        // новая позиция: следующий свободный сегмент того же типа (после бизнеса — премиум)
+        var type = cur().type, cls = freeCls(type);
+        if (!cls) { type = type === 'new' ? 'commercial' : 'new'; cls = freeCls(type); }
+        if (!cls) return;
+        var list = CLASSES[type].map(function (c) { return c[0]; });
+        var after = list.slice(list.indexOf(cur().cls) + 1).filter(function (c) { return !st.items.some(function (it) { return it.cls === c; }); })[0];
+        st.items.push({ type: type, cls: after || cls, qty: MIN });
+        st.fresh = st.items.length - 1;
+        st.touched = true;
+        select(st.items.length - 1);
+      }
+      else if (b.hasAttribute('data-pack-pick')) select(Number(b.getAttribute('data-pack-pick')));
+      else {
+        var i = Number(b.getAttribute('data-pack-del'));
+        st.items.splice(i, 1);
+        select(Math.min(st.active > i ? st.active - 1 : st.active, st.items.length - 1));
+      }
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); });
     orders.forEach(function (o) {

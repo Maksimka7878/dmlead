@@ -510,6 +510,11 @@
 
     <div class="calc__grid">
       <form class="calc__form" id="calc-form" novalidate>
+        <div class="pack" data-pack hidden>
+          <p class="pack__label">Состав пакета <span>нажмите на позицию, чтобы изменить её</span></p>
+          <div class="pack__list" data-pack-list role="tablist" aria-label="Позиции пакета"></div>
+        </div>
+
         <div class="cstep">
           <p class="cstep__label"><b>1</b>Тип недвижимости</p>
           <div class="seg" data-group="type" role="radiogroup" aria-label="Тип недвижимости">
@@ -540,6 +545,10 @@
             </div>
           </div>
           <p class="nudge" data-nudge aria-live="polite">Ещё 20 лидов — и скидка 10% на весь пакет. <button type="button" data-qty-to="30">Добавить</button></p>
+          <button type="button" class="pack__add" data-pack-add>
+            <span class="pack__plus" aria-hidden="true"></span>
+            <span><b>Добавить ещё сегмент</b><small>Например, 30 бизнес + 20 премиум в одном пакете</small></span>
+          </button>
         </div>
 
         <div class="cstep">
@@ -560,9 +569,10 @@
       <aside class="receipt" aria-live="polite">
         <p class="receipt__title"><span>Ваш расчёт</span><span data-r-tariff>С заменами</span></p>
         <p class="receipt__summary" data-r-summary>Новостройки · Бизнес · 10 лидов</p>
+        <ul class="receipt__lines" data-r-lines hidden></ul>
         <dl class="receipt__rows">
-          <div><dt>Цена за лид</dt><dd><s data-r-base hidden></s><b data-odo data-r-lead>7 700 ₽</b></dd></div>
-          <div><dt>Скидка за объём</dt><dd data-r-disc>—</dd></div>
+          <div data-r-single><dt>Цена за лид</dt><dd><s data-r-base hidden></s><b data-odo data-r-lead>7 700 ₽</b></dd></div>
+          <div data-r-single><dt>Скидка за объём</dt><dd data-r-disc>—</dd></div>
           <div><dt>Экономия</dt><dd data-r-save>—</dd></div>
         </dl>
         <div class="receipt__total">
