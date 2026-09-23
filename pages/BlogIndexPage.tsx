@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Calendar, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { useListing } from '../components/useContent';
-import { Breadcrumbs } from '../components/PageFurniture';
+import { Breadcrumbs, Dot, PageHead } from '../components/PageFurniture';
+import { Arrow } from '../components/Icons';
 import SEO from '../components/SEO';
 import { url } from '../site';
 import NotFound from './NotFound';
@@ -21,12 +21,12 @@ const BlogIndexPage: React.FC = () => {
     const { listing, status } = useListing(key, path);
 
     if (status === 'missing') return <NotFound />;
-    if (!listing) return <div className="flex min-h-[60vh] items-center justify-center text-slate-400">Загрузка…</div>;
+    if (!listing) return <div className="flex min-h-[60vh] items-center justify-center text-muted">Загрузка…</div>;
 
     const pageUrl = (p: number) => (p === 1 ? basePath : `${basePath}/page/${p}`);
 
     return (
-        <div className="pt-24 pb-20">
+        <div className="aurora pt-[calc(var(--nav-h)+64px)] md:pt-[calc(var(--nav-h)+88px)]">
             <SEO
                 title={listing.title}
                 description={listing.description}
@@ -41,7 +41,7 @@ const BlogIndexPage: React.FC = () => {
                     isPartOf: { '@type': 'Blog', name: 'Блог DmitryLeads', url: url('/blog') },
                 }]}
             />
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div className="wrap">
                 <Breadcrumbs
                     items={[
                         { name: 'Главная', to: '/' },
@@ -49,80 +49,70 @@ const BlogIndexPage: React.FC = () => {
                     ]}
                 />
 
-                <h1 className="mb-4 text-4xl font-black tracking-tight text-slate-900 md:text-5xl">
-                    {listing.h1}
-                    {listing.page > 1 && <span className="text-slate-300"> — {listing.page}</span>}
-                </h1>
-                <p className="mb-10 max-w-2xl text-xl text-slate-600">{listing.description}</p>
+                <PageHead
+                    title={<>{listing.h1}{listing.page > 1 && <span className="text-muted-2"> — {listing.page}</span>}</>}
+                    lead={listing.description}
+                />
 
                 {/* Категории — отдельные страницы, а не клиентский фильтр:
                     так каждая тема получает свой URL и свой вход из поиска. */}
-                <nav className="mb-10 flex flex-wrap gap-2">
-                    <Link
-                        to="/blog"
-                        className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${!cat ? 'text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                        style={!cat ? { backgroundColor: 'var(--accent)' } : undefined}
-                    >
-                        Все
-                    </Link>
-                    {listing.categories.map((c) => (
-                        <Link
-                            key={c.slug}
-                            to={`/blog/kategoriya/${c.slug}`}
-                            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${cat === c.slug ? 'text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                            style={cat === c.slug ? { backgroundColor: 'var(--accent)' } : undefined}
-                        >
-                            {c.name} <span className="opacity-60">{c.count}</span>
-                        </Link>
-                    ))}
+                <nav className="mb-10 flex gap-1.5 overflow-x-auto border-b border-[var(--line)] pb-3.5 [scrollbar-width:none]" aria-label="Категории">
+                    {[{ slug: '', name: 'Все', count: 0 }, ...listing.categories].map((c) => {
+                        const on = (cat ?? '') === c.slug;
+                        return (
+                            <Link
+                                key={c.slug || 'all'}
+                                to={c.slug ? `/blog/kategoriya/${c.slug}` : '/blog'}
+                                aria-current={on ? 'page' : undefined}
+                                className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full px-[18px] text-[15px] font-medium transition-colors ${on ? 'bg-ink text-white' : 'text-muted hover:text-ink'}`}
+                            >
+                                {c.name}
+                                {c.count > 0 && <span className="opacity-60">{c.count}</span>}
+                            </Link>
+                        );
+                    })}
                 </nav>
 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {listing.items.map((a) => (
                         <Link
                             key={a.slug}
                             to={a.path}
-                            className="group flex flex-col rounded-[1.5rem] border border-slate-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
+                            className="group flex flex-col rounded-[24px] border border-[var(--line-2)] bg-white p-6 transition-[box-shadow,border-color,transform] duration-500 hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow)] md:p-7"
                         >
-                            <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--accent)' }}>
-                                {a.group}
+                            <span className="flex items-center justify-between gap-4 text-[13.5px] text-ink-2">
+                                <Dot>{a.group}</Dot>
+                                <Arrow className="ico text-muted-2 transition-[transform,color] duration-500 group-hover:rotate-45 group-hover:text-brand" />
                             </span>
-                            <h2 className="mt-2 text-xl font-bold leading-snug text-slate-900 transition-colors group-hover:text-[var(--accent)]">
+                            <h2 className="display mt-5 text-[clamp(26px,2.3vw,34px)] leading-[.98] transition-colors group-hover:text-brand">
                                 {a.h1}
                             </h2>
-                            <p className="mt-3 flex-1 text-slate-500">{a.description}</p>
-                            <div className="mt-4 flex items-center gap-4 text-xs font-medium text-slate-400">
-                                <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{a.date}</span>
-                                {a.readingMinutes && (
-                                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{a.readingMinutes} мин</span>
-                                )}
+                            <p className="mt-4 line-clamp-4 flex-1 text-[15.5px] leading-relaxed text-ink-2">{a.description}</p>
+                            <div className="mt-6 flex items-center gap-4 border-t border-[var(--line)] pt-4 text-[13px] text-muted">
+                                <span>{a.date}</span>
+                                {a.readingMinutes && <span>{a.readingMinutes} мин чтения</span>}
                             </div>
                         </Link>
                     ))}
                 </div>
 
                 {listing.totalPages > 1 && (
-                    <nav aria-label="Страницы" className="mt-12 flex flex-wrap items-center justify-center gap-2">
+                    <nav aria-label="Страницы" className="mt-14 flex flex-wrap items-center justify-center gap-2">
                         {listing.page > 1 && (
-                            <Link to={pageUrl(listing.page - 1)} className="flex items-center gap-1 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-                                <ChevronLeft className="h-4 w-4" />Назад
-                            </Link>
+                            <Link to={pageUrl(listing.page - 1)} className="btn btn--ghost btn--sm">← Назад</Link>
                         )}
                         {Array.from({ length: listing.totalPages }, (_, i) => i + 1).map((p) => (
                             <Link
                                 key={p}
                                 to={pageUrl(p)}
                                 aria-current={p === listing.page ? 'page' : undefined}
-                                className={`min-w-10 rounded-xl px-3 py-2 text-center text-sm font-semibold transition-colors ${p === listing.page ? 'text-white' : 'border border-slate-200 text-slate-700 hover:bg-slate-50'}`}
-                                style={p === listing.page ? { backgroundColor: 'var(--accent)' } : undefined}
+                                className={`grid h-[42px] min-w-[42px] place-items-center rounded-full px-3 text-[15px] font-medium transition-colors ${p === listing.page ? 'bg-ink text-white' : 'text-ink shadow-[inset_0_0_0_1px_var(--line-2)] hover:shadow-[inset_0_0_0_1px_var(--text)]'}`}
                             >
                                 {p}
                             </Link>
                         ))}
                         {listing.page < listing.totalPages && (
-                            <Link to={pageUrl(listing.page + 1)} className="flex items-center gap-1 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-                                Дальше<ChevronRight className="h-4 w-4" />
-                            </Link>
+                            <Link to={pageUrl(listing.page + 1)} className="btn btn--ghost btn--sm">Дальше →</Link>
                         )}
                     </nav>
                 )}

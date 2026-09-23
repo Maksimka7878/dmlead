@@ -52,14 +52,14 @@ const GROUPS: { title: string; links: { to: string; label: string }[] }[] = [
 ];
 
 const FooterLinks: React.FC = () => (
-  <nav aria-label="Разделы сайта" className="mb-16 grid gap-8 border-t border-slate-200/70 pt-12 sm:grid-cols-2 lg:grid-cols-4">
+  <nav aria-label="Разделы сайта" className="grid gap-x-8 gap-y-10 pb-12 pt-4 sm:grid-cols-2 lg:grid-cols-4">
     {GROUPS.map((g) => (
       <div key={g.title}>
-        <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">{g.title}</div>
-        <ul className="space-y-2">
+        <div className="mb-4 text-[13px] font-medium text-muted-2">{g.title}</div>
+        <ul className="space-y-2.5">
           {g.links.map((l) => (
             <li key={l.to}>
-              <Link to={l.to} className="text-sm font-medium text-slate-600 transition-colors hover:text-[var(--accent)]">
+              <Link to={l.to} className="text-[15px] text-ink-2 transition-colors hover:text-ink">
                 {l.label}
               </Link>
             </li>

@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useContentIndex } from '../components/useContent';
-import { Breadcrumbs } from '../components/PageFurniture';
+import { Breadcrumbs, PageHead } from '../components/PageFurniture';
+import { Arrow } from '../components/Icons';
 import SEO from '../components/SEO';
 import { url } from '../site';
 
@@ -25,7 +26,7 @@ const LandingIndexPage: React.FC = () => {
     const total = groups.reduce((n, g) => n + g.items.length, 0);
 
     return (
-        <div className="pt-24 pb-20">
+        <div className="aurora pt-[calc(var(--nav-h)+64px)] md:pt-[calc(var(--nav-h)+88px)]">
             <SEO
                 title="Каталог услуг: лиды и клиенты на недвижимость"
                 description="Все направления: покупка лидов на недвижимость по городам и сегментам, цены, гарантии замены, решения под агентства, застройщиков и брокеров."
@@ -39,32 +40,32 @@ const LandingIndexPage: React.FC = () => {
                     url: url('/lidy'),
                 }]}
             />
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                <Breadcrumbs items={[{ name: 'Главная', to: '/' }, { name: 'Услуги' }]} />
-                <h1 className="mb-4 text-4xl font-black tracking-tight text-slate-900 md:text-5xl">
-                    Лиды и клиенты на недвижимость
-                </h1>
-                <p className="mb-12 max-w-2xl text-xl text-slate-600">
-                    {total} направлений: по городам, сегментам рынка и типам компаний. Выберите своё — на странице
-                    будут цена, критерии квалификации и условия замены нецелевых лидов.
-                </p>
+            <div className="wrap">
+                <Breadcrumbs items={[{ name: 'Главная', to: '/' }, { name: 'Направления' }]} />
+                <PageHead
+                    title={<><span className="text-brand">{total}</span> направлений <em>под вашу задачу</em></>}
+                    lead="Лиды и клиенты на недвижимость по городам, сегментам рынка и типам компаний. Выберите своё — на странице будут цена, критерии квалификации и условия замены нецелевых лидов."
+                />
 
                 {groups.map((g) => (
-                    <section key={g.group} className="mb-12">
-                        <h2 className="mb-5 text-2xl font-bold text-slate-900">{g.group}</h2>
-                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                            {g.items.map((e) => (
-                                <Link
-                                    key={e.slug}
-                                    to={e.path}
-                                    className="group rounded-2xl border border-slate-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
-                                >
-                                    <span className="font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[var(--accent)]">
-                                        {e.h1}
-                                    </span>
-                                </Link>
-                            ))}
+                    <section key={g.group} className="mb-16 md:mb-20">
+                        <div className="mb-5 flex items-baseline justify-between gap-4">
+                            <h2 className="display text-[clamp(30px,3.4vw,48px)]">{g.group}</h2>
+                            <span className="num text-[22px] text-muted-2">{g.items.length}</span>
                         </div>
+                        <ul className="grid border-t border-[var(--line)] sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3">
+                            {g.items.map((e) => (
+                                <li key={e.slug}>
+                                    <Link
+                                        to={e.path}
+                                        className="group grid h-full grid-cols-[minmax(0,1fr)_20px] items-center gap-4 border-b border-[var(--line)] py-4 text-[16px] font-medium leading-snug text-ink transition-colors hover:text-brand"
+                                    >
+                                        {e.h1}
+                                        <Arrow className="ico text-muted-2 transition-[transform,color] duration-500 group-hover:rotate-45 group-hover:text-brand" />
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
                     </section>
                 ))}
             </div>

@@ -31,7 +31,8 @@ const main = async () => {
   const listings = reg.buildListings().map((l) => ({ ...l, categories: cats }));
   const listingByPath = new Map(listings.map((l) => [l.path, l]));
 
-  const routes = ['/', '/lidy', ...listings.map((l) => l.path), ...byPath.keys()];
+  // «/» не пререндерим: главная — статическая страница из home/ (scripts/install-home.mjs).
+  const routes = ['/lidy', ...listings.map((l) => l.path), ...byPath.keys()];
   let written = 0;
 
   for (const route of routes) {

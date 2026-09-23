@@ -3,20 +3,15 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const NotFound: React.FC = () => (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+    <div className="aurora wrap flex min-h-[80vh] flex-col items-start justify-center pt-[calc(var(--nav-h)+48px)]">
         <SEO title="Страница не найдена" description="Запрошенная страница не найдена." path="/404" />
-        <div className="text-6xl font-black text-slate-200">404</div>
-        <h1 className="mt-4 text-2xl font-bold text-slate-900">Страница не найдена</h1>
-        <p className="mt-2 max-w-md text-slate-500">
-            Возможно, адрес изменился. Загляните в каталог услуг или в блог.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/lidy" className="rounded-2xl px-6 py-3 font-semibold text-white" style={{ backgroundColor: 'var(--accent)' }}>
-                Каталог услуг
-            </Link>
-            <Link to="/blog" className="rounded-2xl border border-slate-200 px-6 py-3 font-semibold text-slate-700">
-                Блог
-            </Link>
+        <div className="num text-[clamp(120px,17vw,300px)] leading-[.78] text-brand">404</div>
+        <h1 className="display mt-6 text-[clamp(40px,5vw,72px)]">Страница <em>не найдена</em></h1>
+        <p className="lede mt-5 max-w-[46ch]">Возможно, адрес изменился. Загляните в каталог направлений, в блог или на главную.</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/lidy" className="btn btn--accent btn--lg">Все направления</Link>
+            <Link to="/blog" className="btn btn--ghost btn--lg">Блог</Link>
+            <a href="/" className="btn btn--ghost btn--lg">На главную</a>
         </div>
     </div>
 );

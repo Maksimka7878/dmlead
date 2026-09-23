@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Landing } from '../content/types';
 import { useContentIndex, useContentPage } from '../components/useContent';
 import ContentBlocks from '../components/ContentBlocks';
-import { Breadcrumbs, Faq, RelatedLinks } from '../components/PageFurniture';
+import { Breadcrumbs, Dot, Faq, PageHead, RelatedLinks } from '../components/PageFurniture';
 import SEO from '../components/SEO';
 import { pageSchema } from '../content/schema';
 import NotFound from './NotFound';
@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
 
     if (status === 'missing') return <NotFound />;
     if (!page) {
-        return <div className="flex min-h-[60vh] items-center justify-center text-slate-400">Загрузка…</div>;
+        return <div className="flex min-h-[60vh] items-center justify-center text-muted">Загрузка…</div>;
     }
 
     const l = page as Landing;
@@ -25,7 +25,7 @@ const LandingPage: React.FC = () => {
         .slice(0, 6);
 
     return (
-        <div className="pt-24 pb-20">
+        <div className="aurora pt-[calc(var(--nav-h)+64px)] md:pt-[calc(var(--nav-h)+88px)]">
             <SEO
                 title={l.title}
                 description={l.description}
@@ -33,23 +33,20 @@ const LandingPage: React.FC = () => {
                 path={`/lidy/${l.slug}`}
                 schema={pageSchema(l)}
             />
-            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                <Breadcrumbs items={[{ name: 'Главная', to: '/' }, { name: 'Услуги', to: '/lidy' }, { name: l.h1 }]} />
+            <div className="wrap">
+                <Breadcrumbs items={[{ name: 'Главная', to: '/' }, { name: 'Направления', to: '/lidy' }, { name: l.h1 }]} />
+                <PageHead kicker={<Dot>{l.section}</Dot>} title={l.h1} lead={l.lead} />
+            </div>
 
-                <header className="mb-10">
-                    <div className="mb-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                        {l.section}
-                    </div>
-                    <h1 className="mb-4 text-4xl font-black tracking-tight text-slate-900 md:text-5xl">{l.h1}</h1>
-                    <p className="text-xl leading-relaxed text-slate-600">{l.lead}</p>
-                </header>
+            <div className="wrap">
+                <div className="max-w-[880px]">
+                    <article className="text-[17px] md:text-[18px]">
+                        <ContentBlocks blocks={l.blocks} />
+                    </article>
 
-                <article className="text-lg">
-                    <ContentBlocks blocks={l.blocks} />
-                </article>
-
-                <Faq items={l.faq} />
-                <RelatedLinks items={related} />
+                    <Faq items={l.faq} />
+                    <RelatedLinks items={related} />
+                </div>
             </div>
         </div>
     );

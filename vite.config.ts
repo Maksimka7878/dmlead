@@ -35,7 +35,6 @@ export default defineConfig(({ isSsrBuild }) => ({
           output: {
             manualChunks: {
               'vendor-react': ['react', 'react-dom', 'react-router-dom', 'react-helmet-async'],
-              'vendor-ui': ['lucide-react'],
             },
           },
         },

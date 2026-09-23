@@ -1,323 +1,224 @@
-import React, { useState, useMemo } from 'react';
-import { MarketType, PricingTier } from '../types';
+import React, { useMemo, useState } from 'react';
+import { MarketType } from '../types';
 import { PRICING_DATA, DISCOUNTS } from '../constants';
-import { Briefcase, Check, House, ShoppingCart, Sliders } from 'lucide-react';
-import { PricingModeBadge, PricingModeToggle, TierPrice, usePricingMode, tierPrice } from './PricingMode';
+import { usePricingMode, tierPrice } from './PricingMode';
 import { useAnimatedNumber } from './useAnimatedNumber';
+import { TELEGRAM } from '../site';
+import { Arrow } from './Icons';
 
-const ruble = (n: number) => Math.round(n).toLocaleString('ru-RU');
+const ruble = (n: number) => `${Math.round(n).toLocaleString('ru-RU')} ₽`;
 
 const MIN_LEADS = 10;
-const MAX_LEADS = 100;
-const LEAD_STEP = 1;
+const MAX_LEADS = 1000;
+const PRESETS = [10, 30, 50, 100];
 
-const SLIDER_MARKS = [
-  { value: MIN_LEADS, discount: 0 },
-  { value: 30, discount: 10 },
-  { value: 50, discount: 15 },
-  { value: 100, discount: 20 },
-] as const;
+const discountFor = (count: number) => (DISCOUNTS.find((d) => count >= d.minCount) ?? { percentage: 0 }).percentage;
 
-const Calculator: React.FC<{ showModeToggle?: boolean }> = ({ showModeToggle = true }) => {
-  const [selectedMarket, setSelectedMarket] = useState<MarketType>(MarketType.PRIMARY);
-  const [selectedTierIndex, setSelectedTierIndex] = useState<number>(1);
-  const [leadCount, setLeadCount] = useState<number>(MIN_LEADS);
-  const { noReplace } = usePricingMode();
+const Step: React.FC<{ n: number; title: string; aside?: React.ReactNode; children: React.ReactNode }> = ({ n, title, aside, children }) => (
+  <fieldset className="min-w-0">
+    <legend className="mb-4 flex w-full items-center justify-between gap-3">
+      <span className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+        <span className="grid h-6 w-6 place-items-center rounded-full bg-ink text-[12px] font-semibold text-white">{n}</span>
+        {title}
+      </span>
+      {aside && <span className="text-[13px] text-muted">{aside}</span>}
+    </legend>
+    {children}
+  </fieldset>
+);
 
-  const currentCategory = PRICING_DATA.find(c => c.id === selectedMarket) || PRICING_DATA[0];
-  const currentTier: PricingTier = currentCategory.tiers[selectedTierIndex] || currentCategory.tiers[0];
-  const sliderProgress = ((leadCount - MIN_LEADS) / (MAX_LEADS - MIN_LEADS)) * 100;
-  const sliderBackground = `linear-gradient(90deg, var(--accent) 0%, var(--accent-2) ${sliderProgress}%, rgba(226,232,240,0.75) ${sliderProgress}%, rgba(226,232,240,0.75) 100%)`;
+/** Калькулятор пакета — повторяет калькулятор новой главной:
+ *  шаги 1–4 слева, расчёт справа, «Отправить расчёт» копирует параметры для чата. */
+const Calculator: React.FC = () => {
+  const [market, setMarket] = useState<MarketType>(MarketType.PRIMARY);
+  const [tierIndex, setTierIndex] = useState(1);
+  const [count, setCount] = useState(MIN_LEADS);
+  const [copied, setCopied] = useState(false);
+  const { noReplace, setNoReplace } = usePricingMode();
 
-  const { total, discountPercent, pricePerLead, savedAmount } = useMemo(() => {
-    const basePrice = tierPrice(currentTier, noReplace) * leadCount;
-    const activeDiscount = DISCOUNTS.find(d => leadCount >= d.minCount) || { percentage: 0 };
-    const discountAmount = (basePrice * activeDiscount.percentage) / 100;
-    const finalTotal = basePrice - discountAmount;
-    
-    return {
-      total: finalTotal,
-      discountPercent: activeDiscount.percentage,
-      pricePerLead: finalTotal / leadCount,
-      savedAmount: discountAmount
-    };
-  }, [currentTier, leadCount, noReplace]);
+  const category = PRICING_DATA.find((c) => c.id === market) ?? PRICING_DATA[0];
+  const tier = category.tiers[tierIndex] ?? category.tiers[0];
+
+  const { perLead, discount, saved, total } = useMemo(() => {
+    const base = tierPrice(tier, noReplace) * count;
+    const pct = discountFor(count);
+    const cut = (base * pct) / 100;
+    return { perLead: (base - cut) / count, discount: pct, saved: cut, total: base - cut };
+  }, [tier, count, noReplace]);
 
   const animTotal = useAnimatedNumber(total);
-  const animPerLead = useAnimatedNumber(pricePerLead);
-  const animSaved = useAnimatedNumber(savedAmount);
+  const next = DISCOUNTS.filter((d) => d.minCount > count).sort((a, b) => a.minCount - b.minCount)[0];
+
+  const setQty = (v: number) => setCount(Math.min(MAX_LEADS, Math.max(MIN_LEADS, Math.round(v) || MIN_LEADS)));
+
+  const summary = `${category.title} · ${tier.name} · ${count} лидов`;
+  const sendText = [
+    'Здравствуйте! Расчёт с сайта dmleads.ru:',
+    summary,
+    noReplace ? 'Тариф без замен' : 'Тариф с заменами',
+    `Цена за лид: ${ruble(perLead)}`,
+    discount ? `Скидка за объём: ${discount}%` : '',
+    `Итого: ${ruble(total)}`,
+  ].filter(Boolean).join('\n');
+
+  const copy = () => {
+    navigator.clipboard?.writeText(sendText).then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 4000);
+    }, () => {});
+  };
+
+  const pill = (on: boolean) =>
+    `rounded-full px-5 min-h-[46px] text-[15.5px] font-medium transition-colors ${on ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'}`;
 
   return (
-    <div className="relative group z-10 h-full">
-      {/* Background glow for the glass card */}
-      <div className="absolute inset-4 bg-[var(--accent-soft)] rounded-[3rem] blur-2xl"></div>
-
-      <div className="relative liquid-glass rounded-[2.5rem] p-0 h-full flex flex-col shadow-2xl overflow-hidden duration-500">
-        
-        {/* Header with frosted separation */}
-        <div className="p-8 pb-6 border-b border-white/20 flex items-center justify-between backdrop-blur-md bg-white/5 flex-none">
-          <div>
-              <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                <div className="p-2 bg-[var(--accent-soft)] rounded-xl">
-                    <Sliders className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                Калькулятор
-              </h3>
-              <div className="mt-2 pl-1 flex items-center gap-2 flex-wrap">
-                <p className="text-slate-500 text-sm">Соберите свой пакет</p>
-                <PricingModeBadge />
-              </div>
-          </div>
-          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-50/50 to-white/50 border border-white/50 flex items-center justify-center shadow-lg shadow-blue-500/10">
-              <ShoppingCart className="w-5 h-5 text-[var(--accent)]" />
-          </div>
-        </div>
-
-        {/* Тариф: с заменами / без замен (−50%) */}
-        {showModeToggle && (
-          <div className="px-6 pt-5 flex-none">
-            <PricingModeToggle className="w-full" />
-          </div>
-        )}
-        
-        <div className="p-6 pt-5 flex-1 flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Left: Market type + Tier selector */}
-          <div className="flex-1 flex flex-col gap-6">
-            {/* Market Selector */}
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Тип недвижимости</label>
-              <div className="grid grid-cols-2 gap-3">
-                {PRICING_DATA.map((market) => (
-                  <button
-                    key={market.id}
-                    onClick={() => {
-                        setSelectedMarket(market.id);
-                        setSelectedTierIndex(0);
-                    }}
-                    className={`relative w-full rounded-2xl px-4 py-3.5 text-left transition-all duration-300 overflow-hidden border backdrop-blur-md ${
-                      selectedMarket === market.id
-                        ? 'text-white border-white/40 shadow-[0_10px_26px_var(--accent-soft)] bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[var(--accent-2)] -translate-y-0.5'
-                        : 'text-slate-700 bg-white/28 border-white/40 hover:bg-white/42 hover:border-white/60'
-                    }`}
-                    aria-pressed={selectedMarket === market.id}
-                  >
-                    <div className="absolute inset-x-0 top-0 h-px bg-white/50"></div>
-                    <div className="relative z-10 flex items-center gap-3">
-                      <div className={`h-9 w-9 rounded-xl flex items-center justify-center border ${
-                        selectedMarket === market.id
-                          ? 'bg-white/20 border-white/35'
-                          : 'bg-white/55 border-white/70'
-                      }`}>
-                        {market.id === MarketType.PRIMARY && <House className={`w-4 h-4 ${selectedMarket === market.id ? 'text-white' : 'text-[var(--accent)]'}`} />}
-                        {market.id === MarketType.COMMERCIAL && <Briefcase className={`w-4 h-4 ${selectedMarket === market.id ? 'text-white' : 'text-[var(--accent)]'}`} />}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[15px] font-bold leading-tight truncate">{market.title}</p>
-                        <p className={`text-[11px] mt-0.5 ${selectedMarket === market.id ? 'text-blue-100' : 'text-slate-500'}`}>
-                          {market.id === MarketType.PRIMARY && 'Жилая первичка'}
-                          {market.id === MarketType.COMMERCIAL && 'Офисы и ритейл'}
-                        </p>
-                      </div>
-                    </div>
-                    {selectedMarket === market.id && (
-                      <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-white shadow-[0_0_0_6px_rgba(255,255,255,0.16)]"></div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Tier Selector */}
-            <div className="flex-1 flex flex-col justify-center">
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Класс / Сегмент</label>
-              <div key={selectedMarket} className="grid grid-cols-2 gap-3 content-center min-h-[22.75rem] animate-segment-in">
-                {currentCategory.tiers.map((tier, idx) => {
-                  const isSelected = selectedTierIndex === idx;
-                  return (
-                  <div
-                    key={tier.name}
-                    onClick={() => setSelectedTierIndex(idx)}
-                    aria-pressed={isSelected}
-                    className={`liquid-glass group/card relative cursor-pointer overflow-hidden rounded-3xl p-5 h-[11rem] flex flex-col justify-between border transition-all duration-300 ${
-                      isSelected
-                        ? '!bg-[var(--accent-soft)] border-[var(--accent)]/55 ring-1 ring-[var(--accent)]/25 shadow-xl shadow-[var(--accent)]/10 -translate-y-0.5'
-                        : 'border-white/50 hover:-translate-y-1 hover:bg-white/55 hover:border-white/70'
-                    }`}
-                  >
-                    {/* Accent glow on selection */}
-                    <div
-                      className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'opacity-0'}`}
-                      style={{ background: 'var(--accent-soft)' }}
-                    />
-
-                    <div className="relative z-10">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-[var(--accent)] to-[var(--accent-2)]"></span>
-                          <span className={`font-bold text-base md:text-lg tracking-tight transition-colors ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}>
-                            {tier.name}
-                          </span>
-                        </div>
-                        <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${
-                          isSelected
-                            ? 'bg-[var(--accent)] scale-100 opacity-100'
-                            : 'bg-white/60 border border-white/70 scale-90 opacity-0 group-hover/card:opacity-100'
-                        }`}>
-                          <Check className={`h-3.5 w-3.5 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
-                        </div>
-                      </div>
-                      <div className="mt-2 text-[12px] text-slate-500 font-medium leading-relaxed">{tier.description}</div>
-                    </div>
-
-                    <div className="relative z-10 mt-4">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-0.5">Цена за лид</div>
-                      <TierPrice
-                        tier={tier}
-                        align="start"
-                        className={`text-lg md:text-xl tracking-tight ${isSelected ? 'text-[var(--accent)]' : 'text-slate-800'}`}
-                      />
-                    </div>
-                  </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Slider + Results */}
-          <div className="flex-1 flex flex-col gap-6 justify-between">
-
-            <div className="bg-white/20 rounded-[2.5rem] p-8 border border-white/30 shadow-inner relative overflow-hidden group/slider">
-              {/* Subtle pulsing glow for the slider section */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--accent-soft)] to-transparent"></div>
-              
-              <div className="flex justify-between items-center mb-10 relative z-10">
-                <div>
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Количество лидов</label>
-                  <p className="text-[10px] text-slate-500 mt-1">Минимальный пакет: 10 лидов</p>
-                </div>
-                <div className="flex items-baseline gap-2 bg-white/40 px-4 py-1 rounded-2xl border border-white/60 shadow-sm">
-                    <span className="text-5xl font-black text-slate-900 tabular-nums tracking-tighter transition-all duration-300 group-hover/slider:text-[var(--accent)]">
-                      {leadCount}
-                    </span>
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">шт.</span>
-                </div>
-              </div>
-              
-              <div className="relative h-12 flex items-center px-3">
-                <input
-                  type="range"
-                  min={MIN_LEADS}
-                  max={MAX_LEADS}
-                  step={LEAD_STEP}
-                  value={leadCount}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLeadCount(parseInt(e.target.value, 10))}
-                  style={{ background: sliderBackground }}
-                  className="premium-range z-20"
-                />
-              </div>
-
-              {/* Threshold marks */}
-              <div className="mt-6 grid grid-cols-4 gap-3 px-1">
-                {SLIDER_MARKS.map((mark) => {
-                  const isActive = leadCount >= mark.value;
-                  const isDiscountMark = mark.discount !== null && mark.discount > 0;
-                  const markLabel = isDiscountMark
-                    ? `${mark.value} лидов, скидка ${mark.discount}%`
-                    : `${mark.value} лидов`;
-
-                  return (
-                    <button
-                      key={mark.value}
-                      type="button"
-                      onClick={() => setLeadCount(mark.value)}
-                      aria-label={markLabel}
-                      className="flex flex-col items-center gap-2 rounded-xl py-1 transition-all cursor-pointer hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-soft)]"
-                    >
-                      <div
-                        className={`w-3 h-3 rounded-full border transition-all ${
-                          isActive
-                            ? isDiscountMark
-                              ? 'bg-emerald-500 border-emerald-300 shadow-[0_0_0_4px_rgba(16,185,129,0.18)]'
-                              : 'bg-[var(--accent)] border-[var(--accent-soft)] shadow-[0_0_0_4px_var(--accent-soft)]'
-                            : 'bg-slate-300 border-slate-200'
-                        }`}
-                      ></div>
-                      <div className="flex items-baseline gap-1">
-                        <span
-                          className={`text-[12px] font-extrabold tabular-nums transition-colors ${
-                            isDiscountMark
-                              ? isActive ? 'text-emerald-600' : 'text-slate-500'
-                              : isActive ? 'text-[var(--accent)]' : 'text-slate-400'
-                          }`}
-                        >
-                          {mark.value}
-                        </span>
-                        {isDiscountMark && (
-                          <span className={`text-[10px] font-bold ${isActive ? 'text-emerald-600' : 'text-slate-400'}`}>
-                            {mark.discount}%
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-3 text-[11px] text-slate-500">
-                Скидки: от 30 шт. — 10%, от 50 шт. — 15%, от 100 шт. — 20%.
-              </div>
-            </div>
-
-            {/* Results Group */}
-            <div className="space-y-4">
-              {/* Summary Panel */}
-              <div className="rounded-3xl p-6 relative overflow-hidden text-white shadow-2xl border border-white/40 bg-[linear-gradient(135deg,rgba(125,153,255,0.18),rgba(182,200,255,0.26))] backdrop-blur-xl">
-                  {/* Internal Glows */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--accent-soft)] rounded-full blur-[60px] -mr-20 -mt-20"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-[40px] -ml-10 -mb-10"></div>
-
-                  <div className="flex justify-between items-center gap-3 mb-3 relative z-10">
-                      <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-slate-700/85 text-sm font-semibold whitespace-nowrap">Цена за лид:</span>
-                          <span
-                              aria-hidden={discountPercent === 0}
-                              className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-[12px] font-bold text-white whitespace-nowrap shadow-md shadow-emerald-500/40 ring-1 ring-emerald-300/60 transition-opacity duration-300 ${discountPercent > 0 ? 'opacity-100' : 'opacity-0'}`}
-                          >
-                              −{discountPercent}%
-                              <span className="font-mono font-semibold text-emerald-50 tabular-nums">−{ruble(animSaved)} ₽</span>
-                          </span>
-                      </div>
-                      <span className="font-mono text-slate-900 text-lg font-bold whitespace-nowrap tabular-nums">{ruble(animPerLead)} ₽</span>
-                  </div>
-
-                  <div className="h-px bg-gradient-to-r from-transparent via-slate-400/20 to-transparent my-3"></div>
-                  
-                  <div className="flex justify-between items-end relative z-10">
-                      <span className="text-lg font-semibold text-slate-800 pb-1">
-                        Итого:
-                        <span className={`block text-[11px] font-bold uppercase tracking-wider transition-colors duration-500 ${noReplace ? 'text-emerald-600' : 'text-slate-500'}`}>
-                          {noReplace ? 'тариф без замен' : 'тариф с заменами'}
-                        </span>
-                      </span>
-                      <span className="text-5xl font-black text-slate-950 tracking-tighter tabular-nums drop-shadow-[0_6px_18px_rgba(255,255,255,0.45)]">
-                          {ruble(animTotal)} <span className="text-2xl text-slate-500 font-semibold">₽</span>
-                      </span>
-                  </div>
-              </div>
-              
-              <a 
-                  href="https://t.me/DMitryLeads" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="block w-full text-center bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-[var(--accent-soft)] relative overflow-hidden group hover:-translate-y-1 hover:brightness-110"
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)] lg:items-start xl:gap-12">
+      <div className="grid gap-9">
+        <Step n={1} title="Тип недвижимости">
+          <div className="inline-flex rounded-full p-1 shadow-[inset_0_0_0_1px_var(--line-2)]" role="radiogroup" aria-label="Тип недвижимости">
+            {PRICING_DATA.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                role="radio"
+                aria-checked={market === m.id}
+                onClick={() => { setMarket(m.id); setTierIndex(m.id === MarketType.PRIMARY ? 1 : 0); }}
+                className={pill(market === m.id)}
               >
-                  <div className="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
-                  <span className="relative z-10 text-lg tracking-wide">Обсудить заказ</span>
-              </a>
+                {m.title}
+              </button>
+            ))}
+          </div>
+        </Step>
+
+        <Step n={2} title="Сегмент" aside="цена за один лид">
+          <div className="grid grid-cols-2 gap-2.5" role="radiogroup" aria-label="Сегмент">
+            {category.tiers.map((t, i) => {
+              const on = i === tierIndex;
+              return (
+                <button
+                  key={t.name}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  onClick={() => setTierIndex(i)}
+                  className={`rounded-[18px] border bg-white p-4 text-left transition-[border-color,box-shadow,background-color] ${
+                    on
+                      ? 'border-[var(--accent-hi)] bg-[#F3F7FF] shadow-[0_0_0_1px_var(--accent-hi),0_14px_30px_-18px_rgba(37,99,235,.8)]'
+                      : 'border-[var(--line-2)] hover:border-ink/40'
+                  }`}
+                >
+                  <span className={`display block text-[21px] ${on ? 'text-brand' : 'text-ink'}`}>{t.name}</span>
+                  <span className={`num block text-[27px] leading-tight ${on ? 'text-brand' : 'text-ink'}`}>{ruble(tierPrice(t, noReplace))}</span>
+                  {noReplace && <span className="block text-[12px] text-muted-2 line-through">{ruble(t.price)}</span>}
+                  <span className="mt-1 block text-[12.5px] text-muted">{t.description}</span>
+                </button>
+              );
+            })}
+          </div>
+        </Step>
+
+        <Step n={3} title="Количество лидов" aside={`от ${MIN_LEADS} шт.`}>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex h-[54px] items-center rounded-[16px] shadow-[inset_0_0_0_1px_var(--line-2)]">
+              <button type="button" aria-label="Меньше" onClick={() => setQty(count - 1)} className="h-full w-12 text-xl text-ink disabled:text-muted-2" disabled={count <= MIN_LEADS}>−</button>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={MIN_LEADS}
+                max={MAX_LEADS}
+                value={count}
+                aria-label="Количество лидов"
+                onChange={(e) => setCount(Number(e.target.value) || 0)}
+                onBlur={() => setQty(count)}
+                className="num w-16 bg-transparent text-center text-[28px] text-ink outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+              />
+              <button type="button" aria-label="Больше" onClick={() => setQty(count + 1)} className="h-full w-12 text-xl text-ink">+</button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {PRESETS.map((p) => {
+                const pct = discountFor(p);
+                const on = count === p;
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setQty(p)}
+                    className={`flex min-h-[42px] items-center gap-1.5 rounded-full px-4 text-[15px] font-medium transition-colors ${
+                      on ? 'bg-ink text-white' : 'text-ink shadow-[inset_0_0_0_1px_var(--line-2)] hover:shadow-[inset_0_0_0_1px_var(--text)]'
+                    }`}
+                  >
+                    {p}
+                    {pct > 0 && <span className={`text-[11.5px] ${on ? 'text-white/70' : 'text-brand'}`}>−{pct}%</span>}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </div>
+          <p className="mt-3 min-h-[1.5em] text-[14px] text-ink-2">
+            {next ? (
+              <>
+                Ещё {next.minCount - count} лидов — и скидка {next.percentage}% на весь пакет.{' '}
+                <button type="button" onClick={() => setQty(next.minCount)} className="copy text-[14px]">Добавить {next.minCount - count}</button>
+              </>
+            ) : (
+              <>Максимальная скидка {discount}% уже применена.</>
+            )}
+          </p>
+        </Step>
+
+        <Step n={4} title="Замена нецелевых лидов">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!noReplace}
+            onClick={() => setNoReplace(!noReplace)}
+            className="flex items-start gap-4 text-left"
+          >
+            <span className={`relative mt-0.5 h-[30px] w-[52px] shrink-0 rounded-full transition-colors ${noReplace ? 'bg-[var(--line-2)]' : 'bg-brand'}`}>
+              <span className={`absolute top-[3px] h-6 w-6 rounded-full bg-white shadow transition-[left] duration-300 ${noReplace ? 'left-[3px]' : 'left-[25px]'}`} />
+            </span>
+            <span>
+              <span className="block text-[16px] font-semibold text-ink">{noReplace ? 'Без замен' : 'С заменами'}</span>
+              <span className="block text-[14px] text-ink-2">
+                {noReplace
+                  ? 'Комфорт дешевле на 50%, остальные классы — на 25%: нецелевые лиды не заменяем.'
+                  : 'Бесплатно заменяем нецелевые лиды в течение 5 дней.'}
+              </span>
+            </span>
+          </button>
+        </Step>
       </div>
+
+      <aside className="rounded-[26px] border border-[var(--line-2)] bg-white p-6 shadow-[var(--shadow)] lg:sticky lg:top-24" aria-live="polite">
+        <div className="flex items-center justify-between border-b border-[var(--line)] pb-4 text-[13.5px]">
+          <span className="text-muted">Ваш расчёт</span>
+          <span className="text-brand">{noReplace ? 'Без замен' : 'С заменами'}</span>
+        </div>
+        <div className="pt-5 text-[18px] font-semibold leading-snug text-ink">{summary}</div>
+        <dl className="mt-3 text-[15px]">
+          {[
+            ['Цена за лид', ruble(perLead)],
+            ['Скидка за объём', discount ? `${discount}%` : '—'],
+            ['Экономия', saved ? ruble(saved) : '—'],
+          ].map(([k, v]) => (
+            <div key={k} className="flex justify-between gap-4 border-b border-[var(--line)] py-3">
+              <dt className="text-ink-2">{k}</dt>
+              <dd className="font-medium text-ink">{v}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="flex items-end justify-between gap-4 pb-5 pt-6">
+          <span className="pb-1 text-ink-2">Итого</span>
+          <span className="num text-[clamp(40px,4vw,56px)] leading-[.9] text-brand">{ruble(animTotal)}</span>
+        </div>
+        <a href={TELEGRAM} target="_blank" rel="noopener" onClick={copy} className="btn btn--accent btn--lg btn--block">
+          Отправить расчёт в Telegram <Arrow />
+        </a>
+        <p className="mt-3 text-center text-[12.5px] text-muted">
+          {copied ? 'Расчёт скопирован — вставьте его в чат.' : 'Параметры скопируются — вставьте их в чат, и мы сразу продолжим.'}
+        </p>
+      </aside>
     </div>
   );
 };

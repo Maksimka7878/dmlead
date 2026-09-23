@@ -1,39 +1,63 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 import { FaqItem } from '../content/types';
 import { IndexEntry } from '../content/client';
+import { Arrow } from './Icons';
+
+// «/» — статическая главная вне роутера: туда только полная загрузка.
+const Crumb: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) =>
+  to === '/' ? (
+    <a href="/" className="transition-colors hover:text-ink">{children}</a>
+  ) : (
+    <Link to={to} className="transition-colors hover:text-ink">{children}</Link>
+  );
 
 export const Breadcrumbs: React.FC<{ items: { name: string; to?: string }[] }> = ({ items }) => (
-  <nav aria-label="Хлебные крошки" className="mb-6 flex flex-wrap items-center gap-1 text-sm text-slate-500">
+  <nav aria-label="Хлебные крошки" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
     {items.map((it, i) => (
       <React.Fragment key={i}>
-        {i > 0 && <ChevronRight aria-hidden className="h-3.5 w-3.5 text-slate-300" />}
-        {it.to ? (
-          <Link to={it.to} className="transition-colors hover:text-slate-900">{it.name}</Link>
-        ) : (
-          <span className="text-slate-400">{it.name}</span>
-        )}
+        {i > 0 && <span aria-hidden className="text-muted-2">/</span>}
+        {it.to ? <Crumb to={it.to}>{it.name}</Crumb> : <span className="text-muted-2">{it.name}</span>}
       </React.Fragment>
     ))}
   </nav>
 );
 
+/** Шапка страницы: раздел, узкий заголовок капсом, лид. */
+export const PageHead: React.FC<{ kicker?: React.ReactNode; title: React.ReactNode; lead?: React.ReactNode; size?: 'lg' | 'md' }> = ({
+  kicker,
+  title,
+  lead,
+  size = 'lg',
+}) => (
+  <header className="mb-12 md:mb-16">
+    {kicker && <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[15px] text-ink-2">{kicker}</div>}
+    <h1 className={`display ${size === 'lg' ? 'text-[clamp(44px,6.4vw,104px)]' : 'text-[clamp(40px,5.2vw,80px)]'}`}>{title}</h1>
+    {lead && <p className="lede mt-6 max-w-[62ch]">{lead}</p>}
+  </header>
+);
+
+/** Метка раздела с точкой-акцентом, как «факты» на главной. */
+export const Dot: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="inline-flex items-center gap-2.5">
+    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--accent-hi)]" />
+    {children}
+  </span>
+);
+
 export const Faq: React.FC<{ items: FaqItem[]; title?: string }> = ({ items, title = 'Частые вопросы' }) => {
   if (!items.length) return null;
   return (
-    <section className="mt-16">
-      <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">{title}</h2>
-      <div className="space-y-3">
+    <section className="faq mt-20 md:mt-28">
+      <h2 className="display mb-8 text-[clamp(36px,4.4vw,64px)]">{title}</h2>
+      <div className="border-t border-[var(--line)]">
         {items.map((f, i) => (
-          <details key={i} className="group rounded-2xl border border-slate-200 bg-white p-5 open:shadow-sm">
-            <summary className="cursor-pointer list-none font-semibold text-slate-900 marker:content-none">
-              <span className="flex items-start justify-between gap-4">
-                {f.q}
-                <ChevronRight aria-hidden className="mt-1 h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-90" />
-              </span>
+          <details key={i} className="group border-b border-[var(--line)]">
+            <summary className="flex items-center justify-between gap-6 py-5 text-lg font-medium text-ink md:py-6 md:text-xl">
+              {f.q}
+              <span className="faq__sign" aria-hidden />
             </summary>
-            <p className="mt-3 leading-relaxed text-slate-600">{f.a}</p>
+            <p className="max-w-[70ch] pb-6 leading-relaxed text-ink-2">{f.a}</p>
           </details>
         ))}
       </div>
@@ -41,27 +65,28 @@ export const Faq: React.FC<{ items: FaqItem[]; title?: string }> = ({ items, tit
   );
 };
 
+/** Перелинковка: крупные строки-ссылки, как список направлений на главной. */
 export const RelatedLinks: React.FC<{ items: IndexEntry[]; title?: string }> = ({ items, title = 'Смотрите также' }) => {
   if (!items.length) return null;
   return (
-    <section className="mt-16">
-      <h2 className="mb-5 text-xl font-bold text-slate-900">{title}</h2>
-      <div className="grid gap-3 sm:grid-cols-2">
+    <section className="mt-20 md:mt-28">
+      <h2 className="display mb-6 text-[clamp(36px,4.4vw,64px)]">{title}</h2>
+      <ul className="border-t border-[var(--line)]">
         {items.map((p) => (
-          <Link
-            key={p.slug}
-            to={p.path}
-            className="group rounded-2xl border border-slate-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
-              {p.group}
-            </div>
-            <div className="mt-1 font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[var(--accent)]">
-              {p.h1}
-            </div>
-          </Link>
+          <li key={p.slug}>
+            <Link
+              to={p.path}
+              className="group grid grid-cols-[minmax(0,1fr)_30px] items-center gap-5 border-b border-[var(--line)] py-5 transition-[padding,color] duration-500 hover:pl-3 hover:text-brand md:hover:pl-6"
+            >
+              <span>
+                <span className="mb-1 block text-[13px] text-muted">{p.group}</span>
+                <span className="display block text-[clamp(24px,2.6vw,40px)] leading-[.98]">{p.h1}</span>
+              </span>
+              <Arrow className="ico h-7 w-7 [stroke-width:1.4] transition-transform duration-500 group-hover:rotate-45" />
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 };

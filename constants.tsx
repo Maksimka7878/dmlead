@@ -1,6 +1,4 @@
 import { MarketType, MarketCategory, DiscountRule } from './types';
-import { Phone, Users, CheckCircle, ShieldAlert, BadgeCheck, FileText, Ban, CreditCard } from 'lucide-react';
-import React from 'react';
 
 export const PRICING_DATA: MarketCategory[] = [
   {
@@ -35,51 +33,24 @@ export const GUARANTEES = [
     id: 1,
     title: "Клиент не отвечает",
     scenario: "После 3+ попыток контакта в разные дни и время клиент не берёт трубку.",
-    proof: "Скриншоты звонков с датами",
-    icon: <Phone className="w-6 h-6 text-red-500" />
+    proof: "Скриншоты звонков с датами"
   },
   {
     id: 2,
     title: "Ошибка в данных",
     scenario: "Критичная ошибка в имени или номере, препятствующая связи.",
-    proof: "Описание ошибки",
-    icon: <ShieldAlert className="w-6 h-6 text-orange-500" />
+    proof: "Описание ошибки"
   },
   {
     id: 3,
     title: "Прямой отказ",
     scenario: "Клиент сообщает, что не интересуется покупкой.",
-    proof: "Скриншот переписки или запись",
-    icon: <Ban className="w-6 h-6 text-red-600" />
+    proof: "Скриншот переписки или запись"
   },
   {
     id: 4,
     title: "Несоответствие бюджета",
     scenario: "Клиент ищет 'Комфорт', хотя лид продан как 'Бизнес'.",
-    proof: "Запись диалога",
-    icon: <CreditCard className="w-6 h-6 text-yellow-500" />
-  }
-];
-
-export const PROCESS_STEPS = [
-  {
-    title: "Согласование",
-    desc: "Определяем количество, сегменты и темп передачи лидов.",
-    icon: <Users className="w-8 h-8 text-blue-600" />
-  },
-  {
-    title: "Оплата",
-    desc: "Фиксируем стоимость, выставляем счет, бронируем объем.",
-    icon: <FileText className="w-8 h-8 text-blue-600" />
-  },
-  {
-    title: "Передача",
-    desc: "Передача лида после квалификации в течение 5 минут.",
-    icon: <CheckCircle className="w-8 h-8 text-blue-600" />
-  },
-  {
-    title: "Обратная связь",
-    desc: "В течение 5 дней принимаем обратную связь и бесплатно заменяем нецелевые лиды.",
-    icon: <BadgeCheck className="w-8 h-8 text-blue-600" />
+    proof: "Запись диалога"
   }
 ];
