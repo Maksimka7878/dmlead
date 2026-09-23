@@ -6,10 +6,12 @@ export const FACTS = {
   minPackage: 10,
   transferMinutes: 5,
   feedbackDays: 5,
+  // percent — строкой для текста: «17,5» с запятой, по-русски.
   discounts: [
-    { from: 30, percent: 10 },
-    { from: 50, percent: 15 },
-    { from: 100, percent: 20 },
+    { from: 30, percent: '10' },
+    { from: 50, percent: '15' },
+    { from: 75, percent: '17,5' },
+    { from: 100, percent: '20' },
   ],
   primaryTiers: [
     { name: 'Комфорт', note: 'объекты до 500 000 ₽/м²', price: 3600 },
@@ -34,5 +36,8 @@ export const FACTS = {
     { title: 'Обратная связь', text: 'В течение 5 дней принимаем обратную связь и бесплатно заменяем нецелевые лиды.' },
   ],
 } as const;
+
+/** Максимальная скидка за объём — последняя ступень. */
+export const MAX_DISCOUNT = FACTS.discounts[FACTS.discounts.length - 1];
 
 export const priceRangeText = 'от 3 600 ₽ за лид в комфорт-классе до 17 000 ₽ в сегменте De Luxe';

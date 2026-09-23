@@ -1,7 +1,7 @@
 import { Article, Block } from '../types';
 import { art } from './_builder';
 import { AUDIENCES, Audience } from '../audiences';
-import { FACTS } from '../facts';
+import { FACTS, MAX_DISCOUNT } from '../facts';
 
 const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
 const low = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -202,7 +202,7 @@ const TOPICS: Topic[] = [
       { t: 'p', text: a.routine },
       { t: 'h2', text: 'Скидки и когда они вредят' },
       { t: 'table', head: ['Объём', 'Скидка'], rows: FACTS.discounts.map((d) => [`от ${d.from} лидов`, `${d.percent}%`]) },
-      { t: 'p', text: `Скидка ${FACTS.discounts[2].percent}% не компенсирует падение конверсии из-за просроченной обработки. Берите объём, который реально проходит через команду.` },
+      { t: 'p', text: `Скидка ${MAX_DISCOUNT.percent}% не компенсирует падение конверсии из-за просроченной обработки. Берите объём, который реально проходит через команду.` },
       { t: 'calc' },
       { t: 'cta', title: 'Подобрать объём', text: 'Назовите численность команды и план — рассчитаем пакет и темп подачи.' },
     ],
@@ -283,7 +283,7 @@ const TOPICS: Topic[] = [
       { t: 'p', text: `Полученную стоимость сделки сравнивайте со своей средней комиссией, а не с ценой клика в рекламном кабинете. Только это сравнение отвечает на вопрос, зарабатываете вы на канале или нет.` },
       { t: 'h2', text: 'Что даёт наибольший эффект' },
       { t: 'ul', items: [
-        `Скидка за объём — максимум ${FACTS.discounts[2].percent}%.`,
+        `Скидка за объём — максимум ${MAX_DISCOUNT.percent}%.`,
         'Удвоение сквозной конверсии — минус 50% к стоимости сделки.',
         'Сокращение времени до первого контакта — самый дешёвый способ поднять конверсию.',
       ] },

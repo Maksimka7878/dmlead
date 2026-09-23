@@ -23,6 +23,7 @@ export const PRICING_DATA: MarketCategory[] = [
 
 export const DISCOUNTS: DiscountRule[] = [
   { minCount: 100, percentage: 20 },
+  { minCount: 75, percentage: 17.5 },
   { minCount: 50, percentage: 15 },
   { minCount: 30, percentage: 10 },
   { minCount: 0, percentage: 0 },

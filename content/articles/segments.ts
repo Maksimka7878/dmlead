@@ -1,7 +1,7 @@
 import { Article, Block } from '../types';
 import { art } from './_builder';
 import { SEGMENTS, Segment } from '../segments';
-import { FACTS } from '../facts';
+import { FACTS, MAX_DISCOUNT } from '../facts';
 
 const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -225,7 +225,7 @@ const TOPICS: Topic[] = [
       { t: 'ul', items: s.notReady },
       { t: 'p', text: 'Обращения на ранней стадии попадают в знаменатель конверсии, но закрываются позже остальных. Если считать их отказами, экономика канала выглядит хуже, чем есть.' },
       { t: 'h2', text: 'Что даёт больший эффект' },
-      { t: 'p', text: `Максимальная скидка за объём — ${FACTS.discounts[2].percent}% при пакете от ${FACTS.discounts[2].from} лидов. Удвоение сквозной конверсии снижает стоимость сделки на 50%. Поэтому первым делом смотрят на обработку, а не на прайс.` },
+      { t: 'p', text: `Максимальная скидка за объём — ${MAX_DISCOUNT.percent}% при пакете от ${MAX_DISCOUNT.from} лидов. Удвоение сквозной конверсии снижает стоимость сделки на 50%. Поэтому первым делом смотрят на обработку, а не на прайс.` },
       { t: 'calc' },
       { t: 'cta', title: 'Посчитать под ваши цифры', text: 'Назовите конверсию и комиссию — посчитаем окупаемость до покупки.' },
     ],
@@ -379,7 +379,7 @@ const TOPICS: Topic[] = [
       { t: 'ul', items: s.materials },
       { t: 'h2', text: 'Скидки' },
       { t: 'table', head: ['Объём', 'Скидка'], rows: FACTS.discounts.map((d) => [`от ${d.from} лидов`, `${d.percent}%`]) },
-      { t: 'callout', title: 'Когда скидка вредит', text: `Пакет в ${FACTS.discounts[2].from} заявок при команде из двух человек означает просроченную обработку половины объёма. Экономия ${FACTS.discounts[2].percent}% не покрывает потерю конверсии.` },
+      { t: 'callout', title: 'Когда скидка вредит', text: `Пакет в ${MAX_DISCOUNT.from} заявок при команде из двух человек означает просроченную обработку половины объёма. Экономия ${MAX_DISCOUNT.percent}% не покрывает потерю конверсии.` },
       { t: 'calc' },
       { t: 'cta', title: 'Рассчитать пакет', text: 'Назовите численность команды и план — подберём объём и темп подачи.' },
     ],

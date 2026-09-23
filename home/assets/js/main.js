@@ -926,7 +926,9 @@
       'new': [['comfort', 'Комфорт', 'до 500 000 ₽/м²'], ['business', 'Бизнес', 'до 800 000 ₽/м²'], ['premium', 'Премиум', 'до 1 200 000 ₽/м²'], ['deluxe', 'De Luxe', 'от 1 200 000 ₽/м²']],
       'commercial': [['office', 'Офисы', 'Классы А, Б'], ['retail', 'Ритейл', 'Торговые помещения']]
     };
-    var TIERS = [[30, 0.1], [50, 0.15], [100, 0.2]];
+    var TIERS = [[30, 0.1], [50, 0.15], [75, 0.175], [100, 0.2]];
+    // 0.175 → «17,5%»
+    function pct(d) { return String(Math.round(d * 1000) / 10).replace('.', ',') + '%'; }
     var MIN = 10, MAX = 1000;
     var st = { type: 'new', cls: 'business', repl: true, qty: 10, touched: false };
     var calc = { summary: '', total: '', orderText: '' };
@@ -963,20 +965,20 @@
       odoSet($('[data-r-lead]'), fmtRub(lead));
       var baseEl = $('[data-r-base]');
       if (d > 0) { baseEl.hidden = false; baseEl.textContent = fmtRub(base); } else { baseEl.hidden = true; }
-      $('[data-r-disc]').textContent = d > 0 ? '−' + Math.round(d * 100) + '%' : '—';
+      $('[data-r-disc]').textContent = d > 0 ? '−' + pct(d) : '—';
       $('[data-r-save]').textContent = d > 0 ? fmtRub((base - lead) * st.qty) : '—';
       odoSet($('[data-r-total]'), fmtRub(total));
       $('[data-r-tariff]').textContent = st.repl ? 'С заменами' : 'Без замен';
       $('[data-r-summary]').textContent = typeName + ' · ' + clsName + ' · ' + leads(st.qty);
       $$('[data-bar-total]').forEach(function (el) { el.textContent = fmtRub(total); });
-      $$('[data-bar-lead]').forEach(function (el) { el.textContent = fmtRub(lead) + ' за лид' + (d > 0 ? ' · −' + Math.round(d * 100) + '%' : ''); });
+      $$('[data-bar-lead]').forEach(function (el) { el.textContent = fmtRub(lead) + ' за лид' + (d > 0 ? ' · −' + pct(d) : ''); });
       presets.forEach(function (b) { b.classList.toggle('is-on', Number(b.getAttribute('data-qty')) === st.qty); });
       // next volume discount
       var next = TIERS.filter(function (t) { return st.qty < t[0]; })[0];
       if (next) {
         var need = next[0] - st.qty;
         nudge.innerHTML = '';
-        nudge.appendChild(document.createTextNode('Ещё ' + leads(need) + ' — и скидка ' + Math.round(next[1] * 100) + '% на весь пакет.'));
+        nudge.appendChild(document.createTextNode('Ещё ' + leads(need) + ' — и скидка ' + pct(next[1]) + ' на весь пакет.'));
         var add = document.createElement('button'); add.type = 'button'; add.setAttribute('data-qty-to', next[0]);
         add.textContent = 'Добавить ' + need; nudge.appendChild(add);
       } else {

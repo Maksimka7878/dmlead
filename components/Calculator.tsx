@@ -10,7 +10,9 @@ const ruble = (n: number) => `${Math.round(n).toLocaleString('ru-RU')} ₽`;
 
 const MIN_LEADS = 10;
 const MAX_LEADS = 1000;
-const PRESETS = [10, 30, 50, 100];
+const PRESETS = [10, 30, 50, 75, 100];
+
+const pct = (n: number) => `${String(n).replace('.', ',')}%`;
 
 const discountFor = (count: number) => (DISCOUNTS.find((d) => count >= d.minCount) ?? { percentage: 0 }).percentage;
 
@@ -41,9 +43,9 @@ const Calculator: React.FC = () => {
 
   const { perLead, discount, saved, total } = useMemo(() => {
     const base = tierPrice(tier, noReplace) * count;
-    const pct = discountFor(count);
-    const cut = (base * pct) / 100;
-    return { perLead: (base - cut) / count, discount: pct, saved: cut, total: base - cut };
+    const rate = discountFor(count);
+    const cut = (base * rate) / 100;
+    return { perLead: (base - cut) / count, discount: rate, saved: cut, total: base - cut };
   }, [tier, count, noReplace]);
 
   const animTotal = useAnimatedNumber(total);
@@ -57,7 +59,7 @@ const Calculator: React.FC = () => {
     summary,
     noReplace ? 'Тариф без замен' : 'Тариф с заменами',
     `Цена за лид: ${ruble(perLead)}`,
-    discount ? `Скидка за объём: ${discount}%` : '',
+    discount ? `Скидка за объём: ${pct(discount)}` : '',
     `Итого: ${ruble(total)}`,
   ].filter(Boolean).join('\n');
 
@@ -137,7 +139,7 @@ const Calculator: React.FC = () => {
             </div>
             <div className="flex flex-wrap gap-2">
               {PRESETS.map((p) => {
-                const pct = discountFor(p);
+                const d = discountFor(p);
                 const on = count === p;
                 return (
                   <button
@@ -149,7 +151,7 @@ const Calculator: React.FC = () => {
                     }`}
                   >
                     {p}
-                    {pct > 0 && <span className={`text-[11.5px] ${on ? 'text-white/70' : 'text-brand'}`}>−{pct}%</span>}
+                    {d > 0 && <span className={`text-[11.5px] ${on ? 'text-white/70' : 'text-brand'}`}>−{pct(d)}</span>}
                   </button>
                 );
               })}
@@ -158,11 +160,11 @@ const Calculator: React.FC = () => {
           <p className="mt-3 min-h-[1.5em] text-[14px] text-ink-2">
             {next ? (
               <>
-                Ещё {next.minCount - count} лидов — и скидка {next.percentage}% на весь пакет.{' '}
+                Ещё {next.minCount - count} лидов — и скидка {pct(next.percentage)} на весь пакет.{' '}
                 <button type="button" onClick={() => setQty(next.minCount)} className="copy text-[14px]">Добавить {next.minCount - count}</button>
               </>
             ) : (
-              <>Максимальная скидка {discount}% уже применена.</>
+              <>Максимальная скидка {pct(discount)} уже применена.</>
             )}
           </p>
         </Step>
@@ -199,7 +201,7 @@ const Calculator: React.FC = () => {
         <dl className="mt-3 text-[15px]">
           {[
             ['Цена за лид', ruble(perLead)],
-            ['Скидка за объём', discount ? `${discount}%` : '—'],
+            ['Скидка за объём', discount ? pct(discount) : '—'],
             ['Экономия', saved ? ruble(saved) : '—'],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between gap-4 border-b border-[var(--line)] py-3">
