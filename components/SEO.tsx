@@ -80,7 +80,7 @@ const SEO: React.FC<SEOProps> = ({
     const defaultKeywords = "лиды недвижимость, купить лиды недвижимость, премиальные лиды, лидогенерация недвижимость, клиенты на недвижимость, трафик недвижимость";
     const siteUrl = "https://dmleads.ru";
     const canonicalUrl = `${siteUrl}${path}`;
-    const ogImage = `${siteUrl}/og-image.jpg`;
+    const ogImage = `${siteUrl}/og-dmleads.jpg`;
 
     // Merge base schemas with any page-specific schema
     const allSchemas = noAutoSchema
