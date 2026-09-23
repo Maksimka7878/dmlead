@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/build-content.mjs && vite",
     "content": "node scripts/build-content.mjs",
-    "build": "node scripts/build-content.mjs && vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "build": "node scripts/build-content.mjs && vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/install-home.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -151,17 +151,18 @@ const Layout = () => {
                             : 'max-w-7xl px-6 py-5 bg-white/0 border-white/0 shadow-none'}
                     `}>
 
-                        <Link to="/" className="flex items-center gap-3 group cursor-pointer">
+                        {/* Главная — отдельная статическая страница (home/), поэтому полная загрузка, а не роутер */}
+                        <a href="/" className="flex items-center gap-3 group cursor-pointer">
                             {/* Logo Text */}
                             <span className={`font-black tracking-tighter text-slate-900 transition-all duration-300 uppercase ${scrolled ? 'text-2xl md:text-3xl' : 'text-[1.8rem] md:text-[2.2rem]'}`}>
                                 DM<span className="text-[var(--accent)] transition-colors duration-700 mx-[1px]">.</span>LEADS
                             </span>
-                        </Link>
+                        </a>
 
                         {/* Desktop Links */}
                         <div className={`hidden md:flex items-center space-x-1 text-base font-semibold text-slate-600 ${scrolled ? 'mx-4' : 'mx-auto'}`}>
                             {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Услуги', 'Блог'].map((item) => {
-                                const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
+                                const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantees' : item === 'Методы' ? 'sources' : item === 'Блог' ? 'articles' : 'process';
                                 const href = ROUTE_ITEMS[item] ?? getLink(id);
                                 
                                 if (ROUTE_ITEMS[item]) {
@@ -221,7 +222,7 @@ const Layout = () => {
                     <div className="relative z-10 flex h-full flex-col px-5 pt-28 pb-10">
                         <div className="flex flex-col gap-3">
                             {['Процесс', 'Гарантии', 'Методы', 'Цены', 'Услуги', 'Блог'].map((item) => {
-                                const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantee' : item === 'Методы' ? 'methods' : item === 'Блог' ? 'articles' : 'process';
+                                const id = item === 'Цены' ? 'pricing' : item === 'Гарантии' ? 'guarantees' : item === 'Методы' ? 'sources' : item === 'Блог' ? 'articles' : 'process';
 
                                 const inner = (
                                     <>
